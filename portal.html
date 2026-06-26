@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zoops PoP Login</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: #fff7cf;
+      color: #17151f;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+    .login-shell {
+      width: min(100%, 460px);
+      overflow: hidden;
+      border: 4px solid #17151f;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 10px 10px 0 rgba(23,21,31,.18);
+    }
+    header {
+      padding: 22px;
+      background: #20bcec;
+      border-bottom: 4px solid #17151f;
+    }
+    h1 { margin: 0; font-size: 40px; letter-spacing: 0; }
+    h1 span {
+      display: inline-block;
+      padding: 0 7px;
+      border: 3px solid #17151f;
+      border-radius: 5px;
+      background: #fff;
+      color: #ff263d;
+    }
+    header p { margin: 6px 0 0; font-weight: 800; }
+    .switcher {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 3px solid #17151f;
+    }
+    .switcher button {
+      min-height: 50px;
+      border: 0;
+      background: #17151f;
+      color: #fff;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .switcher button.active { background: #ff263d; }
+    main { padding: 22px; }
+    form { display: grid; gap: 13px; }
+    label { display: grid; gap: 5px; font-weight: 900; }
+    input {
+      min-height: 48px;
+      width: 100%;
+      padding: 10px 12px;
+      border: 3px solid #17151f;
+      border-radius: 5px;
+      font: inherit;
+      font-weight: 700;
+    }
+    .submit {
+      min-height: 50px;
+      border: 3px solid #17151f;
+      border-radius: 5px;
+      background: #ffe500;
+      box-shadow: 0 4px 0 rgba(23,21,31,.2);
+      cursor: pointer;
+      font-size: 17px;
+      font-weight: 900;
+    }
+    .secondary {
+      border: 0;
+      background: transparent;
+      color: #126f9b;
+      cursor: pointer;
+      font-weight: 800;
+    }
+    .message {
+      min-height: 22px;
+      margin: 14px 0 0;
+      color: #c9142e;
+      font-weight: 800;
+      text-align: center;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <section class="login-shell">
+    <header>
+      <h1>Zoops <span>PoP</span></h1>
+      <p>Academy phonics learning</p>
+    </header>
+    <div class="switcher">
+      <button id="ownerTab" class="active" type="button">원장님</button>
+      <button id="studentTab" type="button">학생</button>
+    </div>
+    <main>
+      <form id="ownerForm">
+        <label>이메일
+          <input id="ownerEmail" type="email" autocomplete="email" required>
+        </label>
+        <label>비밀번호
+          <input id="ownerPassword" type="password" minlength="6" autocomplete="current-password" required>
+        </label>
+        <button class="submit" type="submit">로그인</button>
+        <button id="ownerSignup" class="secondary" type="button">처음 이용합니다 - 원장님 가입</button>
+      </form>
+      <form id="studentForm" class="hidden">
+        <label>학원 코드
+          <input id="academyCode" inputmode="latin" autocomplete="organization" required>
+        </label>
+        <label>학생 ID
+          <input id="studentId" inputmode="latin" autocomplete="username" required>
+        </label>
+        <label>비밀번호
+          <input id="studentPassword" type="password" minlength="6" autocomplete="current-password" required>
+        </label>
+        <button class="submit" type="submit">학습 시작</button>
+      </form>
+      <p id="message" class="message" aria-live="polite"></p>
+    </main>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase_config.js"></script>
+  <script>
+    const client = supabase.createClient(
+      ZOOPS_SUPABASE.url,
+      ZOOPS_SUPABASE.publishableKey
+    );
+    const ownerTab = document.getElementById("ownerTab");
+    const studentTab = document.getElementById("studentTab");
+    const ownerForm = document.getElementById("ownerForm");
+    const studentForm = document.getElementById("studentForm");
+    const message = document.getElementById("message");
+    const portalUrl = new URL("portal.html", window.location.href).href;
+
+    async function finishEmailConfirmation() {
+      const url = new URL(window.location.href);
+      const code = url.searchParams.get("code");
+
+      if (code) {
+        message.textContent = "이메일 확인을 완료하는 중입니다...";
+        const { error } = await client.auth.exchangeCodeForSession(code);
+        if (error) {
+          message.textContent = `이메일 확인 오류: ${error.message}`;
+          return;
+        }
+        window.history.replaceState({}, document.title, portalUrl);
+      }
+
+      const { data: { session } } = await client.auth.getSession();
+      if (session) {
+        window.location.replace("academy.html");
+      }
+    }
+
+    function showMode(mode) {
+      const owner = mode === "owner";
+      ownerTab.classList.toggle("active", owner);
+      studentTab.classList.toggle("active", !owner);
+      ownerForm.classList.toggle("hidden", !owner);
+      studentForm.classList.toggle("hidden", owner);
+      message.textContent = "";
+    }
+
+    ownerTab.onclick = () => showMode("owner");
+    studentTab.onclick = () => showMode("student");
+
+    ownerForm.onsubmit = async event => {
+      event.preventDefault();
+      message.textContent = "로그인 중...";
+      const { error } = await client.auth.signInWithPassword({
+        email: document.getElementById("ownerEmail").value.trim(),
+        password: document.getElementById("ownerPassword").value,
+      });
+      if (error) {
+        message.textContent = error.message;
+        return;
+      }
+      location.href = "academy.html";
+    };
+
+    document.getElementById("ownerSignup").onclick = async () => {
+      const email = document.getElementById("ownerEmail").value.trim();
+      const password = document.getElementById("ownerPassword").value;
+      if (!email || password.length < 6) {
+        message.textContent = "이메일과 6자 이상의 비밀번호를 입력해 주세요.";
+        return;
+      }
+      message.textContent = "가입 처리 중...";
+      const { error } = await client.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: portalUrl,
+        },
+      });
+      message.textContent = error
+        ? error.message
+        : "가입되었습니다. 이메일 확인 후 로그인해 주세요.";
+    };
+
+    studentForm.onsubmit = async event => {
+      event.preventDefault();
+      message.textContent = "로그인 중...";
+      const code = document.getElementById("academyCode").value.trim().toLowerCase();
+      const id = document.getElementById("studentId").value.trim().toLowerCase();
+      const { error } = await client.auth.signInWithPassword({
+        email: `${code}.${id}@students.zoopspop.invalid`,
+        password: document.getElementById("studentPassword").value,
+      });
+      if (error) {
+        message.textContent = "학원 코드, 학생 ID 또는 비밀번호를 확인해 주세요.";
+        return;
+      }
+      location.href = "phonics.html";
+    };
+
+    finishEmailConfirmation();
+  </script>
+</body>
+</html>

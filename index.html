@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zoops PoP</title>
+  <script>
+    const portal = new URL("portal.html", window.location.href);
+    portal.search = window.location.search;
+    portal.hash = window.location.hash;
+    window.location.replace(portal.href);
+  </script>
+</head>
+<body>
+  <p><a href="portal.html">Zoops PoP 로그인으로 이동</a></p>
+</body>
+</html>

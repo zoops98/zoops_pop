@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zoops PoP Academy</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --ink: #17151f;
+      --sky: #20bcec;
+      --sun: #ffe500;
+      --hot: #ff263d;
+      --paper: #fffbea;
+      --soft: #e1f7ff;
+      --green: #55b92b;
+    }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+    header {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 22px;
+      border-bottom: 4px solid var(--ink);
+      background: var(--sky);
+    }
+    h1, h2, h3 { margin: 0; letter-spacing: 0; }
+    h2 { margin-bottom: 8px; }
+    button {
+      min-height: 42px;
+      padding: 8px 14px;
+      border: 3px solid var(--ink);
+      border-radius: 5px;
+      background: var(--sun);
+      cursor: pointer;
+      font-weight: 900;
+    }
+    button:disabled { cursor: wait; opacity: .6; }
+    main { width: min(1180px, calc(100% - 28px)); margin: 22px auto; }
+    .panel {
+      margin-bottom: 18px;
+      padding: 18px;
+      border: 4px solid var(--ink);
+      border-radius: 7px;
+      background: #fff;
+      box-shadow: 7px 7px 0 rgba(23,21,31,.14);
+    }
+    form, .api-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr) auto;
+      gap: 10px;
+    }
+    input, textarea {
+      min-height: 44px;
+      width: 100%;
+      padding: 8px 10px;
+      border: 3px solid var(--ink);
+      border-radius: 5px;
+      background: #fff;
+      font: inherit;
+      font-weight: 700;
+    }
+    textarea { min-height: 180px; resize: vertical; line-height: 1.55; }
+    table { width: 100%; margin-top: 15px; border-collapse: collapse; }
+    th, td { padding: 10px; border-bottom: 2px solid #ddd; text-align: left; }
+    th { background: var(--soft); }
+    tr.is-selected td { background: #fff4b0; }
+    .empty { padding: 28px 10px; color: #65616b; text-align: center; font-weight: 800; }
+    .message { min-height: 22px; color: #c9142e; font-weight: 800; }
+    .muted { color: #65616b; }
+    .hidden { display: none !important; }
+    .section-head {
+      display: flex;
+      gap: 12px;
+      align-items: end;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .api-settings {
+      margin: 18px 0;
+      padding: 14px;
+      border: 3px solid var(--ink);
+      border-radius: 6px;
+      background: #f5fcff;
+    }
+    .api-settings h3 { margin-bottom: 5px; }
+    .api-row { grid-template-columns: minmax(220px, 1fr) auto auto; }
+    .student-action { min-height: 34px; padding: 4px 10px; background: #fff; }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin: 16px 0;
+    }
+    .metric {
+      min-width: 0;
+      padding: 12px;
+      border: 3px solid var(--ink);
+      border-radius: 6px;
+      background: #fff;
+    }
+    .metric span { display: block; color: #65616b; font-size: 12px; font-weight: 800; }
+    .metric b { display: block; margin-top: 4px; font-size: 22px; overflow-wrap: anywhere; }
+    .mastered { color: #247d15; }
+    .review { color: #c9142e; }
+    .feedback-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 12px 0;
+    }
+    .feedback-actions .primary { background: var(--hot); color: #fff; }
+    .wrong-words {
+      margin: 12px 0;
+      padding: 10px 12px;
+      border-left: 6px solid var(--hot);
+      background: #fff3f3;
+      font-weight: 800;
+    }
+    @media (max-width: 850px) {
+      form, .api-row { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .section-head { align-items: start; flex-direction: column; }
+    }
+    @media (max-width: 600px) {
+      header { align-items: flex-start; }
+      h1 { font-size: 24px; }
+      .metrics { grid-template-columns: 1fr 1fr; }
+      table, thead, tbody, tr, th, td { display: block; }
+      thead { display: none; }
+      tr { padding: 10px; border-bottom: 3px solid var(--ink); }
+      td { border: 0; padding: 5px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Zoops PoP Academy</h1>
+      <strong id="academyTitle">원장님 관리</strong>
+    </div>
+    <button id="signOut">로그아웃</button>
+  </header>
+
+  <main>
+    <section id="setupPanel" class="panel hidden">
+      <h2>학원 공간 만들기</h2>
+      <p>처음 한 번만 입력합니다. 학원 코드는 학생 로그인에 사용됩니다.</p>
+      <form id="setupForm">
+        <input id="academyName" placeholder="학원 이름" required>
+        <input id="academyNewCode" placeholder="학원 코드 (예: HAPPY01)" required>
+        <input id="ownerName" placeholder="원장님 표시 이름" required>
+        <button id="academyCreateButton" type="submit">학원 생성</button>
+      </form>
+      <p id="setupMessage" class="message" aria-live="polite"></p>
+    </section>
+
+    <section id="studentsPanel" class="panel hidden">
+      <div class="section-head">
+        <div>
+          <h2>학생 계정과 학습 현황</h2>
+          <p class="muted">학생을 추가하거나 성취도 버튼을 눌러 학습 기록을 확인합니다.</p>
+        </div>
+      </div>
+
+      <form id="studentCreateForm">
+        <input id="englishName" placeholder="English name" required>
+        <input id="newStudentId" placeholder="Student ID" required>
+        <input id="newStudentPassword" type="password" minlength="6" placeholder="임시 비밀번호" required>
+        <button type="submit">학생 추가</button>
+      </form>
+      <p id="message" class="message" aria-live="polite"></p>
+
+      <div class="api-settings">
+        <h3>Gemini AI 피드백 설정</h3>
+        <p class="muted">Gemini 2.5 Flash API 키는 이 브라우저의 로컬 저장소에만 저장됩니다.</p>
+        <div class="api-row">
+          <input id="geminiApiKey" type="password" autocomplete="off" placeholder="Google Gemini API key">
+          <button id="saveGeminiKey" type="button">키 저장</button>
+          <button id="removeGeminiKey" type="button">키 삭제</button>
+        </div>
+        <p id="geminiKeyStatus" class="message" aria-live="polite"></p>
+      </div>
+
+      <table>
+        <thead>
+          <tr><th>English name</th><th>학생 ID</th><th>상태</th><th>생성일</th><th>학습 현황</th></tr>
+        </thead>
+        <tbody id="studentRows"></tbody>
+      </table>
+      <div id="emptyStudents" class="empty">아직 등록된 학생이 없습니다.</div>
+    </section>
+
+    <section id="progressPanel" class="panel hidden">
+      <div class="section-head">
+        <div>
+          <h2 id="progressTitle">학생 성취도</h2>
+          <p id="progressSubtitle" class="muted"></p>
+        </div>
+        <button id="refreshProgress" type="button">새로고침</button>
+      </div>
+
+      <div id="metricCards" class="metrics"></div>
+      <div id="wrongWords" class="wrong-words hidden"></div>
+
+      <h3>Unit별 학습 기록</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Section / Unit</th><th>Study Board</th><th>Listen 성공</th><th>Spelling 시도</th>
+            <th>첫 정답률</th><th>최종 정답률</th><th>학습 시간</th><th>상태</th><th>최근 학습</th>
+          </tr>
+        </thead>
+        <tbody id="progressRows"></tbody>
+      </table>
+      <div id="emptyProgress" class="empty hidden">아직 저장된 학습 기록이 없습니다.</div>
+
+      <div class="feedback-actions">
+        <button id="generateFeedback" class="primary" type="button">AI 피드백 만들기</button>
+        <button id="saveFeedback" type="button">수정본 저장</button>
+      </div>
+      <textarea id="feedbackText" placeholder="학생을 선택한 뒤 AI 피드백 만들기를 누르세요."></textarea>
+      <p id="feedbackStatus" class="message" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase_config.js"></script>
+  <script>
+    const client = supabase.createClient(
+      ZOOPS_SUPABASE.url,
+      ZOOPS_SUPABASE.publishableKey
+    );
+    const GEMINI_KEY_STORAGE = "zoops_pop_gemini_api_key";
+    const GEMINI_MODEL = "gemini-2.5-flash";
+    let currentUser = null;
+    let currentProfile = null;
+    let students = [];
+    let selectedStudent = null;
+    let selectedMetrics = null;
+
+    const setupPanel = document.getElementById("setupPanel");
+    const studentsPanel = document.getElementById("studentsPanel");
+    const progressPanel = document.getElementById("progressPanel");
+    const setupMessage = document.getElementById("setupMessage");
+    const academyCreateButton = document.getElementById("academyCreateButton");
+    const message = document.getElementById("message");
+    const feedbackStatus = document.getElementById("feedbackStatus");
+
+    function showSetupError(text) {
+      setupMessage.textContent = text;
+      setupPanel.classList.remove("hidden");
+    }
+
+    async function start() {
+      const { data: { user }, error: userError } = await client.auth.getUser();
+      if (userError) {
+        showSetupError(`로그인 상태를 확인하지 못했습니다: ${userError.message}`);
+        return;
+      }
+      if (!user) {
+        location.href = "portal.html";
+        return;
+      }
+      currentUser = user;
+
+      const { data: profile, error: profileError } = await client
+        .from("profiles")
+        .select("academy_id, role, display_name")
+        .eq("id", user.id)
+        .maybeSingle();
+      if (profileError) {
+        showSetupError(`계정 정보를 불러오지 못했습니다: ${profileError.message}`);
+        return;
+      }
+      currentProfile = profile;
+      if (!profile) {
+        setupPanel.classList.remove("hidden");
+        return;
+      }
+      if (!["academy_owner", "teacher"].includes(profile.role)) {
+        location.href = "phonics.html";
+        return;
+      }
+
+      const { data: academy, error: academyError } = await client
+        .from("academies")
+        .select("name, code")
+        .eq("id", profile.academy_id)
+        .single();
+      if (academyError) {
+        showSetupError(`학원 정보를 불러오지 못했습니다: ${academyError.message}`);
+        return;
+      }
+
+      document.getElementById("academyTitle").textContent = `${academy.name} · ${academy.code}`;
+      setupPanel.classList.add("hidden");
+      studentsPanel.classList.remove("hidden");
+      loadGeminiKey();
+      await loadStudents();
+    }
+
+    document.getElementById("setupForm").onsubmit = async event => {
+      event.preventDefault();
+      const academyName = document.getElementById("academyName").value.trim();
+      const academyCode = document.getElementById("academyNewCode").value
+        .trim().toUpperCase().replace(/[^A-Z0-9_-]/g, "");
+      const ownerName = document.getElementById("ownerName").value.trim();
+
+      if (!academyCode) {
+        showSetupError("학원 코드는 영문, 숫자, 하이픈(-), 밑줄(_)로 입력해 주세요.");
+        return;
+      }
+
+      academyCreateButton.disabled = true;
+      academyCreateButton.textContent = "생성 중...";
+      setupMessage.textContent = "학원 공간을 만들고 있습니다...";
+
+      const { error } = await client.rpc("create_my_academy", {
+        academy_name: academyName,
+        academy_code: academyCode,
+        owner_display_name: ownerName,
+      });
+
+      if (error) {
+        showSetupError(error.code === "23505"
+          ? "이미 사용 중인 학원 코드입니다."
+          : error.message);
+      } else {
+        await start();
+      }
+      academyCreateButton.disabled = false;
+      academyCreateButton.textContent = "학원 생성";
+    };
+
+    async function loadStudents() {
+      const { data, error } = await client
+        .from("students")
+        .select("id, english_name, student_login_id, status, created_at")
+        .order("created_at", { ascending: false });
+      if (error) {
+        message.textContent = error.message;
+        return;
+      }
+
+      students = data || [];
+      document.getElementById("emptyStudents").classList.toggle("hidden", students.length > 0);
+      document.getElementById("studentRows").innerHTML = students.map(student => `
+        <tr class="${selectedStudent?.id === student.id ? "is-selected" : ""}">
+          <td>${escapeText(student.english_name)}</td>
+          <td>${escapeText(student.student_login_id)}</td>
+          <td>${escapeText(student.status)}</td>
+          <td>${new Date(student.created_at).toLocaleDateString("ko-KR")}</td>
+          <td><button class="student-action" type="button" onclick="openStudentProgress('${student.id}')">성취도 보기</button></td>
+        </tr>
+      `).join("");
+    }
+
+    document.getElementById("studentCreateForm").onsubmit = async event => {
+      event.preventDefault();
+      message.textContent = "학생 계정을 만드는 중...";
+      const { data, error } = await client.functions.invoke("create-student", {
+        body: {
+          english_name: document.getElementById("englishName").value.trim(),
+          student_login_id: document.getElementById("newStudentId").value.trim(),
+          password: document.getElementById("newStudentPassword").value,
+        },
+      });
+      if (error || data?.error) {
+        message.textContent = data?.error || error.message;
+        return;
+      }
+      event.target.reset();
+      message.textContent = "학생 계정이 생성되었습니다.";
+      await loadStudents();
+    };
+
+    async function openStudentProgress(studentId) {
+      selectedStudent = students.find(student => student.id === studentId);
+      if (!selectedStudent) return;
+      await loadStudents();
+      progressPanel.classList.remove("hidden");
+      document.getElementById("progressTitle").textContent =
+        `${selectedStudent.english_name} 학습 성취도`;
+      document.getElementById("progressSubtitle").textContent =
+        `학생 ID: ${selectedStudent.student_login_id}`;
+      document.getElementById("feedbackText").value = "";
+      await loadStudentProgress();
+      progressPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    async function loadStudentProgress() {
+      if (!selectedStudent) return;
+      feedbackStatus.textContent = "학습 기록을 불러오는 중...";
+
+      const [
+        progressResult,
+        attemptsResult,
+        sessionsResult,
+        gameProfileResult,
+        listenResult,
+        badgesResult,
+      ] = await Promise.all([
+        client.from("unit_progress")
+          .select("*")
+          .eq("student_id", selectedStudent.id)
+          .order("last_studied_at", { ascending: false }),
+        client.from("word_attempts")
+          .select("word, is_correct, session_id")
+          .eq("student_id", selectedStudent.id),
+        client.from("learning_sessions")
+          .select("id, section_key, unit_key, audio_replays, duration_seconds")
+          .eq("student_id", selectedStudent.id),
+        client.from("student_game_profiles")
+          .select("xp, streak_days")
+          .eq("student_id", selectedStudent.id)
+          .maybeSingle(),
+        client.from("listen_select_attempts")
+          .select("unit_key, word, is_correct")
+          .eq("student_id", selectedStudent.id),
+        client.from("student_badges")
+          .select("id")
+          .eq("student_id", selectedStudent.id),
+      ]);
+
+      if (
+        progressResult.error ||
+        attemptsResult.error ||
+        sessionsResult.error ||
+        gameProfileResult.error ||
+        listenResult.error ||
+        badgesResult.error
+      ) {
+        feedbackStatus.textContent =
+          progressResult.error?.message ||
+          attemptsResult.error?.message ||
+          sessionsResult.error?.message ||
+          gameProfileResult.error?.message ||
+          listenResult.error?.message ||
+          badgesResult.error?.message;
+        return;
+      }
+
+      const progress = progressResult.data || [];
+      const attempts = attemptsResult.data || [];
+      const sessions = sessionsResult.data || [];
+      const gameProfile = gameProfileResult.data || { xp: 0, streak_days: 0 };
+      const listenAttempts = listenResult.data || [];
+      const badges = badgesResult.data || [];
+      const numeric = value => value === null || value === undefined ? null : Number(value);
+      const average = values => {
+        const valid = values.map(numeric).filter(value => Number.isFinite(value));
+        return valid.length ? valid.reduce((sum, value) => sum + value, 0) / valid.length : null;
+      };
+      const wrongMap = {};
+      attempts.filter(item => !item.is_correct).forEach(item => {
+        wrongMap[item.word] = (wrongMap[item.word] || 0) + 1;
+      });
+      const wrongWords = Object.entries(wrongMap)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10);
+
+      selectedMetrics = {
+        student: selectedStudent.english_name,
+        unitsLearned: progress.length,
+        studyBoardsCompleted: progress.filter(item => item.study_board_completed).length,
+        spellingAttempts: progress.reduce((sum, item) => sum + item.spelling_attempts, 0),
+        firstAttemptAccuracy: average(progress.map(item => item.first_attempt_accuracy)),
+        finalAccuracy: average(progress.map(item => item.final_accuracy)),
+        wrongCount: attempts.filter(item => !item.is_correct).length,
+        audioReplays: sessions.reduce((sum, item) => sum + item.audio_replays, 0),
+        studySeconds: sessions.reduce((sum, item) => sum + item.duration_seconds, 0),
+        masteredUnits: progress.filter(item => item.mastery_status === "mastered").length,
+        reviewUnits: progress.filter(item => item.mastery_status === "review").length,
+        recentStudy: progress[0]?.last_studied_at || null,
+        xp: Number(gameProfile.xp) || 0,
+        level: Math.floor((Number(gameProfile.xp) || 0) / 100) + 1,
+        streakDays: Number(gameProfile.streak_days) || 0,
+        listenCorrect: listenAttempts.filter(item => item.is_correct).length,
+        badgeCount: badges.length,
+        wrongWords,
+        units: progress.map(item => {
+          const unitSessions = sessions.filter(session =>
+              session.section_key === item.section_key &&
+              session.unit_key === item.unit_key
+          );
+          const sessionIds = new Set(unitSessions.map(session => session.id));
+          return {
+            ...item,
+            liveWrongCount: attempts.filter(attempt =>
+              !attempt.is_correct && sessionIds.has(attempt.session_id)
+            ).length,
+            listenCorrect: listenAttempts.filter(attempt =>
+              attempt.is_correct && attempt.unit_key === item.unit_key
+            ).length,
+            liveStudySeconds: unitSessions
+              .reduce((sum, session) => sum + session.duration_seconds, 0),
+            liveAudioReplays: unitSessions
+              .reduce((sum, session) => sum + session.audio_replays, 0),
+          };
+        }),
+      };
+
+      renderMetrics();
+      renderProgressRows(selectedMetrics.units);
+      feedbackStatus.textContent = progress.length
+        ? "학습 기록을 불러왔습니다."
+        : "학생이 학습을 완료하면 이곳에 기록이 표시됩니다.";
+    }
+
+    function renderMetrics() {
+      const metric = selectedMetrics;
+      const accuracy = value => value === null ? "-" : `${value.toFixed(1)}%`;
+
+      document.getElementById("metricCards").innerHTML = [
+        ["학습 Unit", `${metric.unitsLearned}개`],
+        ["레벨 / XP", `Lv.${metric.level} · ${metric.xp} XP`],
+        ["연속 학습", `${metric.streakDays}일`],
+        ["Listen 성공", `${metric.listenCorrect}회`],
+        ["몬스터 배지", `${metric.badgeCount}개`],
+        ["Study Board 완료", `${metric.studyBoardsCompleted}개`],
+        ["Spelling 시도", `${metric.spellingAttempts}회`],
+        ["첫 시도 정답률", accuracy(metric.firstAttemptAccuracy)],
+        ["최종 정답률", accuracy(metric.finalAccuracy)],
+        ["누적 오답", `${metric.wrongCount}회`],
+        ["음성 재생", `${metric.audioReplays}회`],
+        ["학습 시간", formatDuration(metric.studySeconds)],
+        ["숙달 Unit", `${metric.masteredUnits}개`],
+        ["복습 필요", `${metric.reviewUnits}개`],
+      ].map(([label, value]) => `
+        <div class="metric"><span>${label}</span><b>${value}</b></div>
+      `).join("");
+
+      const wrongWords = document.getElementById("wrongWords");
+      wrongWords.classList.toggle("hidden", metric.wrongWords.length === 0);
+      wrongWords.textContent = metric.wrongWords.length
+        ? `자주 틀린 단어: ${metric.wrongWords.map(([word, count]) => `${word}(${count})`).join(", ")}`
+        : "";
+    }
+
+    function renderProgressRows(progress) {
+      document.getElementById("emptyProgress").classList.toggle("hidden", progress.length > 0);
+      document.getElementById("progressRows").innerHTML = progress.map(item => `
+        <tr>
+          <td>${escapeText(item.section_key)} / ${escapeText(item.unit_name)}</td>
+          <td>${item.study_board_completed ? "완료" : "학습 중"}</td>
+          <td>${item.listenCorrect}회</td>
+          <td>${item.spelling_attempts}회</td>
+          <td>${formatAccuracy(item.first_attempt_accuracy)}</td>
+          <td>${formatAccuracy(item.final_accuracy)}</td>
+          <td>${formatDuration(item.liveStudySeconds)}</td>
+          <td class="${item.mastery_status === "mastered" ? "mastered" : item.mastery_status === "review" ? "review" : ""}">
+            ${masteryLabel(item.mastery_status)}
+          </td>
+          <td>${item.last_studied_at ? new Date(item.last_studied_at).toLocaleDateString("ko-KR") : "-"}</td>
+        </tr>
+      `).join("");
+    }
+
+    function loadGeminiKey() {
+      const key = localStorage.getItem(GEMINI_KEY_STORAGE) || "";
+      document.getElementById("geminiApiKey").value = key;
+      document.getElementById("geminiKeyStatus").textContent =
+        key ? "이 브라우저에 API 키가 저장되어 있습니다." : "아직 저장된 API 키가 없습니다.";
+    }
+
+    document.getElementById("saveGeminiKey").onclick = () => {
+      const key = document.getElementById("geminiApiKey").value.trim();
+      if (!key) {
+        document.getElementById("geminiKeyStatus").textContent = "API 키를 입력해 주세요.";
+        return;
+      }
+      localStorage.setItem(GEMINI_KEY_STORAGE, key);
+      document.getElementById("geminiKeyStatus").textContent = "API 키를 이 브라우저에 저장했습니다.";
+    };
+
+    document.getElementById("removeGeminiKey").onclick = () => {
+      localStorage.removeItem(GEMINI_KEY_STORAGE);
+      document.getElementById("geminiApiKey").value = "";
+      document.getElementById("geminiKeyStatus").textContent = "저장된 API 키를 삭제했습니다.";
+    };
+
+    document.getElementById("generateFeedback").onclick = async event => {
+      if (!selectedStudent || !selectedMetrics) {
+        feedbackStatus.textContent = "먼저 학생의 성취도를 선택해 주세요.";
+        return;
+      }
+      const apiKey = localStorage.getItem(GEMINI_KEY_STORAGE);
+      if (!apiKey) {
+        feedbackStatus.textContent = "Gemini API 키를 먼저 저장해 주세요.";
+        return;
+      }
+
+      const button = event.currentTarget;
+      button.disabled = true;
+      button.textContent = "피드백 작성 중...";
+      feedbackStatus.textContent = "Gemini 2.5 Flash가 학습 기록을 분석하고 있습니다...";
+
+      try {
+        const prompt = buildFeedbackPrompt(selectedMetrics);
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-goog-api-key": apiKey,
+            },
+            body: JSON.stringify({
+              contents: [{ role: "user", parts: [{ text: prompt }] }],
+              generationConfig: {
+                temperature: 0.25,
+                maxOutputTokens: 1800,
+                thinkingConfig: { thinkingBudget: 0 },
+                responseMimeType: "application/json",
+                responseSchema: {
+                  type: "OBJECT",
+                  properties: {
+                    summary: { type: "STRING" },
+                    strengths: { type: "STRING" },
+                    improvements: { type: "STRING" },
+                    nextSteps: { type: "STRING" },
+                  },
+                  required: ["summary", "strengths", "improvements", "nextSteps"],
+                },
+              },
+            }),
+          }
+        );
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.error?.message || "Gemini API 요청에 실패했습니다.");
+        }
+        const candidate = result.candidates?.[0];
+        if (candidate?.finishReason && candidate.finishReason !== "STOP") {
+          throw new Error(
+            candidate.finishReason === "MAX_TOKENS"
+              ? "AI 답변이 중간에 잘렸습니다. 다시 한 번 눌러 주세요."
+              : `AI 답변을 완성하지 못했습니다: ${candidate.finishReason}`
+          );
+        }
+        const rawText = (candidate?.content?.parts || [])
+          .filter(part => !part.thought)
+          .map(part => part.text || "")
+          .join("")
+          .trim();
+        if (!rawText) throw new Error("Gemini가 피드백 문장을 반환하지 않았습니다.");
+
+        let feedback;
+        try {
+          feedback = JSON.parse(rawText);
+        } catch {
+          throw new Error("AI 피드백 형식이 올바르지 않습니다. 다시 생성해 주세요.");
+        }
+        const text = formatFeedback(feedback);
+
+        document.getElementById("feedbackText").value = text;
+        await saveFeedbackReport(text, true);
+        feedbackStatus.textContent = "AI 피드백 초안을 만들고 Supabase에 저장했습니다.";
+      } catch (error) {
+        feedbackStatus.textContent = error.message;
+      } finally {
+        button.disabled = false;
+        button.textContent = "AI 피드백 만들기";
+      }
+    };
+
+    document.getElementById("saveFeedback").onclick = async () => {
+      const text = document.getElementById("feedbackText").value.trim();
+      if (!selectedStudent || !text) {
+        feedbackStatus.textContent = "저장할 피드백을 입력해 주세요.";
+        return;
+      }
+      try {
+        await saveFeedbackReport(text, false);
+        feedbackStatus.textContent = "수정한 피드백을 저장했습니다.";
+      } catch (error) {
+        feedbackStatus.textContent = error.message;
+      }
+    };
+
+    async function saveFeedbackReport(text, generatedByAi) {
+      const today = new Date();
+      const startDate = new Date(today);
+      startDate.setDate(today.getDate() - 30);
+      const dateOnly = date => date.toISOString().slice(0, 10);
+      const { error } = await client.from("feedback_reports").insert({
+        academy_id: currentProfile.academy_id,
+        student_id: selectedStudent.id,
+        period_start: dateOnly(startDate),
+        period_end: dateOnly(today),
+        metric_snapshot: selectedMetrics,
+        ai_draft: generatedByAi ? { model: GEMINI_MODEL, text } : null,
+        edited_feedback: text,
+        created_by: currentUser.id,
+      });
+      if (error) throw error;
+    }
+
+    function buildFeedbackPrompt(metric) {
+      const unitLines = metric.units.map(unit =>
+        `${unit.section_key} ${unit.unit_name}: first=${unit.first_attempt_accuracy ?? "-"}%, ` +
+        `final=${unit.final_accuracy ?? "-"}%, wrong=${unit.liveWrongCount}, ` +
+        `audio=${unit.liveAudioReplays}, study_seconds=${unit.liveStudySeconds}, ` +
+        `status=${unit.mastery_status}`
+      ).join("\n");
+      const wrongWords = metric.wrongWords.map(([word, count]) => `${word} ${count}회`).join(", ") || "없음";
+
+      return `당신은 한국 초등 영어학원의 전문 파닉스 교사입니다.
+아래 익명 학생 계정의 수치만 근거로 학부모용 피드백을 작성하세요.
+반드시 지정된 JSON 필드 네 개를 모두 완전한 한국어 문장으로 채우세요.
+마크다운, 번호, 별표, 제목, 인사말, JSON 밖의 설명은 쓰지 마세요.
+자료가 부족한 항목은 단정하지 말고 "현재 기록에서는"이라고 표현하세요.
+각 필드는 2~3문장, 전체는 450~650자로 작성하세요.
+문체는 전문적이고 직관적이면서 친근하게 작성하세요. 지나치게 딱딱하거나 과장된 표현은 피하세요.
+
+Zoops PoP에서 학생이 실제로 할 수 있는 학습은 아래 세 가지뿐입니다.
+1. Study Board에서 단어 카드를 선택하고 단어를 확인하기
+2. Play Word 또는 Listen 버튼으로 해당 단어 음성을 반복해서 듣기
+3. Spelling Check에서 음성을 듣고 철자를 입력한 뒤 Check 버튼으로 확인하기
+
+위 세 가지 이외의 앱 기능을 제안하거나 있다고 표현하지 마세요.
+특히 녹음, 발음 채점, 말하기 평가, 동영상, 게임, 프린트 학습지, 교사와의 실시간 활동은 언급하지 마세요.
+학생이 음성을 듣고 스스로 따라 읽는 것은 가능하지만, 앱이 이를 기록하거나 평가한다고 표현하면 안 됩니다.
+Section과 Unit은 제공된 Unit별 기록에 실제로 등장하는 이름만 사용하세요.
+Section 1을 Unit 1이라고 부르지 말고 "Section 1의 Short A Unit"처럼 정확히 구분하세요.
+오답이 0회라는 이유만으로 이해도가 높거나 정확할 가능성이 있다고 추론하지 마세요.
+정답률 기록이 없으면 실력을 평가하지 말고 Spelling Check 완료 데이터가 부족하다고 설명하세요.
+
+필드 작성 기준:
+- summary: 학습 범위, 시간, 참여 양상을 객관적으로 요약
+- strengths: 실제 수치로 확인되는 잘한 점만 언급
+- improvements: 부족한 기록이나 오답을 비난 없이 구체적으로 설명
+- nextSteps: 다음 수업과 가정 복습에서 실행할 수 있는 방법 제안
+
+학생 영어 이름: ${metric.student}
+현재 레벨과 XP: Level ${metric.level}, ${metric.xp} XP
+연속 학습일: ${metric.streakDays}일
+Listen & Select 성공: ${metric.listenCorrect}회
+획득 몬스터 배지: ${metric.badgeCount}개
+학습 Unit: ${metric.unitsLearned}
+Study Board 완료: ${metric.studyBoardsCompleted}
+Spelling 시도: ${metric.spellingAttempts}
+첫 시도 평균 정답률: ${metric.firstAttemptAccuracy ?? "-"}%
+최종 평균 정답률: ${metric.finalAccuracy ?? "-"}%
+누적 오답: ${metric.wrongCount}
+음성 재생: ${metric.audioReplays}
+총 학습 시간(초): ${metric.studySeconds}
+숙달 Unit: ${metric.masteredUnits}
+복습 필요 Unit: ${metric.reviewUnits}
+자주 틀린 단어: ${wrongWords}
+
+Unit별 기록:
+${unitLines || "아직 완료된 Unit 기록 없음"}`;
+    }
+
+    function formatFeedback(feedback) {
+      const clean = value => String(value || "")
+        .replace(/\*\*/g, "")
+        .replace(/^#+\s*/gm, "")
+        .trim();
+      const sections = [
+        ["이번 학습 요약", clean(feedback.summary)],
+        ["잘한 점", clean(feedback.strengths)],
+        ["보완할 점", clean(feedback.improvements)],
+        ["다음 학습 제안", clean(feedback.nextSteps)],
+      ];
+      if (sections.some(([, text]) => !text)) {
+        throw new Error("AI가 일부 피드백 항목을 누락했습니다. 다시 생성해 주세요.");
+      }
+      return sections.map(([title, text]) => `${title}\n${text}`).join("\n\n");
+    }
+
+    document.getElementById("refreshProgress").onclick = loadStudentProgress;
+    document.getElementById("signOut").onclick = async () => {
+      await client.auth.signOut();
+      location.href = "portal.html";
+    };
+
+    function formatAccuracy(value) {
+      return value === null || value === undefined ? "-" : `${Number(value).toFixed(1)}%`;
+    }
+    function formatDuration(value) {
+      const seconds = Math.max(0, Math.round(Number(value) || 0));
+      if (seconds < 60) return `${seconds}초`;
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const remainingSeconds = seconds % 60;
+      if (hours > 0) {
+        return `${hours}시간 ${minutes}분${remainingSeconds ? ` ${remainingSeconds}초` : ""}`;
+      }
+      return `${minutes}분${remainingSeconds ? ` ${remainingSeconds}초` : ""}`;
+    }
+    function masteryLabel(value) {
+      return {
+        not_started: "시작 전",
+        learning: "학습 중",
+        review: "복습 필요",
+        mastered: "숙달",
+      }[value] || value;
+    }
+    function escapeText(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    start();
+  </script>
+</body>
+</html>

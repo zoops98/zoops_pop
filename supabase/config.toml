@@ -1,0 +1,25 @@
+project_id = "qudxcsbfjerwittazmpx"
+
+[auth]
+site_url = "https://zoops.synology.me:8081/zoopspop/portal.html"
+additional_redirect_urls = [
+  "https://zoops.synology.me:8081/zoopspop/portal.html",
+  "http://zoops.synology.me:8080/phonics/portal.html",
+  "http://127.0.0.1:8173/portal.html",
+  "http://localhost:8173/portal.html"
+]
+
+[auth.email]
+enable_confirmations = true
+max_frequency = "1m"
+otp_length = 8
+
+[auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
+
+[storage.vector]
+enabled = false
+
+[functions.create-student]
+verify_jwt = true
