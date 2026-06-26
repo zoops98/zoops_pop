@@ -162,3 +162,71 @@ var PHONICS_DATA = {
     ]
   }
 };
+
+var SIGHT_WORD_POOLS = {
+  "Section 1": [
+    "a", "I", "am", "can", "and", "the", "it", "in", "is", "on", "up", "not",
+    "my", "see", "we", "me", "he", "she", "yes", "no", "go", "so", "to", "do"
+  ],
+  "Section 2": [
+    "all", "will", "tell", "off", "back", "look", "little", "thing", "think", "thank", "drink", "with",
+    "this", "that", "then", "them", "when", "which", "much", "such", "went", "want", "best", "last"
+  ],
+  "Section 3": [
+    "this", "that", "them", "then", "with", "when", "where", "which", "while", "why", "what", "who",
+    "there", "they", "three", "phone", "photo", "school", "chair", "cheese", "ship", "shop", "thank", "think"
+  ],
+  "Section 4": [
+    "blue", "black", "play", "please", "sleep", "small", "stop", "step", "still", "strong", "street", "friend",
+    "from", "bring", "drink", "green", "brown", "every", "after", "under", "just", "must", "first", "last"
+  ],
+  "Section 5": [
+    "make", "made", "came", "same", "take", "name", "like", "time", "home", "those", "use", "these",
+    "have", "give", "live", "come", "some", "one", "done", "love", "move", "every", "there", "where"
+  ],
+  "Section 6": [
+    "day", "say", "may", "way", "play", "they", "see", "green", "three", "read", "eat", "please",
+    "boat", "show", "yellow", "new", "few", "blue", "right", "light", "night", "my", "by", "why"
+  ],
+  "Section 7": [
+    "for", "or", "more", "before", "her", "first", "third", "turn", "our", "your", "their", "there",
+    "under", "after", "over", "every", "mother", "father", "sister", "brother", "water", "work", "world", "learn"
+  ],
+  "Section 8": [
+    "out", "about", "around", "down", "now", "how", "brown", "found", "good", "look", "book", "school",
+    "soon", "too", "food", "boy", "toy", "joy", "saw", "draw", "because", "house", "sound", "round"
+  ],
+  "Section 9": [
+    "they", "their", "eight", "weigh", "neighbor", "great", "break", "ready", "head", "bread", "read", "piece",
+    "field", "chief", "baby", "happy", "family", "every", "very", "many", "only", "both", "again", "away"
+  ],
+  "Section 10": [
+    "city", "place", "space", "ice", "face", "once", "give", "giant", "large", "page", "write", "know",
+    "wrong", "sign", "high", "right", "light", "next", "six", "quick", "queen", "question", "because", "again"
+  ],
+  "Section 11": [
+    "cats", "dogs", "books", "kids", "boxes", "wishes", "played", "looked", "wanted", "needed", "started", "called",
+    "reading", "playing", "going", "doing", "helping", "faster", "fastest", "smaller", "every", "always", "today", "tomorrow"
+  ],
+  "Section 12": [
+    "little", "people", "because", "about", "before", "after", "again", "around", "together", "family", "favorite", "different",
+    "important", "beautiful", "number", "another", "mother", "father", "teacher", "friend", "school", "student", "complete", "perfect"
+  ]
+};
+
+function assignSightWords() {
+  Object.entries(PHONICS_DATA).forEach(([sectionKey, section]) => {
+    const pool = SIGHT_WORD_POOLS[sectionKey] || [];
+    section.units.forEach((unit, index) => {
+      const start = (index * 4) % pool.length;
+      const words = [];
+      for (let offset = 0; words.length < 6 && offset < pool.length; offset += 1) {
+        const word = pool[(start + offset) % pool.length];
+        if (word && !words.includes(word)) words.push(word);
+      }
+      unit.sightWords = words;
+    });
+  });
+}
+
+assignSightWords();

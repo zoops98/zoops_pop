@@ -564,7 +564,8 @@
   }
 
   .word-grid,
-  .challenge-grid {
+  .challenge-grid,
+  .sight-grid {
     position: relative;
     z-index: 1;
     display: grid;
@@ -573,7 +574,8 @@
   }
 
   .word-card,
-  .challenge-card {
+  .challenge-card,
+  .sight-card {
     min-height: 126px;
     border: 4px solid var(--line);
     border-radius: var(--radius);
@@ -698,6 +700,67 @@
     color: var(--muted);
     font-family: "Segoe UI", system-ui, sans-serif;
     font-weight: 800;
+  }
+
+  .sight-panel {
+    background: linear-gradient(90deg, #fff 0%, #e8ffd2 100%);
+  }
+
+  .sight-helper {
+    margin-top: 8px;
+    color: var(--muted);
+    font: 800 14px "Segoe UI", system-ui, sans-serif;
+  }
+
+  .sight-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sight-card {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 8px;
+    min-height: 150px;
+    padding: 12px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .sight-card:hover,
+  .sight-card.playing {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 0 rgba(23, 21, 31, 0.18);
+  }
+
+  .sight-card.playing {
+    outline: 5px solid var(--lime);
+  }
+
+  .sight-tag {
+    justify-self: start;
+    padding: 5px 9px;
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font: 900 12px "Segoe UI", system-ui, sans-serif;
+  }
+
+  .sight-card .word {
+    align-self: center;
+    font-size: clamp(34px, 4.2vw, 58px);
+  }
+
+  .sight-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 36px;
+    border: 3px solid var(--line);
+    border-radius: 999px;
+    background: var(--sun);
+    font: 900 13px "Segoe UI", system-ui, sans-serif;
   }
 
   .play-big {
@@ -1349,13 +1412,15 @@
     }
 
     .word-grid,
-    .challenge-grid {
+    .challenge-grid,
+    .sight-grid {
       grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
       gap: 10px;
     }
 
     .word-card,
-    .challenge-card {
+    .challenge-card,
+    .sight-card {
       min-height: 112px;
     }
   }
@@ -1397,7 +1462,8 @@
     }
 
     .word-grid,
-    .challenge-grid {
+    .challenge-grid,
+    .sight-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
@@ -1559,6 +1625,7 @@ const state = {
   unitIndex: 0,
   mode: "study",
   selectedIndex: 0,
+  sightIndex: 0,
   answers: {},
   checked: {},
   listenIndex: 0,
@@ -2032,6 +2099,8 @@ function renderMain() {
     prepareListenRound(state.listenIndex);
   }
   const selectedWord = unit.words[state.selectedIndex] || unit.words[0];
+  const sightWords = unit.sightWords || [];
+  const selectedSightWord = sightWords[state.sightIndex] || sightWords[0] || selectedWord;
   const firstUncheckedIndex = unit.words.findIndex((_, index) => state.checked[index] !== true);
   const spellingPromptWord = unit.words[firstUncheckedIndex === -1 ? 0 : firstUncheckedIndex];
   const listenPromptWord = unit.words[state.listenIndex] || unit.words[0];
@@ -2047,7 +2116,7 @@ function renderMain() {
         <div>
           <div class="unit-label"><span>${state.unitIndex + 1}</span> ${escapeHtml(unit.label)}</div>
           <h2>${escapeHtml(unit.name)}</h2>
-          <div class="unit-meta">${state.book} · ${unit.words.length} words</div>
+          <div class="unit-meta">${state.book} · ${unit.words.length} phonics words · ${sightWords.length} sight words</div>
         </div>
         <div class="focus-card">
           <div class="focus">${escapeHtml(unit.focus)}</div>
@@ -2057,25 +2126,30 @@ function renderMain() {
 
       <div class="mode-row">
         <button class="mode-tab ${state.mode === "study" ? "active" : ""}" onclick="setMode('study')">Study Board</button>
+        <button class="mode-tab ${state.mode === "sight" ? "active" : ""}" onclick="setMode('sight')">Sight Words</button>
         <button class="mode-tab ${state.mode === "spell" ? "active" : ""}" onclick="setMode('spell')">Spelling Check</button>
         <button class="mode-tab ${state.mode === "listen" ? "active" : ""}" onclick="setMode('listen')">Listen & Select</button>
         <button class="utility-btn" onclick="playWord('${escapeHtml(
           state.mode === "spell" ? spellingPromptWord :
           state.mode === "listen" ? listenPromptWord :
+          state.mode === "sight" ? selectedSightWord :
           selectedWord
         )}')">Play Word</button>
       </div>
 
       <div class="pattern-strip">
         ${unit.families.map(item => `<span class="pattern-chip">${escapeHtml(item)}</span>`).join("")}
+        ${state.mode === "sight" ? `<span class="pattern-chip">Sight Words</span>` : ""}
       </div>
 
       ${
         state.mode === "study"
           ? renderStudyMode(unit, selectedWord)
-          : state.mode === "spell"
-            ? renderSpellMode(unit, correctCount, checkedCount)
-            : renderListenMode(unit)
+          : state.mode === "sight"
+            ? renderSightMode(unit, sightWords, selectedSightWord)
+            : state.mode === "spell"
+              ? renderSpellMode(unit, correctCount, checkedCount)
+              : renderListenMode(unit)
       }
     </section>
   `;
@@ -2100,6 +2174,28 @@ function renderStudyMode(unit, selectedWord) {
           <span class="word-body">
             <span class="word ${getWordLengthClass(word)}">${markWord(word, unit)}</span>
           </span>
+        </button>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderSightMode(unit, sightWords, selectedSightWord) {
+  return `
+    <div class="selected-panel sight-panel">
+      <div>
+        <div class="selected-word ${getWordLengthClass(selectedSightWord)}">${escapeHtml(selectedSightWord)}</div>
+        <div class="selected-meta">Sight Word · ${escapeHtml(unit.name)}</div>
+        <div class="sight-helper">파닉스 단어와 함께 자주 만나는 단어를 듣고 바로 읽어 보세요.</div>
+      </div>
+      <button class="play-big" onclick="playWord('${escapeHtml(selectedSightWord)}')" aria-label="Play selected sight word">&#9654;</button>
+    </div>
+    <div class="sight-grid">
+      ${sightWords.map((word, index) => `
+        <button class="sight-card ${state.sightIndex === index ? "playing" : ""}" type="button" onclick="selectSightWord(${index})">
+          <span class="sight-tag">Sight ${String(index + 1).padStart(2, "0")}</span>
+          <span class="word ${getWordLengthClass(word)}">${escapeHtml(word)}</span>
+          <span class="sight-action"><span aria-hidden="true">&#9654;</span> Listen & Read</span>
         </button>
       `).join("")}
     </div>
@@ -2384,6 +2480,7 @@ function selectBook(book) {
   state.unitIndex = 0;
   state.mode = "study";
   state.selectedIndex = 0;
+  state.sightIndex = 0;
   state.answers = {};
   state.checked = {};
   resetListenState();
@@ -2397,6 +2494,7 @@ function selectUnit(index) {
   state.unitIndex = index;
   state.mode = "study";
   state.selectedIndex = 0;
+  state.sightIndex = 0;
   state.answers = {};
   state.checked = {};
   resetListenState();
@@ -2414,9 +2512,19 @@ function selectWord(index) {
   playWord(word);
 }
 
+function selectSightWord(index) {
+  noteLearningActivity();
+  const words = currentUnit().sightWords || [];
+  state.sightIndex = Math.max(0, Math.min(index, words.length - 1));
+  const word = words[state.sightIndex];
+  renderMain();
+  playWord(word);
+}
+
 function setMode(mode) {
   finishActiveLearningSession(false);
   state.mode = mode;
+  if (mode === "sight") state.sightIndex = 0;
   state.answers = {};
   state.checked = {};
   resetListenState();
@@ -2425,6 +2533,9 @@ function setMode(mode) {
   noteLearningActivity();
   if (mode === "spell") {
     window.setTimeout(() => playSpellingWord(0), 120);
+  } else if (mode === "sight") {
+    const firstSightWord = currentUnit().sightWords?.[0];
+    if (firstSightWord) window.setTimeout(() => playWord(firstSightWord), 120);
   } else if (mode === "listen") {
     prepareListenRound(0);
     renderMain();
