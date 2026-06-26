@@ -29,6 +29,12 @@ def find_word_arrays(source_path: Path) -> list[str]:
             arrays = re.findall(r"\[[^\]]*\]", call)
             if len(arrays) >= 3:
                 word_arrays.append(arrays[2])
+        sight_pool_match = re.search(
+            r"var\s+SIGHT_WORD_POOLS\s*=\s*\{(?P<body>[\s\S]*?)\n\};",
+            curriculum,
+        )
+        if sight_pool_match:
+            word_arrays.extend(re.findall(r":\s*(\[[^\]]+\])", sight_pool_match.group("body")))
         return word_arrays
     return []
 
