@@ -13,6 +13,10 @@ VOLUME = "+0%"
 PITCH = "+0Hz"
 CONCURRENCY = 4
 RETRIES = 4
+PRONUNCIATION_TEXT = {
+    "a": "uh",
+    "i": "eye",
+}
 
 
 def find_word_arrays(source_path: Path) -> list[str]:
@@ -59,8 +63,9 @@ async def generate_word(
     async with semaphore:
         for attempt in range(1, RETRIES + 1):
             try:
+                spoken_text = PRONUNCIATION_TEXT.get(word, word)
                 communicator = edge_tts.Communicate(
-                    text=f"{word}.",
+                    text=f"{spoken_text}.",
                     voice=VOICE,
                     rate=RATE,
                     volume=VOLUME,

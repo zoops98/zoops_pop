@@ -2129,7 +2129,7 @@ function renderMain() {
         <button class="mode-tab ${state.mode === "sight" ? "active" : ""}" onclick="setMode('sight')">Sight Words</button>
         <button class="mode-tab ${state.mode === "spell" ? "active" : ""}" onclick="setMode('spell')">Spelling Check</button>
         <button class="mode-tab ${state.mode === "listen" ? "active" : ""}" onclick="setMode('listen')">Listen & Select</button>
-        <button class="utility-btn" onclick="${state.mode === "sight" ? "playSightWord" : "playWord"}('${escapeHtml(
+        <button class="utility-btn" onclick="playWord('${escapeHtml(
           state.mode === "spell" ? spellingPromptWord :
           state.mode === "listen" ? listenPromptWord :
           state.mode === "sight" ? selectedSightWord :
@@ -2522,7 +2522,7 @@ function selectSightWord(index) {
 }
 
 function playSightWord(word) {
-  playWord(word, { spelling: true });
+  playWord(word);
 }
 
 function setMode(mode) {
