@@ -2097,7 +2097,554 @@ function getWordLengthClass(word) {
   return "";
 }
 
+const UNIT_COLLAB_PHRASE_OVERRIDES = {
+  "Short A": [
+    ["a cat", "a", ["cat"]],
+    ["the bat", "the", ["bat"]],
+    ["my hat", "my", ["hat"]],
+    ["a mat", "a", ["mat"]],
+    ["a rat", "a", ["rat"]],
+    ["a man", "a", ["man"]],
+    ["a fan", "a", ["fan"]],
+    ["in a pan", "in", ["pan"]],
+    ["jam bag", "bag", ["jam", "bag"]]
+  ],
+  "Short E": [
+    ["a bed", "a", ["bed"]],
+    ["red pen", "red", ["red", "pen"]],
+    ["the hen", "the", ["hen"]],
+    ["my net", "my", ["net"]],
+    ["peg leg", "leg", ["peg", "leg"]],
+    ["web page", "web", ["web"]],
+    ["jet pack", "jet", ["jet"]],
+    ["wet dog", "wet", ["wet"]],
+    ["ten men", "men", ["men"]]
+  ],
+  "Short I": [
+    ["a pig", "a", ["pig"]],
+    ["the kid", "the", ["kid"]],
+    ["my pin", "my", ["pin"]],
+    ["little fin", "little", ["fin"]],
+    ["big lip", "big", ["lip"]],
+    ["two zips", "two", ["zip"]],
+    ["big win", "big", ["win"]],
+    ["the lid", "the", ["lid"]],
+    ["helpful tip", "helpful", ["tip"]]
+  ],
+  "Short O": [
+    ["a dog", "a", ["dog"]],
+    ["the log", "the", ["log"]],
+    ["foggy day", "day", ["fog"]],
+    ["hot pot", "hot", ["hot", "pot"]],
+    ["mop top", "top", ["mop", "top"]],
+    ["cot bed", "bed", ["cot"]],
+    ["top job", "job", ["top", "job"]],
+    ["a rod", "a", ["rod"]],
+    ["hop on", "on", ["hop"]]
+  ],
+  "Short U": [
+    ["a bug", "a", ["bug"]],
+    ["the mug", "the", ["mug"]],
+    ["my pup", "my", ["pup"]],
+    ["a hug", "a", ["hug"]],
+    ["hot tub", "tub", ["tub"]],
+    ["in the sun", "in", ["sun"]],
+    ["a cup", "a", ["cup"]],
+    ["a nut", "a", ["nut"]],
+    ["on the rug", "on", ["rug"]]
+  ],
+  "CVC Review": [
+    ["a map", "a", ["map"]],
+    ["the bed", "the", ["bed"]],
+    ["my fin", "my", ["fin"]],
+    ["on a log", "on", ["log"]],
+    ["in the sun", "in", ["sun"]],
+    ["red fox", "red", ["red", "fox"]],
+    ["a cup", "a", ["cup"]],
+    ["jam jar", "jam", ["jam"]],
+    ["a hen", "a", ["hen"]]
+  ],
+  "Final CK::Final /k/ Sound": [
+    ["back pack", "pack", ["back", "pack"]],
+    ["duck pond", "duck", ["duck"]],
+    ["neck pain", "neck", ["neck"]],
+    ["rock wall", "rock", ["rock"]],
+    ["clock face", "clock", ["clock"]],
+    ["truck stop", "stop", ["truck"]],
+    ["sock drawer", "sock", ["sock"]],
+    ["luck charm", "luck", ["luck"]],
+    ["pick up", "up", ["pick"]]
+  ],
+  "Double Finals": [
+    ["puff ball", "ball", ["puff"]],
+    ["bell ring", "bell", ["bell"]],
+    ["hill top", "top", ["hill"]],
+    ["class dress", "class", ["class", "dress"]],
+    ["staff room", "room", ["staff"]],
+    ["shell dish", "shell", ["shell"]],
+    ["fizz drink", "drink", ["fizz"]],
+    ["off switch", "off", ["off"]],
+    ["fuzz ball", "ball", ["fuzz"]]
+  ],
+  "Final NG": [
+    ["bang drum", "drum", ["bang"]],
+    ["king ring", "king", ["king", "ring"]],
+    ["long song", "long", ["long", "song"]],
+    ["bird wing", "wing", ["wing"]],
+    ["hang tag", "hang", ["hang"]],
+    ["lung power", "lung", ["lung"]],
+    ["sing a song", "a", ["sing", "song"]],
+    ["fang tooth", "fang", ["fang"]],
+    ["sang softly", "softly", ["sang"]]
+  ],
+  "Final NK": [
+    ["bank tank", "bank", ["bank", "tank"]],
+    ["pink sink", "pink", ["pink", "sink"]],
+    ["wink and blink", "and", ["wink", "blink"]],
+    ["honk horn", "honk", ["honk"]],
+    ["junk box", "box", ["junk"]],
+    ["bunk bed", "bed", ["bunk"]],
+    ["drink cup", "cup", ["drink"]],
+    ["thank you", "you", ["thank"]],
+    ["trunk lid", "lid", ["trunk"]]
+  ],
+  "Final Blends::Two Final Consonants": [
+    ["hand print", "hand", ["hand"]],
+    ["sand tent", "sand", ["sand", "tent"]],
+    ["mint camp", "mint", ["mint", "camp"]],
+    ["lamp light", "lamp", ["lamp"]],
+    ["jump rope", "rope", ["jump"]],
+    ["bird nest", "nest", ["nest"]],
+    ["fast car", "fast", ["fast"]],
+    ["left bend", "left", ["bend"]],
+    ["rest stop", "rest", ["rest"]]
+  ],
+  "CVC Endings Review": [
+    ["black shell", "black", ["black", "shell"]],
+    ["stiff brush", "stiff", ["stiff"]],
+    ["spell check", "spell", ["spell"]],
+    ["grass field", "grass", ["grass"]],
+    ["think fast", "fast", ["think"]],
+    ["clock face", "clock", ["clock"]],
+    ["fluff ball", "fluff", ["fluff"]],
+    ["swing set", "swing", ["swing"]],
+    ["drink cup", "cup", ["drink"]]
+  ],
+  "SH": [
+    ["ship shop", "shop", ["ship", "shop"]],
+    ["shut door", "shut", ["shut"]],
+    ["shell dish", "shell", ["shell", "dish"]],
+    ["fish tank", "fish", ["fish"]],
+    ["cash box", "cash", ["cash"]],
+    ["brush hair", "brush", ["brush"]],
+    ["flash light", "flash", ["flash"]],
+    ["shed roof", "shed", ["shed"]],
+    ["shin guard", "shin", ["shin"]]
+  ],
+  "CH": [
+    ["chat room", "chat", ["chat"]],
+    ["chin strap", "chin", ["chin"]],
+    ["chop stick", "chop", ["chop"]],
+    ["lunch bench", "lunch", ["lunch", "bench"]],
+    ["chest patch", "chest", ["chest", "patch"]],
+    ["catch ball", "catch", ["catch"]],
+    ["match box", "match", ["match"]],
+    ["rich kid", "rich", ["rich"]],
+    ["chick feed", "chick", ["chick"]]
+  ],
+  "TH": [
+    ["thin line", "thin", ["thin"]],
+    ["thick book", "thick", ["thick"]],
+    ["thank you", "you", ["thank"]],
+    ["thumb print", "thumb", ["thumb"]],
+    ["bath tub", "bath", ["bath"]],
+    ["moth wing", "moth", ["moth"]],
+    ["with father", "with", ["father"]],
+    ["this and that", "and", ["this", "that"]],
+    ["them together", "them", ["them"]]
+  ],
+  "WH": [
+    ["white whale", "white", ["white", "whale"]],
+    ["wheel chair", "wheel", ["wheel"]],
+    ["wheat bread", "wheat", ["wheat"]],
+    ["whisk broom", "whisk", ["whisk"]],
+    ["whisper voice", "whisper", ["whisper"]],
+    ["which one", "one", ["which"]],
+    ["where now", "where", ["where"]],
+    ["when to go", "when", ["when"]],
+    ["whip cream", "whip", ["whip"]]
+  ],
+  "PH": [
+    ["phone call", "phone", ["phone"]],
+    ["photo album", "photo", ["photo"]],
+    ["dolphin show", "dolphin", ["dolphin"]],
+    ["elephant ear", "elephant", ["elephant"]],
+    ["alphabet song", "alphabet", ["alphabet"]],
+    ["trophy case", "trophy", ["trophy"]],
+    ["phrase book", "phrase", ["phrase"]],
+    ["nephew visit", "nephew", ["nephew"]],
+    ["phonics lesson", "phonics", ["phonics"]]
+  ],
+  "QU and Digraph Review": [
+    ["quick quiz", "quick", ["quick", "quiz"]],
+    ["queen bee", "queen", ["queen"]],
+    ["quack quack", "quack", ["quack"]],
+    ["shell chick", "shell", ["shell", "chick"]],
+    ["thumb print", "thumb", ["thumb"]],
+    ["whale song", "whale", ["whale"]],
+    ["squid ink", "squid", ["squid"]],
+    ["lunch box", "lunch", ["lunch"]],
+    ["brush hair", "brush", ["brush"]]
+  ],
+  "L Blends": [
+    ["black flag", "black", ["black", "flag"]],
+    ["blue sky", "blue", ["blue"]],
+    ["glass cup", "glass", ["glass"]],
+    ["flat tire", "flat", ["flat"]],
+    ["clock face", "clock", ["clock"]],
+    ["sled ride", "sled", ["sled"]],
+    ["plant pot", "plant", ["plant"]],
+    ["clap hands", "clap", ["clap"]],
+    ["slip mat", "slip", ["slip"]]
+  ],
+  "R Blends": [
+    ["crab trap", "crab", ["crab"]],
+    ["drum stick", "drum", ["drum"]],
+    ["frog pond", "frog", ["frog"]],
+    ["brick wall", "brick", ["brick"]],
+    ["fresh crop", "fresh", ["fresh", "crop"]],
+    ["track race", "track", ["track"]],
+    ["press button", "press", ["press"]],
+    ["big grin", "big", ["grin"]],
+    ["brag less", "brag", ["brag"]]
+  ],
+  "S Blends": [
+    ["smell a snack", "a", ["smell", "snack"]],
+    ["stop sign", "stop", ["stop"]],
+    ["swim class", "swim", ["swim"]],
+    ["skin care", "skin", ["skin"]],
+    ["smash hit", "smash", ["smash"]],
+    ["snap button", "snap", ["snap"]],
+    ["spot check", "spot", ["spot"]],
+    ["step stool", "step", ["step"]],
+    ["skip rope", "skip", ["skip"]]
+  ],
+  "Final Blends::Final Consonant Blends": [
+    ["gift box", "gift", ["gift"]],
+    ["soft silk", "soft", ["soft", "silk"]],
+    ["cold milk", "cold", ["cold", "milk"]],
+    ["gold belt", "gold", ["gold", "belt"]],
+    ["help child", "help", ["help", "child"]],
+    ["left hand", "left", ["left"]],
+    ["melt pot", "melt", ["melt"]],
+    ["dog yelp", "dog", ["yelp"]],
+    ["milk glass", "milk", ["milk"]]
+  ],
+  "Three-Letter Blends": [
+    ["scrap paper", "scrap", ["scrap"]],
+    ["scrub brush", "scrub", ["scrub"]],
+    ["splash pad", "splash", ["splash"]],
+    ["split pea", "split", ["split"]],
+    ["spring day", "spring", ["spring"]],
+    ["string strap", "string", ["string", "strap"]],
+    ["scratch mark", "scratch", ["scratch"]],
+    ["strong sprint", "strong", ["strong", "sprint"]],
+    ["street sign", "street", ["street"]]
+  ],
+  "Blend Review": [
+    ["plant pot", "plant", ["plant"]],
+    ["brush stroke", "brush", ["brush"]],
+    ["stamp print", "stamp", ["stamp", "print"]],
+    ["bread crust", "crust", ["crust"]],
+    ["grand plan", "grand", ["grand", "plan"]],
+    ["flint stone", "flint", ["flint"]],
+    ["trust friend", "trust", ["trust"]],
+    ["blank page", "blank", ["blank"]],
+    ["drift wood", "drift", ["drift"]]
+  ],
+  "Long A: a_e": [
+    ["cake plate", "cake", ["cake", "plate"]],
+    ["lake wave", "lake", ["lake", "wave"]],
+    ["name tag", "name", ["name"]],
+    ["game date", "game", ["game", "date"]],
+    ["cave gate", "cave", ["cave", "gate"]],
+    ["brave face", "brave", ["brave"]],
+    ["make cake", "make", ["make", "cake"]],
+    ["same name", "same", ["same", "name"]],
+    ["take a plate", "take", ["plate"]]
+  ],
+  "Long I: i_e": [
+    ["bike ride", "bike", ["bike", "ride"]],
+    ["time line", "time", ["time", "line"]],
+    ["fine line", "fine", ["fine", "line"]],
+    ["wide smile", "wide", ["wide", "smile"]],
+    ["hide and seek", "hide", ["hide"]],
+    ["lime pie", "lime", ["lime"]],
+    ["like my bike", "like", ["bike"]],
+    ["kite string", "kite", ["kite"]],
+    ["slide down", "slide", ["slide"]]
+  ],
+  "Long O: o_e": [
+    ["home phone", "home", ["home", "phone"]],
+    ["hope stone", "hope", ["hope", "stone"]],
+    ["rope swing", "rope", ["rope"]],
+    ["rose garden", "rose", ["rose"]],
+    ["smoke joke", "smoke", ["smoke", "joke"]],
+    ["globe map", "globe", ["globe"]],
+    ["close the door", "close", ["close"]],
+    ["those stones", "those", ["stone"]],
+    ["cell phone", "cell", ["phone"]]
+  ],
+  "Long U: u_e": [
+    ["cute mule", "cute", ["cute", "mule"]],
+    ["flute tune", "flute", ["flute", "tune"]],
+    ["June tune", "June", ["June", "tune"]],
+    ["cube tube", "cube", ["cube", "tube"]],
+    ["huge dune", "huge", ["huge", "dune"]],
+    ["use the rule", "use", ["rule"]],
+    ["blue cube", "blue", ["cube"]],
+    ["rude mood", "rude", ["rude"]],
+    ["tune the flute", "tune", ["tune", "flute"]]
+  ],
+  "Silent E Contrast": [
+    ["cap and cape", "and", ["cap", "cape"]],
+    ["kit and kite", "and", ["kit", "kite"]],
+    ["hop and hope", "and", ["hop", "hope"]],
+    ["cub and cube", "and", ["cub", "cube"]],
+    ["mad and made", "and", ["mad", "made"]],
+    ["ride a bike", "a", ["ride"]],
+    ["hide the cube", "the", ["hide", "cube"]],
+    ["make a cape", "a", ["make", "cape"]],
+    ["same ride", "same", ["ride"]]
+  ],
+  "Silent E Review": [
+    ["snake plane", "snake", ["snake", "plane"]],
+    ["grape juice", "grape", ["grape"]],
+    ["white bride", "white", ["white", "bride"]],
+    ["stone drive", "stone", ["stone", "drive"]],
+    ["flute tune", "flute", ["flute", "tune"]],
+    ["bright prize", "bright", ["prize"]],
+    ["chose a tune", "chose", ["chose", "tune"]],
+    ["spoke a line", "spoke", ["spoke"]],
+    ["drive the plane", "drive", ["drive", "plane"]]
+  ],
+  "AI / AY": [
+    ["rainy day", "day", ["rain"]],
+    ["train ride", "train", ["train"]],
+    ["mail bag", "mail", ["mail"]],
+    ["paint tray", "paint", ["paint", "tray"]],
+    ["chain link", "chain", ["chain"]],
+    ["brain game", "brain", ["brain"]],
+    ["play day", "play", ["play"]],
+    ["gray tray", "gray", ["gray", "tray"]],
+    ["spray paint", "spray", ["spray", "paint"]]
+  ],
+  "EE / EA": [
+    ["green tree", "green", ["green", "tree"]],
+    ["sheep sleep", "sheep", ["sheep", "sleep"]],
+    ["sea beach", "sea", ["sea", "beach"]],
+    ["clean leaf", "clean", ["clean", "leaf"]],
+    ["dream team", "dream", ["dream"]],
+    ["reach feet", "reach", ["reach", "feet"]],
+    ["bee hive", "bee", ["bee"]],
+    ["three sheep", "three", ["sheep"]],
+    ["please clean", "please", ["clean"]]
+  ],
+  "OA / OW": [
+    ["snow day", "snow", ["snow"]],
+    ["boat coat", "boat", ["boat", "coat"]],
+    ["road sign", "road", ["road"]],
+    ["goat soap", "goat", ["goat", "soap"]],
+    ["slow float", "slow", ["slow", "float"]],
+    ["open window", "open", ["window"]],
+    ["yellow coat", "yellow", ["yellow", "coat"]],
+    ["show window", "show", ["show", "window"]],
+    ["grow slow", "grow", ["grow", "slow"]]
+  ],
+  "UE / EW": [
+    ["blue glue", "blue", ["blue", "glue"]],
+    ["true clue", "true", ["true", "clue"]],
+    ["rescue crew", "rescue", ["rescue"]],
+    ["new stew", "new", ["new", "stew"]],
+    ["chew stew", "chew", ["chew", "stew"]],
+    ["flew away", "flew", ["flew"]],
+    ["due date", "due", ["due"]],
+    ["glue stick", "glue", ["glue"]],
+    ["blue sky", "blue", ["blue"]]
+  ],
+  "IGH / IE / Y": [
+    ["bright light", "bright", ["bright", "light"]],
+    ["night sky", "night", ["night"]],
+    ["right tie", "right", ["right", "tie"]],
+    ["pie slice", "pie", ["pie"]],
+    ["cried wolf", "cried", ["cried"]],
+    ["tried again", "tried", ["tried"]],
+    ["fly high", "fly", ["fly"]],
+    ["shy child", "shy", ["shy"]],
+    ["sky light", "sky", ["sky", "light"]]
+  ],
+  "Long Vowel Review": [
+    ["paint train", "paint", ["paint", "train"]],
+    ["sheep dream", "sheep", ["sheep", "dream"]],
+    ["snow float", "snow", ["snow", "float"]],
+    ["blue clue", "blue", ["blue", "clue"]],
+    ["bright beach", "bright", ["bright", "beach"]],
+    ["chew food", "chew", ["chew"]],
+    ["cried again", "cried", ["cried"]],
+    ["play train", "play", ["play", "train"]],
+    ["beach day", "beach", ["beach"]]
+  ],
+  "AR": [
+    ["car park", "car", ["car", "park"]],
+    ["dark shark", "dark", ["dark", "shark"]],
+    ["farm cart", "farm", ["farm", "cart"]],
+    ["star jar", "star", ["star", "jar"]],
+    ["hard march", "hard", ["hard", "march"]],
+    ["far away", "far", ["far"]],
+    ["start line", "start", ["start"]],
+    ["park bench", "park", ["park"]],
+    ["shark fin", "shark", ["shark"]]
+  ],
+  "OR": [
+    ["corn fork", "corn", ["corn", "fork"]],
+    ["horse sport", "horse", ["horse", "sport"]],
+    ["north porch", "north", ["north", "porch"]],
+    ["short cork", "short", ["short", "cork"]],
+    ["storm cloud", "storm", ["storm"]],
+    ["born today", "born", ["born"]],
+    ["horn call", "horn", ["horn"]],
+    ["for sport", "for", ["sport"]],
+    ["fork and cork", "and", ["fork", "cork"]]
+  ],
+  "ER": [
+    ["winter river", "winter", ["winter", "river"]],
+    ["sister letter", "sister", ["sister", "letter"]],
+    ["person number", "person", ["person", "number"]],
+    ["germ term", "germ", ["germ", "term"]],
+    ["fern leaf", "fern", ["fern"]],
+    ["under the river", "under", ["under", "river"]],
+    ["her sister", "her", ["sister"]],
+    ["stern look", "stern", ["stern"]],
+    ["letter number", "letter", ["letter", "number"]]
+  ],
+  "IR": [
+    ["bird shirt", "bird", ["bird", "shirt"]],
+    ["girl skirt", "girl", ["girl", "skirt"]],
+    ["dirt pile", "dirt", ["dirt"]],
+    ["birthday card", "birth", ["birth"]],
+    ["first bird", "first", ["first", "bird"]],
+    ["third shirt", "third", ["third", "shirt"]],
+    ["bird chirp", "chirp", ["bird", "chirp"]],
+    ["stir dirt", "stir", ["stir", "dirt"]],
+    ["firm grip", "firm", ["firm"]]
+  ],
+  "UR": [
+    ["fur coat", "fur", ["fur"]],
+    ["nurse purse", "nurse", ["nurse", "purse"]],
+    ["church turtle", "church", ["church", "turtle"]],
+    ["purple curl", "purple", ["purple", "curl"]],
+    ["hurt turn", "hurt", ["hurt", "turn"]],
+    ["surf board", "surf", ["surf"]],
+    ["burn mark", "burn", ["burn"]],
+    ["burst bubble", "burst", ["burst"]],
+    ["turn around", "turn", ["turn"]]
+  ],
+  "R-Controlled Review": [
+    ["farmers market", "farm", ["farm", "market"]],
+    ["stormy morning", "storm", ["storm", "morning"]],
+    ["garden corner", "garden", ["garden", "corner"]],
+    ["winter circle", "winter", ["winter", "circle"]],
+    ["purple bird", "purple", ["purple", "bird"]],
+    ["turn corner", "turn", ["turn", "corner"]],
+    ["bird garden", "bird", ["bird", "garden"]],
+    ["morning storm", "morning", ["morning", "storm"]],
+    ["fern circle", "fern", ["fern", "circle"]]
+  ],
+  "OI / OY": [
+    ["coin point", "coin", ["coin", "point"]],
+    ["oil can", "oil", ["oil"]],
+    ["soil pot", "soil", ["soil"]],
+    ["boil water", "boil", ["boil"]],
+    ["boy toy", "boy", ["boy", "toy"]],
+    ["joy ride", "joy", ["joy"]],
+    ["royal coin", "royal", ["royal", "coin"]],
+    ["oyster shell", "oyster", ["oyster"]],
+    ["join in", "join", ["join"]]
+  ],
+  "OU / OW": [
+    ["brown cow", "brown", ["brown", "cow"]],
+    ["round house", "round", ["round", "house"]],
+    ["sound cloud", "sound", ["sound", "cloud"]],
+    ["mouse house", "mouse", ["mouse", "house"]],
+    ["town clown", "town", ["town", "clown"]],
+    ["cloud cover", "cloud", ["cloud"]],
+    ["out loud", "out", ["out"]],
+    ["down town", "down", ["town"]],
+    ["now and how", "and", ["now", "how"]]
+  ],
+  "OO as in Moon": [
+    ["moon room", "moon", ["moon", "room"]],
+    ["food spoon", "food", ["food", "spoon"]],
+    ["school tooth", "school", ["school", "tooth"]],
+    ["smooth broom", "smooth", ["smooth", "broom"]],
+    ["boot root", "boot", ["boot", "root"]],
+    ["zoo food", "zoo", ["zoo", "food"]],
+    ["soon after", "soon", ["soon"]],
+    ["room school", "room", ["room", "school"]],
+    ["spoon food", "spoon", ["spoon", "food"]]
+  ],
+  "OO as in Book": [
+    ["good book", "good", ["good", "book"]],
+    ["cook food", "cook", ["cook"]],
+    ["look at the book", "look", ["look", "book"]],
+    ["wood hook", "wood", ["wood", "hook"]],
+    ["wool sock", "wool", ["wool"]],
+    ["brook trout", "brook", ["brook"]],
+    ["shook foot", "shook", ["shook", "foot"]],
+    ["foot stool", "foot", ["foot"]],
+    ["hook book", "hook", ["hook", "book"]]
+  ],
+  "AU / AW": [
+    ["Paul saw", "Paul", ["Paul", "saw"]],
+    ["fault line", "fault", ["fault"]],
+    ["cause pause", "cause", ["cause", "pause"]],
+    ["launch day", "launch", ["launch"]],
+    ["draw straw", "draw", ["draw", "straw"]],
+    ["lawn crawl", "lawn", ["lawn", "crawl"]],
+    ["paw print", "paw", ["paw"]],
+    ["haul cart", "haul", ["haul"]],
+    ["saw blade", "saw", ["saw"]]
+  ],
+  "Diphthong Review": [
+    ["enjoy school", "enjoy", ["enjoy", "school"]],
+    ["cloud point", "cloud", ["cloud", "point"]],
+    ["brown spoon", "brown", ["brown", "spoon"]],
+    ["round book", "round", ["round", "book"]],
+    ["toy boat", "toy", ["toy"]],
+    ["draw circle", "draw", ["draw"]],
+    ["fault line", "fault", ["fault"]],
+    ["crawl under", "crawl", ["crawl"]],
+    ["sound wave", "sound", ["sound"]]
+  ]
+};
+
+function makeExplicitCollabPhrase([phrase, sightWord, phonicsWords]) {
+  const targets = phonicsWords.filter(Boolean);
+  return {
+    phrase,
+    sightWord,
+    phonicsWord: targets[0] || "",
+    phonicsWords: targets,
+    nextWord: targets[1] || ""
+  };
+}
+
 function makeCollabPhrases(unit, sightWords) {
+  const unitOverride = UNIT_COLLAB_PHRASE_OVERRIDES[`${unit.name}::${unit.label}`] || UNIT_COLLAB_PHRASE_OVERRIDES[unit.name];
+  if (unitOverride) {
+    return unitOverride.slice(0, 9).map(makeExplicitCollabPhrase);
+  }
+
   const usedPhonicsWords = new Set();
   const usedPhrases = new Set();
   return sightWords.slice(0, 9).map((sightWord, index) => {
@@ -2135,9 +2682,9 @@ function makeDefaultCollocationPhrase(word, index) {
     { phrase: `little ${cleanWord}`, sightWord: "little" },
     { phrase: `big ${cleanWord}`, sightWord: "big" },
     { phrase: `two ${pluralizeForCollocation(cleanWord)}`, sightWord: "two" },
-    { phrase: `${cleanWord} sound`, sightWord: "sound" },
-    { phrase: `${cleanWord} card`, sightWord: "card" },
-    { phrase: `say ${cleanWord}`, sightWord: "say" }
+    { phrase: `this ${cleanWord}`, sightWord: "this" },
+    { phrase: `that ${cleanWord}`, sightWord: "that" },
+    { phrase: `one ${cleanWord}`, sightWord: "one" }
   ];
   return options[index % options.length];
 }
@@ -2525,9 +3072,9 @@ const COLLAB_PHRASE_OVERRIDES = {
   "Consonant-le & Mastery::simple": ["simple puzzle", ["puzzle"]],
   "Consonant-le & Mastery::time": ["circle time", ["circle"]],
   "Consonant-le & Mastery::bath": ["bubble bath", ["bubble"]],
-  "AI / AY::say": ["say it on the train", ["train"]],
-  "OA / OW::say": ["say it in the snow", ["snow"]],
-  "Long Vowel Review::say": ["say it at the beach", ["beach"]]
+  "AI / AY::say": ["train ride", ["train"]],
+  "OA / OW::say": ["snow day", ["snow"]],
+  "Long Vowel Review::say": ["beach day", ["beach"]]
 };
 
 function makeOverrideCollabPhrase(unit, sightWord) {
