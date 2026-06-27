@@ -228,6 +228,14 @@ var SIGHT_WORD_UNIT_OVERRIDES = {
     "MB / GH": ["a", "the", "my", "see", "with", "at", "high", "bright", "right"],
     "C / K / CK": ["a", "the", "my", "in", "on", "with", "six", "quick", "little"],
     "X / QU": ["a", "the", "my", "six", "quick", "next", "because", "with", "again"]
+  },
+  "Section 12": {
+    "Closed Syllables": ["little", "picnic", "family", "sky", "paper", "bike", "garden", "math", "fridge"],
+    "Open Syllables": ["toy", "baby", "class", "bag", "mistakes", "airplane", "room", "basic", "yogurt"],
+    "Silent-e Syllables": ["bright", "pocket", "spelling", "sentence", "party", "safely", "birthday", "star", "control"],
+    "Vowel-Team Syllables": ["yellow", "sweet", "rocky", "butter", "funny", "busy", "holder", "window", "race"],
+    "R-Controlled Syllables": ["farmers", "flower", "light", "street", "coat", "party", "purple", "stormy", "candles"],
+    "Consonant-le & Mastery": ["dinner", "birthday", "little", "purple", "animal", "pie", "simple", "time", "bath"]
   }
 };
 
