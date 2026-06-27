@@ -201,8 +201,12 @@ var SIGHT_WORD_POOLS = {
     "field", "chief", "baby", "happy", "family", "every", "very", "many", "only", "both", "again", "away"
   ],
   "Section 10": [
-    "city", "place", "space", "ice", "face", "once", "give", "giant", "large", "page", "write", "know",
-    "wrong", "sign", "high", "right", "light", "next", "six", "quick", "queen", "question", "because", "again"
+    "a", "the", "in", "on", "with", "my", "see", "little", "big",
+    "a", "the", "my", "see", "write", "on", "under", "next", "big",
+    "I", "can", "the", "my", "again", "wrong", "because", "quick", "little",
+    "a", "the", "my", "see", "with", "at", "high", "bright", "right",
+    "a", "the", "my", "in", "on", "with", "six", "quick", "little",
+    "a", "the", "my", "six", "quick", "next", "because", "with", "again"
   ],
   "Section 11": [
     "cats", "dogs", "books", "kids", "boxes", "wishes", "played", "looked", "wanted", "needed", "started", "called",
@@ -215,6 +219,17 @@ var SIGHT_WORD_POOLS = {
 };
 
 var SIGHT_WORDS_PER_UNIT = 9;
+
+var SIGHT_WORD_UNIT_OVERRIDES = {
+  "Section 10": {
+    "Soft C": ["a", "the", "in", "on", "with", "my", "see", "little", "big"],
+    "Soft G / DGE": ["a", "the", "my", "see", "write", "on", "under", "next", "big"],
+    "KN / WR / GN": ["I", "can", "the", "my", "again", "wrong", "because", "quick", "little"],
+    "MB / GH": ["a", "the", "my", "see", "with", "at", "high", "bright", "right"],
+    "C / K / CK": ["a", "the", "my", "in", "on", "with", "six", "quick", "little"],
+    "X / QU": ["a", "the", "my", "six", "quick", "next", "because", "with", "again"]
+  }
+};
 
 function assignSightWords() {
   Object.entries(PHONICS_DATA).forEach(([sectionKey, section]) => {
@@ -233,7 +248,8 @@ function assignSightWords() {
         const word = pool[(start + offset) % pool.length];
         if (word && !words.includes(word)) words.push(word);
       }
-      unit.sightWords = words;
+      const override = SIGHT_WORD_UNIT_OVERRIDES[sectionKey]?.[unit.name];
+      unit.sightWords = override || words;
     });
   });
 }

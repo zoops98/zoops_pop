@@ -1691,7 +1691,7 @@ const GOOGLE_TTS_VOICE_NAMES = [
 const WORD_AUDIO_BASE = "audio/words/";
 const WORD_AUDIO_VERSION = "emma-20260627-2";
 const COLLAB_AUDIO_BASE = "audio/collab/";
-const COLLAB_AUDIO_VERSION = "emma-collab-20260627-3";
+const COLLAB_AUDIO_VERSION = "emma-collocation-20260627-1";
 let selectedTtsVoice = null;
 let ttsPlaybackId = 0;
 let activeWordAudio = null;
@@ -2118,6 +2118,14 @@ function displaySightWord(word) {
   return String(word || "").toLowerCase() === "i" ? "I" : word;
 }
 
+function pluralizeForCollocation(word) {
+  const text = String(word || "");
+  if (!text) return "";
+  if (/[^aeiou]y$/i.test(text)) return `${text.slice(0, -1)}ies`;
+  if (/(s|x|z|ch|sh)$/i.test(text)) return `${text}es`;
+  return `${text}s`;
+}
+
 const NON_NOUN_COLLAB_WORDS = new Set([
   "red", "fed", "wet", "big", "dig", "sit", "sat", "run", "sick", "off",
   "miss", "eat", "thank", "thin", "thick", "this", "that", "them", "then",
@@ -2132,7 +2140,8 @@ const NON_NOUN_COLLAB_WORDS = new Set([
   "third", "hurt", "draw", "saw", "good", "stood", "ready", "great",
   "break", "dead", "heavy", "they", "prey", "obey", "survey", "lie", "my",
   "by", "happy", "sunny", "out", "how", "now", "where", "yellow", "brown",
-  "city", "fancy", "place", "dance", "write",
+  "city", "fancy", "place", "dance", "write", "hot", "long", "sing", "sang",
+  "pink", "fast", "stiff", "white",
   "know", "wrong", "sign", "high", "six", "extra", "jumped", "looked",
   "washed", "played", "rained", "called", "wanted", "needed", "painted",
   "helped", "filled", "started", "jumping", "running", "sitting",
@@ -2210,6 +2219,52 @@ function preferredCollabWords(unitName, sightWord) {
 }
 
 const COLLAB_PHRASE_OVERRIDES = {
+  "Soft C::a": ["a city", ["city"]],
+  "Soft C::the": ["the cell", ["cell"]],
+  "Soft C::in": ["in the race", ["race"]],
+  "Soft C::on": ["on the face", ["face"]],
+  "Soft C::with": ["with ice", ["ice"]],
+  "Soft C::my": ["my pencil", ["pencil"]],
+  "Soft C::see": ["see the cycle", ["cycle"]],
+  "Soft C::little": ["little space", ["space"]],
+  "Soft C::big": ["big dance", ["dance"]],
+  "Soft G / DGE::a": ["a gem", ["gem"]],
+  "Soft G / DGE::the": ["the page", ["page"]],
+  "Soft G / DGE::my": ["my badge", ["badge"]],
+  "Soft G / DGE::see": ["see the giant", ["giant"]],
+  "Soft G / DGE::on": ["on the cage", ["cage"]],
+  "Soft G / DGE::under": ["under the bridge", ["bridge"]],
+  "Soft G / DGE::next": ["next edge", ["edge"]],
+  "Soft G / DGE::big": ["big fridge", ["fridge"]],
+  "KN / WR / GN::i": ["I know", ["know"]],
+  "KN / WR / GN::can": ["can write", ["write"]],
+  "KN / WR / GN::the": ["the sign", ["sign"]],
+  "KN / WR / GN::my": ["my knife", ["knife"]],
+  "KN / WR / GN::wrong": ["wrong sign", ["sign"]],
+  "KN / WR / GN::little": ["little gnat", ["gnat"]],
+  "MB / GH::a": ["a lamb", ["lamb"]],
+  "MB / GH::the": ["the comb", ["comb"]],
+  "MB / GH::my": ["my thumb", ["thumb"]],
+  "MB / GH::see": ["see the light", ["light"]],
+  "MB / GH::with": ["with a crumb", ["crumb"]],
+  "MB / GH::at": ["at night", ["night"]],
+  "MB / GH::high": ["climb high", ["climb"]],
+  "MB / GH::bright": ["bright light", ["light"]],
+  "MB / GH::right": ["right thumb", ["thumb"]],
+  "C / K / CK::a": ["a cat", ["cat"]],
+  "C / K / CK::the": ["the cup", ["cup"]],
+  "C / K / CK::my": ["my kid", ["kid"]],
+  "C / K / CK::in": ["in the back", ["back"]],
+  "C / K / CK::on": ["on the clock", ["clock"]],
+  "C / K / CK::with": ["with a duck", ["duck"]],
+  "C / K / CK::little": ["little rock", ["rock"]],
+  "X / QU::a": ["a box", ["box"]],
+  "X / QU::the": ["the fox", ["fox"]],
+  "X / QU::my": ["my quiz", ["quiz"]],
+  "X / QU::six": ["six squares", ["squares"]],
+  "X / QU::quick": ["quick quiz", ["quiz"]],
+  "X / QU::next": ["next squid", ["squid"]],
+  "X / QU::with": ["with extra wax", ["extra", "wax"]],
   "Soft C::city": ["a place in the city", ["place"]],
   "Soft C::place": ["a place in space", ["space"]],
   "Soft C::space": ["space race", ["race"]],
@@ -2227,13 +2282,12 @@ const COLLAB_PHRASE_OVERRIDES = {
   "Soft G / DGE::high": ["high bridge", ["bridge"]],
   "Soft G / DGE::right": ["right edge", ["edge"]],
   "Soft G / DGE::light": ["the page is light", ["page"]],
-  "Soft G / DGE::next": ["next page", ["page"]],
   "KN / WR / GN::six": ["six signs", ["signs"]],
   "KN / WR / GN::quick": ["quick knock", ["knock"]],
   "KN / WR / GN::queen": ["queen sign", ["sign"]],
   "KN / WR / GN::question": ["question sign", ["sign"]],
   "KN / WR / GN::because": ["because I know", ["know"]],
-  "KN / WR / GN::again": ["write again", ["write"]],
+  "KN / WR / GN::again": ["knock again", ["knock"]],
   "KN / WR / GN::city": ["city sign", ["sign"]],
   "KN / WR / GN::place": ["wrong place", ["wrong"]],
   "KN / WR / GN::space": ["write in space", ["write"]],
@@ -2257,7 +2311,7 @@ const COLLAB_PHRASE_OVERRIDES = {
   "C / K / CK::queen": ["queen cat", ["cat"]],
   "X / QU::question": ["quiz question", ["quiz"]],
   "X / QU::because": ["because of the fox", ["fox"]],
-  "X / QU::again": ["quick again", ["quick"]],
+  "X / QU::again": ["quiz again", ["quiz"]],
   "X / QU::city": ["city square", ["square"]],
   "X / QU::place": ["next place", ["next"]],
   "X / QU::space": ["extra space", ["extra"]],
@@ -2298,9 +2352,10 @@ function makeCollabPhrase(unit, sightWord, index, usedPhonicsWords, usedPhrases)
   const a = `${article} ${word}`;
 
   const adjectiveStarters = new Set([
-    "blue", "black", "green", "brown", "yellow", "small", "large", "little",
+    "blue", "black", "green", "brown", "yellow", "small", "large", "little", "big",
     "great", "favorite", "different", "important", "beautiful", "perfect",
-    "complete", "first", "third", "last", "next", "best", "many", "every"
+    "complete", "first", "third", "last", "next", "best", "many", "every",
+    "two", "three", "four", "five", "six"
   ]);
   const determiners = new Set(["a", "the", "my", "this", "that", "these", "those", "some", "one", "all", "both"]);
   const pronouns = new Set(["i", "we", "you", "he", "she", "they"]);
@@ -2309,7 +2364,19 @@ function makeCollabPhrase(unit, sightWord, index, usedPhonicsWords, usedPhrases)
   let phrase = `${displaySight} ${word}`;
   let phonicsTargets = [word];
 
-  if (lower === "and") {
+  if (["two", "three", "four", "five", "six", "eight", "many"].includes(lower)) {
+    phrase = `${displaySight} ${pluralizeForCollocation(word)}`;
+  } else if (lower === "all") {
+    phrase = `all the ${pluralizeForCollocation(word)}`;
+  } else if (lower === "so") {
+    phrase = `so many ${pluralizeForCollocation(word)}`;
+  } else if (lower === "now") {
+    phrase = `now see ${the}`;
+  } else if (lower === "how") {
+    phrase = `how about ${the}`;
+  } else if (lower === "soon") {
+    phrase = `soon by ${the}`;
+  } else if (lower === "and") {
     phrase = `${firstPair} and ${secondPair}`;
     phonicsTargets = [firstPair, secondPair];
   } else if (determiners.has(lower) || adjectiveStarters.has(lower)) {
@@ -2323,6 +2390,8 @@ function makeCollabPhrase(unit, sightWord, index, usedPhonicsWords, usedPhrases)
   } else if (lower === "it" || lower === "is") {
     phrase = `it is ${a}`;
   } else if (lower === "in" || lower === "on" || lower === "under" || lower === "over") {
+    phrase = `${displaySight} ${the}`;
+  } else if (lower === "at" || lower === "by") {
     phrase = `${displaySight} ${the}`;
   } else if (lower === "before" || lower === "after" || lower === "about" || lower === "around") {
     phrase = `${displaySight} ${the}`;
@@ -2635,7 +2704,7 @@ function renderMain() {
   const utilityAction = state.mode === "collab" && selectedCollabPhrase
     ? `playCollabPhrase(${state.collabIndex})`
     : `playWord('${escapeHtml(utilityWord)}')`;
-  const utilityLabel = state.mode === "collab" ? "Play Phrase" : "Play Word";
+  const utilityLabel = state.mode === "collab" ? "Play Collocation" : "Play Word";
 
   main.innerHTML = `
     <section class="worksheet">
@@ -2656,7 +2725,7 @@ function renderMain() {
       <div class="mode-row">
         <button class="mode-tab ${state.mode === "study" ? "active" : ""}" onclick="setMode('study')">Study Board</button>
         <button class="mode-tab ${state.mode === "sight" ? "active" : ""}" onclick="setMode('sight')">Sight Words</button>
-        <button class="mode-tab ${state.mode === "collab" ? "active" : ""}" onclick="setMode('collab')">Word Collab</button>
+        <button class="mode-tab ${state.mode === "collab" ? "active" : ""}" onclick="setMode('collab')">Collocation</button>
         <button class="mode-tab ${state.mode === "spell" ? "active" : ""}" onclick="setMode('spell')">Spelling Check</button>
         <button class="mode-tab ${state.mode === "listen" ? "active" : ""}" onclick="setMode('listen')">Listen & Select</button>
         <button class="utility-btn" onclick="${utilityAction}">${utilityLabel}</button>
@@ -2665,7 +2734,7 @@ function renderMain() {
       <div class="pattern-strip">
         ${unit.families.map(item => `<span class="pattern-chip">${escapeHtml(item)}</span>`).join("")}
         ${state.mode === "sight" ? `<span class="pattern-chip">Sight Words</span>` : ""}
-        ${state.mode === "collab" ? `<span class="pattern-chip">Sight + Phonics</span>` : ""}
+        ${state.mode === "collab" ? `<span class="pattern-chip">Collocation</span>` : ""}
       </div>
 
       ${
@@ -2735,17 +2804,17 @@ function renderCollabMode(collabPhrases, selectedCollabPhrase) {
     <div class="selected-panel collab-panel">
       <div>
         <div class="selected-word collab-phrase">${markCollabPhrase(selectedCollabPhrase)}</div>
-        <div class="selected-meta">Sight + Phonics Collab</div>
-        <div class="sight-helper">Sight word와 phonics word를 붙여 짧은 읽기 덩어리로 연습해요.</div>
+        <div class="selected-meta">Sight + Phonics Collocation</div>
+        <div class="sight-helper">Sight word와 phonics word가 자연스럽게 붙은 짧은 표현을 읽어 봐요.</div>
       </div>
-      <button class="play-big" onclick="playCollabPhrase(${state.collabIndex})" aria-label="Play selected collaboration phrase">&#9654;</button>
+      <button class="play-big" onclick="playCollabPhrase(${state.collabIndex})" aria-label="Play selected collocation">&#9654;</button>
     </div>
     <div class="collab-grid">
       ${collabPhrases.map((item, index) => `
         <button class="collab-card ${state.collabIndex === index ? "playing" : ""}" type="button" onclick="selectCollabPhrase(${index})">
-          <span class="collab-tag">Collab ${String(index + 1).padStart(2, "0")}</span>
+          <span class="collab-tag">Collocation ${String(index + 1).padStart(2, "0")}</span>
           <span class="collab-phrase">${markCollabPhrase(item)}</span>
-          <span class="collab-action"><span aria-hidden="true">&#9654;</span> Listen & Blend</span>
+          <span class="collab-action"><span aria-hidden="true">&#9654;</span> Listen & Read</span>
         </button>
       `).join("")}
     </div>
