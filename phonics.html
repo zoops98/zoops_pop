@@ -565,7 +565,8 @@
 
   .word-grid,
   .challenge-grid,
-  .sight-grid {
+  .sight-grid,
+  .collab-grid {
     position: relative;
     z-index: 1;
     display: grid;
@@ -575,7 +576,8 @@
 
   .word-card,
   .challenge-card,
-  .sight-card {
+  .sight-card,
+  .collab-card {
     min-height: 126px;
     border: 4px solid var(--line);
     border-radius: var(--radius);
@@ -716,7 +718,16 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .sight-card {
+  .collab-panel {
+    background: linear-gradient(90deg, #fff 0%, #dff7ff 100%);
+  }
+
+  .collab-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sight-card,
+  .collab-card {
     display: grid;
     grid-template-rows: auto 1fr auto;
     gap: 8px;
@@ -727,16 +738,20 @@
   }
 
   .sight-card:hover,
-  .sight-card.playing {
+  .sight-card.playing,
+  .collab-card:hover,
+  .collab-card.playing {
     transform: translateY(-4px);
     box-shadow: 0 10px 0 rgba(23, 21, 31, 0.18);
   }
 
-  .sight-card.playing {
+  .sight-card.playing,
+  .collab-card.playing {
     outline: 5px solid var(--lime);
   }
 
-  .sight-tag {
+  .sight-tag,
+  .collab-tag {
     justify-self: start;
     padding: 5px 9px;
     border: 2px solid var(--line);
@@ -751,7 +766,34 @@
     font-size: clamp(34px, 4.2vw, 58px);
   }
 
-  .sight-action {
+  .collab-phrase {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-self: center;
+    gap: 8px;
+    color: var(--ink);
+    font-size: clamp(28px, 3.2vw, 46px);
+    font-weight: 900;
+    line-height: 1.05;
+    text-align: center;
+  }
+
+  .selected-word.collab-phrase {
+    justify-content: flex-start;
+    font-size: clamp(42px, 5.8vw, 72px);
+  }
+
+  .collab-sight {
+    color: var(--accent);
+  }
+
+  .collab-phonics {
+    color: #0f8fcc;
+  }
+
+  .sight-action,
+  .collab-action {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1413,14 +1455,16 @@
 
     .word-grid,
     .challenge-grid,
-    .sight-grid {
+    .sight-grid,
+    .collab-grid {
       grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
       gap: 10px;
     }
 
     .word-card,
     .challenge-card,
-    .sight-card {
+    .sight-card,
+    .collab-card {
       min-height: 112px;
     }
   }
@@ -1463,7 +1507,8 @@
 
     .word-grid,
     .challenge-grid,
-    .sight-grid {
+    .sight-grid,
+    .collab-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
@@ -1626,6 +1671,7 @@ const state = {
   mode: "study",
   selectedIndex: 0,
   sightIndex: 0,
+  collabIndex: 0,
   answers: {},
   checked: {},
   listenIndex: 0,
@@ -1647,6 +1693,7 @@ const WORD_AUDIO_VERSION = "emma-20260627-2";
 let selectedTtsVoice = null;
 let ttsPlaybackId = 0;
 let activeWordAudio = null;
+let activeWordResolve = null;
 let recordedRepeatTimer = 0;
 const wordAudioCache = new Map();
 
@@ -2047,6 +2094,135 @@ function getWordLengthClass(word) {
   return "";
 }
 
+function makeCollabPhrases(unit, sightWords) {
+  const phonicsWords = unit.words || [];
+  const usedPhonicsWords = new Set();
+  return sightWords.slice(0, 9).map((sightWord, index) => {
+    const phonicsWord = chooseCollabPhonicsWord(phonicsWords, index, sightWord, usedPhonicsWords);
+    if (phonicsWord) usedPhonicsWords.add(phonicsWord.toLowerCase());
+    const nextWord = String(sightWord || "").toLowerCase() === "and"
+      ? chooseCollabPhonicsWord(phonicsWords, index + 1, sightWord, usedPhonicsWords) || phonicsWord
+      : phonicsWords[(index + 1) % phonicsWords.length] || phonicsWord;
+    if (String(sightWord || "").toLowerCase() === "and" && nextWord) {
+      usedPhonicsWords.add(nextWord.toLowerCase());
+    }
+    return makeCollabPhrase(sightWord, phonicsWord, nextWord);
+  });
+}
+
+function chooseCollabPhonicsWord(phonicsWords, startIndex, sightWord, usedPhonicsWords) {
+  const verbLikeWords = new Set([
+    "red", "fed", "wet", "big", "dig", "sit", "sat", "run", "came",
+    "made", "take", "give", "live", "come", "move", "read", "eat",
+    "play", "looked", "played", "wanted", "needed", "called", "going",
+    "doing", "helping", "jumping", "running", "sitting", "reading",
+    "looking", "making", "riding", "swimming", "painting"
+  ]);
+  const sight = String(sightWord || "").toLowerCase();
+  const canUseVerbLike = sight === "and";
+  const fallback = phonicsWords[startIndex % phonicsWords.length] || "";
+
+  for (let offset = 0; offset < phonicsWords.length; offset += 1) {
+    const candidate = phonicsWords[(startIndex + offset) % phonicsWords.length];
+    const lower = String(candidate || "").toLowerCase();
+    if (!candidate || usedPhonicsWords.has(lower)) continue;
+    if (!canUseVerbLike && verbLikeWords.has(lower)) continue;
+    return candidate;
+  }
+
+  return fallback;
+}
+
+function makeCollabPhrase(sightWord, phonicsWord, nextWord) {
+  const lower = String(sightWord || "").toLowerCase();
+  const displaySight = lower === "i" ? "I" : sightWord;
+  const simpleNounStarters = new Set([
+    "a", "the", "my", "this", "that", "these", "those", "one", "some",
+    "all", "more", "little", "many", "both", "every", "blue", "black",
+    "green", "brown", "yellow", "small", "large"
+  ]);
+  const pronouns = new Set(["i", "we", "you", "he", "she", "they"]);
+  const modals = new Set(["can", "will", "may", "must"]);
+  const placeWords = new Set(["in", "on", "under", "over", "around"]);
+
+  let phrase = `${displaySight} ${phonicsWord}`;
+  if (lower === "and") {
+    phrase = `${phonicsWord} and ${nextWord}`;
+  } else if (lower === "it") {
+    phrase = `it is a ${phonicsWord}`;
+  } else if (lower === "is") {
+    phrase = `it is the ${phonicsWord}`;
+  } else if (lower === "am") {
+    phrase = `I am with the ${phonicsWord}`;
+  } else if (lower === "not") {
+    phrase = `not the ${phonicsWord}`;
+  } else if (lower === "to") {
+    phrase = `go to the ${phonicsWord}`;
+  } else if (lower === "do") {
+    phrase = `do the ${phonicsWord}`;
+  } else if (lower === "up") {
+    phrase = `${phonicsWord} is up`;
+  } else if (lower === "see") {
+    phrase = `see the ${phonicsWord}`;
+  } else if (lower === "me") {
+    phrase = `the ${phonicsWord} is for me`;
+  } else if (lower === "yes") {
+    phrase = `yes I see the ${phonicsWord}`;
+  } else if (lower === "no") {
+    phrase = `no not the ${phonicsWord}`;
+  } else if (lower === "go") {
+    phrase = `go to the ${phonicsWord}`;
+  } else if (lower === "so") {
+    phrase = `${phonicsWord} is so good`;
+  } else if (lower === "off") {
+    phrase = `${phonicsWord} is off`;
+  } else if (lower === "back") {
+    phrase = `back to the ${phonicsWord}`;
+  } else if (lower === "look") {
+    phrase = `look for the ${phonicsWord}`;
+  } else if (lower === "tell") {
+    phrase = `tell me the ${phonicsWord}`;
+  } else if (lower === "with") {
+    phrase = `${phonicsWord} is with me`;
+  } else if (placeWords.has(lower)) {
+    phrase = `${phonicsWord} is ${lower} it`;
+  } else if (modals.has(lower)) {
+    phrase = `I ${lower} see the ${phonicsWord}`;
+  } else if (lower === "he" || lower === "she") {
+    phrase = `${displaySight} can see the ${phonicsWord}`;
+  } else if (pronouns.has(lower)) {
+    phrase = `${displaySight} see the ${phonicsWord}`;
+  } else if (simpleNounStarters.has(lower)) {
+    phrase = `${displaySight} ${phonicsWord}`;
+  }
+
+  return {
+    phrase,
+    sightWord: displaySight,
+    phonicsWord,
+    nextWord: lower === "and" ? nextWord : ""
+  };
+}
+
+function markCollabPhrase(item) {
+  const sight = String(item.sightWord || "").toLowerCase();
+  const phonics = String(item.phonicsWord || "").toLowerCase();
+  const next = String(item.nextWord || "").toLowerCase();
+  return tokenizePhraseText(item.phrase).map(token => {
+    const lower = token.toLowerCase();
+    const type = lower === sight
+      ? "collab-sight"
+      : lower === phonics || (next && lower === next)
+        ? "collab-phonics"
+        : "";
+    return `<span class="${type}">${escapeHtml(token)}</span>`;
+  }).join(" ");
+}
+
+function tokenizePhraseText(text) {
+  return String(text || "").match(/[A-Za-z']+/g) || [];
+}
+
 function renderApp() {
   const book = currentBook();
   document.documentElement.style.setProperty("--accent", book.accent);
@@ -2101,12 +2277,22 @@ function renderMain() {
   const selectedWord = unit.words[state.selectedIndex] || unit.words[0];
   const sightWords = unit.sightWords || [];
   const selectedSightWord = sightWords[state.sightIndex] || sightWords[0] || selectedWord;
+  const collabPhrases = makeCollabPhrases(unit, sightWords);
+  const selectedCollabPhrase = collabPhrases[state.collabIndex] || collabPhrases[0];
   const firstUncheckedIndex = unit.words.findIndex((_, index) => state.checked[index] !== true);
   const spellingPromptWord = unit.words[firstUncheckedIndex === -1 ? 0 : firstUncheckedIndex];
   const listenPromptWord = unit.words[state.listenIndex] || unit.words[0];
   const checkedValues = Object.values(state.checked);
   const correctCount = checkedValues.filter(Boolean).length;
   const checkedCount = Object.keys(state.checked).length;
+  const utilityWord = state.mode === "spell" ? spellingPromptWord :
+    state.mode === "listen" ? listenPromptWord :
+    state.mode === "sight" ? selectedSightWord :
+    selectedWord;
+  const utilityAction = state.mode === "collab" && selectedCollabPhrase
+    ? `playCollabPhrase(${state.collabIndex})`
+    : `playWord('${escapeHtml(utilityWord)}')`;
+  const utilityLabel = state.mode === "collab" ? "Play Phrase" : "Play Word";
 
   main.innerHTML = `
     <section class="worksheet">
@@ -2127,19 +2313,16 @@ function renderMain() {
       <div class="mode-row">
         <button class="mode-tab ${state.mode === "study" ? "active" : ""}" onclick="setMode('study')">Study Board</button>
         <button class="mode-tab ${state.mode === "sight" ? "active" : ""}" onclick="setMode('sight')">Sight Words</button>
+        <button class="mode-tab ${state.mode === "collab" ? "active" : ""}" onclick="setMode('collab')">Word Collab</button>
         <button class="mode-tab ${state.mode === "spell" ? "active" : ""}" onclick="setMode('spell')">Spelling Check</button>
         <button class="mode-tab ${state.mode === "listen" ? "active" : ""}" onclick="setMode('listen')">Listen & Select</button>
-        <button class="utility-btn" onclick="playWord('${escapeHtml(
-          state.mode === "spell" ? spellingPromptWord :
-          state.mode === "listen" ? listenPromptWord :
-          state.mode === "sight" ? selectedSightWord :
-          selectedWord
-        )}')">Play Word</button>
+        <button class="utility-btn" onclick="${utilityAction}">${utilityLabel}</button>
       </div>
 
       <div class="pattern-strip">
         ${unit.families.map(item => `<span class="pattern-chip">${escapeHtml(item)}</span>`).join("")}
         ${state.mode === "sight" ? `<span class="pattern-chip">Sight Words</span>` : ""}
+        ${state.mode === "collab" ? `<span class="pattern-chip">Sight + Phonics</span>` : ""}
       </div>
 
       ${
@@ -2147,9 +2330,11 @@ function renderMain() {
           ? renderStudyMode(unit, selectedWord)
           : state.mode === "sight"
             ? renderSightMode(unit, sightWords, selectedSightWord)
-            : state.mode === "spell"
-              ? renderSpellMode(unit, correctCount, checkedCount)
-              : renderListenMode(unit)
+            : state.mode === "collab"
+              ? renderCollabMode(collabPhrases, selectedCollabPhrase)
+              : state.mode === "spell"
+                ? renderSpellMode(unit, correctCount, checkedCount)
+                : renderListenMode(unit)
       }
     </section>
   `;
@@ -2196,6 +2381,28 @@ function renderSightMode(unit, sightWords, selectedSightWord) {
           <span class="sight-tag">Sight ${String(index + 1).padStart(2, "0")}</span>
           <span class="word ${getWordLengthClass(word)}">${escapeHtml(word)}</span>
           <span class="sight-action"><span aria-hidden="true">&#9654;</span> Listen & Read</span>
+        </button>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderCollabMode(collabPhrases, selectedCollabPhrase) {
+  return `
+    <div class="selected-panel collab-panel">
+      <div>
+        <div class="selected-word collab-phrase">${markCollabPhrase(selectedCollabPhrase)}</div>
+        <div class="selected-meta">Sight + Phonics Collab</div>
+        <div class="sight-helper">Sight word와 phonics word를 붙여 짧은 읽기 덩어리로 연습해요.</div>
+      </div>
+      <button class="play-big" onclick="playCollabPhrase(${state.collabIndex})" aria-label="Play selected collaboration phrase">&#9654;</button>
+    </div>
+    <div class="collab-grid">
+      ${collabPhrases.map((item, index) => `
+        <button class="collab-card ${state.collabIndex === index ? "playing" : ""}" type="button" onclick="selectCollabPhrase(${index})">
+          <span class="collab-tag">Collab ${String(index + 1).padStart(2, "0")}</span>
+          <span class="collab-phrase">${markCollabPhrase(item)}</span>
+          <span class="collab-action"><span aria-hidden="true">&#9654;</span> Listen & Blend</span>
         </button>
       `).join("")}
     </div>
@@ -2481,6 +2688,7 @@ function selectBook(book) {
   state.mode = "study";
   state.selectedIndex = 0;
   state.sightIndex = 0;
+  state.collabIndex = 0;
   state.answers = {};
   state.checked = {};
   resetListenState();
@@ -2495,6 +2703,7 @@ function selectUnit(index) {
   state.mode = "study";
   state.selectedIndex = 0;
   state.sightIndex = 0;
+  state.collabIndex = 0;
   state.answers = {};
   state.checked = {};
   resetListenState();
@@ -2525,10 +2734,25 @@ function playSightWord(word) {
   playWord(word);
 }
 
+function selectCollabPhrase(index) {
+  noteLearningActivity();
+  const phrases = makeCollabPhrases(currentUnit(), currentUnit().sightWords || []);
+  state.collabIndex = Math.max(0, Math.min(index, phrases.length - 1));
+  renderMain();
+  playCollabPhrase(state.collabIndex);
+}
+
+function playCollabPhrase(index = state.collabIndex) {
+  const phrases = makeCollabPhrases(currentUnit(), currentUnit().sightWords || []);
+  const item = phrases[Math.max(0, Math.min(index, phrases.length - 1))];
+  if (item) playPhrase(item.phrase);
+}
+
 function setMode(mode) {
   finishActiveLearningSession(false);
   state.mode = mode;
   if (mode === "sight") state.sightIndex = 0;
+  if (mode === "collab") state.collabIndex = 0;
   state.answers = {};
   state.checked = {};
   resetListenState();
@@ -2599,6 +2823,70 @@ function resetSpell() {
   renderMain();
   noteLearningActivity();
   window.setTimeout(() => playSpellingWord(0), 120);
+}
+
+async function playPhrase(text) {
+  const words = tokenizePhraseText(text).map(word => word.toLowerCase());
+  if (!words.length) return;
+  noteLearningActivity();
+
+  const playbackId = ++ttsPlaybackId;
+  stopRecordedAudio();
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+
+  for (const word of words) {
+    if (playbackId !== ttsPlaybackId) return;
+    const played = await playRecordedWordToEnd(word, playbackId);
+    if (!played) {
+      await speakPhraseFallback(text, playbackId);
+      return;
+    }
+    await wait(80);
+  }
+}
+
+async function playRecordedWordToEnd(word, playbackId) {
+  const audio = getWordAudio(word);
+  audio.onended = null;
+  audio.onerror = null;
+  audio.currentTime = 0;
+  activeWordAudio = audio;
+
+  try {
+    await audio.play();
+  } catch (error) {
+    if (activeWordAudio === audio) activeWordAudio = null;
+    return false;
+  }
+
+  return new Promise(resolve => {
+    activeWordResolve = () => resolve(false);
+    audio.onended = () => {
+      audio.onended = null;
+      audio.onerror = null;
+      if (activeWordAudio === audio) activeWordAudio = null;
+      activeWordResolve = null;
+      resolve(playbackId === ttsPlaybackId);
+    };
+    audio.onerror = () => {
+      audio.onended = null;
+      audio.onerror = null;
+      if (activeWordAudio === audio) activeWordAudio = null;
+      activeWordResolve = null;
+      resolve(false);
+    };
+  });
+}
+
+async function speakPhraseFallback(text, playbackId) {
+  if (!("speechSynthesis" in window) || playbackId !== ttsPlaybackId) return;
+  const voice = await getConsistentGoogleVoice();
+  if (playbackId !== ttsPlaybackId) return;
+  speakUtterance(`${text}.`, voice, 0.74);
+}
+
+function wait(ms) {
+  return new Promise(resolve => window.setTimeout(resolve, ms));
 }
 
 async function playWord(text, options = {}) {
@@ -2672,7 +2960,13 @@ function getWordAudio(word) {
 function preloadCurrentUnitAudio() {
   const unit = currentUnit();
   if (!unit) return;
-  unit.words.forEach(word => {
+  const words = [
+    ...(unit.words || []),
+    ...(unit.sightWords || []),
+    ...makeCollabPhrases(unit, unit.sightWords || [])
+      .flatMap(item => tokenizePhraseText(item.phrase))
+  ];
+  [...new Set(words.map(word => word.toLowerCase()))].forEach(word => {
     const audio = getWordAudio(word);
     if (audio.readyState === HTMLMediaElement.HAVE_NOTHING) {
       audio.load();
@@ -2683,11 +2977,18 @@ function preloadCurrentUnitAudio() {
 function stopRecordedAudio() {
   window.clearTimeout(recordedRepeatTimer);
   recordedRepeatTimer = 0;
-  if (!activeWordAudio) return;
+  const resolveActiveWord = activeWordResolve;
+  activeWordResolve = null;
+  if (!activeWordAudio) {
+    if (resolveActiveWord) resolveActiveWord();
+    return;
+  }
   activeWordAudio.onended = null;
+  activeWordAudio.onerror = null;
   activeWordAudio.pause();
   activeWordAudio.currentTime = 0;
   activeWordAudio = null;
+  if (resolveActiveWord) resolveActiveWord();
 }
 
 function speakUtterance(text, voice, rate) {
