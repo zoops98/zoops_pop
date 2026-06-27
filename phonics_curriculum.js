@@ -214,13 +214,22 @@ var SIGHT_WORD_POOLS = {
   ]
 };
 
+var SIGHT_WORDS_PER_UNIT = 9;
+
 function assignSightWords() {
   Object.entries(PHONICS_DATA).forEach(([sectionKey, section]) => {
-    const pool = SIGHT_WORD_POOLS[sectionKey] || [];
+    const pool = [];
+    (SIGHT_WORD_POOLS[sectionKey] || []).forEach(word => {
+      if (word && !pool.includes(word)) pool.push(word);
+    });
     section.units.forEach((unit, index) => {
-      const start = (index * 4) % pool.length;
+      const start = (index * SIGHT_WORDS_PER_UNIT) % pool.length;
       const words = [];
-      for (let offset = 0; words.length < 6 && offset < pool.length; offset += 1) {
+      for (
+        let offset = 0;
+        words.length < Math.min(SIGHT_WORDS_PER_UNIT, pool.length) && offset < pool.length;
+        offset += 1
+      ) {
         const word = pool[(start + offset) % pool.length];
         if (word && !words.includes(word)) words.push(word);
       }
