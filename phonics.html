@@ -1691,7 +1691,7 @@ const GOOGLE_TTS_VOICE_NAMES = [
 const WORD_AUDIO_BASE = "audio/words/";
 const WORD_AUDIO_VERSION = "emma-20260627-2";
 const COLLAB_AUDIO_BASE = "audio/collab/";
-const COLLAB_AUDIO_VERSION = "emma-collab-20260627-1";
+const COLLAB_AUDIO_VERSION = "emma-collab-20260627-2";
 let selectedTtsVoice = null;
 let ttsPlaybackId = 0;
 let activeWordAudio = null;
@@ -2119,7 +2119,8 @@ function chooseCollabPhonicsWord(phonicsWords, startIndex, sightWord, usedPhonic
     "made", "take", "give", "live", "come", "move", "read", "eat",
     "play", "looked", "played", "wanted", "needed", "called", "going",
     "doing", "helping", "jumping", "running", "sitting", "reading",
-    "looking", "making", "riding", "swimming", "painting"
+    "looking", "making", "riding", "swimming", "painting", "this",
+    "that", "them", "then", "with", "thin", "thick", "thank"
   ]);
   const sight = String(sightWord || "").toLowerCase();
   const canUseVerbLike = sight === "and";
@@ -2129,11 +2130,23 @@ function chooseCollabPhonicsWord(phonicsWords, startIndex, sightWord, usedPhonic
     const candidate = phonicsWords[(startIndex + offset) % phonicsWords.length];
     const lower = String(candidate || "").toLowerCase();
     if (!candidate || usedPhonicsWords.has(lower)) continue;
+    if (lower === sight) continue;
     if (!canUseVerbLike && verbLikeWords.has(lower)) continue;
     return candidate;
   }
 
-  return fallback;
+  for (let offset = 0; offset < phonicsWords.length; offset += 1) {
+    const candidate = phonicsWords[(startIndex + offset) % phonicsWords.length];
+    const lower = String(candidate || "").toLowerCase();
+    if (!candidate) continue;
+    if (lower === sight) continue;
+    if (!canUseVerbLike && verbLikeWords.has(lower)) continue;
+    return candidate;
+  }
+
+  return String(fallback || "").toLowerCase() === sight
+    ? phonicsWords.find(word => String(word || "").toLowerCase() !== sight) || fallback
+    : fallback;
 }
 
 function makeCollabPhrase(sightWord, phonicsWord, nextWord) {
@@ -2148,9 +2161,17 @@ function makeCollabPhrase(sightWord, phonicsWord, nextWord) {
   const modals = new Set(["can", "will", "may", "must"]);
   const placeWords = new Set(["in", "on", "under", "over", "around"]);
 
-  let phrase = `${displaySight} ${phonicsWord}`;
+  let phrase = `say ${displaySight} with ${phonicsWord}`;
   if (lower === "and") {
     phrase = `${phonicsWord} and ${nextWord}`;
+  } else if (lower === "say") {
+    phrase = `say the ${phonicsWord}`;
+  } else if (lower === "read") {
+    phrase = `read the ${phonicsWord}`;
+  } else if (lower === "eat") {
+    phrase = `eat with the ${phonicsWord}`;
+  } else if (lower === "play") {
+    phrase = `play with the ${phonicsWord}`;
   } else if (lower === "it") {
     phrase = `it is a ${phonicsWord}`;
   } else if (lower === "is") {
