@@ -15,7 +15,10 @@ CONCURRENCY = 4
 RETRIES = 4
 PRONUNCIATION_TEXT = {
     "a": "uh",
-    "i": "eye",
+    "i": "I",
+    "it": "It",
+    "is": "Is",
+    "and": "And",
 }
 
 
