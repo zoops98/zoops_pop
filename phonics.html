@@ -2129,7 +2129,7 @@ function renderMain() {
         <button class="mode-tab ${state.mode === "sight" ? "active" : ""}" onclick="setMode('sight')">Sight Words</button>
         <button class="mode-tab ${state.mode === "spell" ? "active" : ""}" onclick="setMode('spell')">Spelling Check</button>
         <button class="mode-tab ${state.mode === "listen" ? "active" : ""}" onclick="setMode('listen')">Listen & Select</button>
-        <button class="utility-btn" onclick="playWord('${escapeHtml(
+        <button class="utility-btn" onclick="${state.mode === "sight" ? "playSightWord" : "playWord"}('${escapeHtml(
           state.mode === "spell" ? spellingPromptWord :
           state.mode === "listen" ? listenPromptWord :
           state.mode === "sight" ? selectedSightWord :
@@ -2188,7 +2188,7 @@ function renderSightMode(unit, sightWords, selectedSightWord) {
         <div class="selected-meta">Sight Word · ${escapeHtml(unit.name)}</div>
         <div class="sight-helper">파닉스 단어와 함께 자주 만나는 단어를 듣고 바로 읽어 보세요.</div>
       </div>
-      <button class="play-big" onclick="playWord('${escapeHtml(selectedSightWord)}')" aria-label="Play selected sight word">&#9654;</button>
+      <button class="play-big" onclick="playSightWord('${escapeHtml(selectedSightWord)}')" aria-label="Play selected sight word">&#9654;</button>
     </div>
     <div class="sight-grid">
       ${sightWords.map((word, index) => `
@@ -2518,7 +2518,11 @@ function selectSightWord(index) {
   state.sightIndex = Math.max(0, Math.min(index, words.length - 1));
   const word = words[state.sightIndex];
   renderMain();
-  playWord(word);
+  playSightWord(word);
+}
+
+function playSightWord(word) {
+  playWord(word, { spelling: true });
 }
 
 function setMode(mode) {
@@ -2535,7 +2539,7 @@ function setMode(mode) {
     window.setTimeout(() => playSpellingWord(0), 120);
   } else if (mode === "sight") {
     const firstSightWord = currentUnit().sightWords?.[0];
-    if (firstSightWord) window.setTimeout(() => playWord(firstSightWord), 120);
+    if (firstSightWord) window.setTimeout(() => playSightWord(firstSightWord), 120);
   } else if (mode === "listen") {
     prepareListenRound(0);
     renderMain();
