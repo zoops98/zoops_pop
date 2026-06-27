@@ -1643,7 +1643,7 @@ const GOOGLE_TTS_VOICE_NAMES = [
   "Google UK English Male"
 ];
 const WORD_AUDIO_BASE = "audio/words/";
-const WORD_AUDIO_VERSION = "emma-20260627-1";
+const WORD_AUDIO_VERSION = "emma-20260627-2";
 let selectedTtsVoice = null;
 let ttsPlaybackId = 0;
 let activeWordAudio = null;
@@ -2537,9 +2537,6 @@ function setMode(mode) {
   noteLearningActivity();
   if (mode === "spell") {
     window.setTimeout(() => playSpellingWord(0), 120);
-  } else if (mode === "sight") {
-    const firstSightWord = currentUnit().sightWords?.[0];
-    if (firstSightWord) window.setTimeout(() => playSightWord(firstSightWord), 120);
   } else if (mode === "listen") {
     prepareListenRound(0);
     renderMain();

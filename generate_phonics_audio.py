@@ -2,6 +2,7 @@ import argparse
 import asyncio
 import json
 import re
+import subprocess
 from pathlib import Path
 
 import edge_tts
@@ -13,6 +14,7 @@ VOLUME = "+0%"
 PITCH = "+0Hz"
 CONCURRENCY = 4
 RETRIES = 4
+SHORT_WORD_AUDIO_PADDING = {"i", "it", "is", "and"}
 PRONUNCIATION_TEXT = {
     "a": "uh",
     "i": "I",
@@ -20,6 +22,45 @@ PRONUNCIATION_TEXT = {
     "is": "Is",
     "and": "And",
 }
+
+
+def pad_short_word_audio(word: str, output_path: Path) -> None:
+    if word not in SHORT_WORD_AUDIO_PADDING:
+        return
+
+    temp_path = output_path.with_name(f"{output_path.stem}.padded{output_path.suffix}")
+    subprocess.run(
+        [
+            "ffmpeg",
+            "-y",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-f",
+            "lavfi",
+            "-t",
+            "0.22",
+            "-i",
+            "anullsrc=r=24000:cl=mono",
+            "-i",
+            str(output_path),
+            "-f",
+            "lavfi",
+            "-t",
+            "0.32",
+            "-i",
+            "anullsrc=r=24000:cl=mono",
+            "-filter_complex",
+            "[0:a][1:a][2:a]concat=n=3:v=0:a=1",
+            "-codec:a",
+            "libmp3lame",
+            "-q:a",
+            "4",
+            str(temp_path),
+        ],
+        check=True,
+    )
+    temp_path.replace(output_path)
 
 
 def find_word_arrays(source_path: Path) -> list[str]:
@@ -75,6 +116,7 @@ async def generate_word(
                     pitch=PITCH,
                 )
                 await communicator.save(str(output_path))
+                pad_short_word_audio(word, output_path)
                 return "created"
             except Exception:
                 output_path.unlink(missing_ok=True)
