@@ -1691,7 +1691,7 @@ const GOOGLE_TTS_VOICE_NAMES = [
 const WORD_AUDIO_BASE = "audio/words/";
 const WORD_AUDIO_VERSION = "emma-20260627-2";
 const COLLAB_AUDIO_BASE = "audio/collab/";
-const COLLAB_AUDIO_VERSION = "emma-collocation-20260627-1";
+const COLLAB_AUDIO_VERSION = "emma-collocation-20260628-1";
 let selectedTtsVoice = null;
 let ttsPlaybackId = 0;
 let activeWordAudio = null;
@@ -2126,6 +2126,22 @@ function pluralizeForCollocation(word) {
   return `${text}s`;
 }
 
+function makeDefaultCollocationPhrase(word, index) {
+  const cleanWord = String(word || "");
+  const options = [
+    { phrase: `${articleFor(cleanWord)} ${cleanWord}`, sightWord: articleFor(cleanWord) },
+    { phrase: `the ${cleanWord}`, sightWord: "the" },
+    { phrase: `my ${cleanWord}`, sightWord: "my" },
+    { phrase: `little ${cleanWord}`, sightWord: "little" },
+    { phrase: `big ${cleanWord}`, sightWord: "big" },
+    { phrase: `two ${pluralizeForCollocation(cleanWord)}`, sightWord: "two" },
+    { phrase: `${cleanWord} sound`, sightWord: "sound" },
+    { phrase: `${cleanWord} card`, sightWord: "card" },
+    { phrase: `say ${cleanWord}`, sightWord: "say" }
+  ];
+  return options[index % options.length];
+}
+
 const NON_NOUN_COLLAB_WORDS = new Set([
   "red", "fed", "wet", "big", "dig", "sit", "sat", "run", "sick", "off",
   "miss", "eat", "thank", "thin", "thick", "this", "that", "them", "then",
@@ -2318,6 +2334,143 @@ const COLLAB_PHRASE_OVERRIDES = {
   "X / QU::ice": ["ice box", ["box"]],
   "X / QU::face": ["fox face", ["fox"]],
   "X / QU::once": ["quit once", ["quit"]],
+  "Final NK::think": ["junk box", ["junk"]],
+  "Final CK::all": ["back deck", ["back", "deck"]],
+  "CVC Endings Review::want": ["black shell", ["black", "shell"]],
+  "CVC Endings Review::tell": ["think fast", ["think"]],
+  "WH::then": ["when and where", ["when", "where"]],
+  "L Blends::blue": ["black flag", ["black", "flag"]],
+  "L Blends::stop": ["flat tire", ["flat"]],
+  "S Blends::just": ["smell a snack", ["smell", "snack"]],
+  "Long U: u_e::name": ["cute mule", ["cute", "mule"]],
+  "EE / EA::boat": ["green tree", ["green", "tree"]],
+  "UE / EW::they": ["true blue", ["true", "blue"]],
+  "UE / EW::see": ["due date", ["due"]],
+  "AR::or": ["far away", ["far"]],
+  "AR::first": ["dark park", ["dark", "park"]],
+  "ER::or": ["under the river", ["under", "river"]],
+  "UR::under": ["fur coat", ["fur"]],
+  "UR::after": ["turn around", ["turn"]],
+  "UR::over": ["burn mark", ["burn"]],
+  "OI / OY::how": ["join in", ["join"]],
+  "OU / OW::book": ["round town", ["round", "town"]],
+  "OU / OW::school": ["sound wave", ["sound"]],
+  "OO as in Moon::house": ["soon after", ["soon"]],
+  "OO as in Book::now": ["look at the book", ["look", "book"]],
+  "OO as in Book::how": ["cook food", ["cook"]],
+  "AU / AW::too": ["Paul saw", ["Paul", "saw"]],
+  "AU / AW::food": ["fault line", ["fault"]],
+  "AU / AW::boy": ["cause and effect", ["cause"]],
+  "AU / AW::toy": ["pause button", ["pause"]],
+  "Diphthong Review::sound": ["enjoy school", ["enjoy", "school"]],
+  "EA Variations::eat": ["eat meat", ["meat"]],
+  "EA Variations::pie": ["meat pie", ["meat"]],
+  "EA Variations::dream": ["dream team", ["team"]],
+  "EA Variations::start": ["head start", ["head"]],
+  "EA Variations::slice": ["bread slice", ["bread"]],
+  "EA Variations::ready": ["ready to eat", ["eat"]],
+  "EA Variations::great": ["great steak", ["steak"]],
+  "EA Variations::dinner": ["steak dinner", ["steak"]],
+  "EA Variations::heavy": ["heavy head", ["head"]],
+  "OW Variations::snow": ["snow day", ["snow"]],
+  "OW Variations::up": ["grow up", ["grow"]],
+  "OW Variations::show": ["show me", ["show"]],
+  "OW Variations::yellow": ["yellow flower", ["flower"]],
+  "OW Variations::open": ["open window", ["window"]],
+  "OW Variations::brown": ["brown cow", ["cow"]],
+  "OW Variations::funny": ["funny clown", ["clown"]],
+  "OW Variations::rain": ["rain shower", ["shower"]],
+  "OW Variations::right": ["right now", ["now"]],
+  "EIGH / EI / EY::eight": ["eight days", ["eight"]],
+  "EIGH / EI / EY::heavy": ["heavy weight", ["weight"]],
+  "EIGH / EI / EY::ride": ["sleigh ride", ["sleigh"]],
+  "EIGH / EI / EY::train": ["freight train", ["freight"]],
+  "EIGH / EI / EY::weigh": ["weigh in", ["weigh"]],
+  "EIGH / EI / EY::good": ["good neighbor", ["neighbor"]],
+  "EIGH / EI / EY::blue": ["blue vein", ["vein"]],
+  "EIGH / EI / EY::horse": ["horse rein", ["rein"]],
+  "EIGH / EI / EY::rules": ["obey rules", ["obey"]],
+  "IE Variations::slice": ["pie slice", ["pie"]],
+  "IE Variations::shoes": ["tie shoes", ["tie"]],
+  "IE Variations::white": ["white lie", ["lie"]],
+  "IE Variations::again": ["tried again", ["tried"]],
+  "IE Variations::french": ["french fries", ["fries"]],
+  "IE Variations::brief": ["brief note", ["brief"]],
+  "IE Variations::open": ["open field", ["field"]],
+  "IE Variations::puzzle": ["puzzle piece", ["piece"]],
+  "IE Variations::sneaky": ["sneaky thief", ["thief"]],
+  "Y as a Vowel::high": ["fly high", ["fly"]],
+  "Y as a Vowel::baby": ["cry baby", ["cry"]],
+  "Y as a Vowel::blue": ["blue sky", ["sky"]],
+  "Y as a Vowel::shy": ["shy puppy", ["puppy"]],
+  "Y as a Vowel::happy": ["happy baby", ["baby"]],
+  "Y as a Vowel::sunny": ["sunny day", ["sunny"]],
+  "Y as a Vowel::candy": ["candy shop", ["candy"]],
+  "Y as a Vowel::family": ["family dinner", ["family"]],
+  "Y as a Vowel::puppy": ["puppy dog", ["puppy"]],
+  "Vowel Team Review::slice": ["bread slice", ["bread"]],
+  "Vowel Team Review::dinner": ["steak dinner", ["steak"]],
+  "Vowel Team Review::garden": ["flower garden", ["flower"]],
+  "Vowel Team Review::open": ["open window", ["window"]],
+  "Vowel Team Review::eight": ["eight days", ["eight"]],
+  "Vowel Team Review::good": ["good neighbor", ["neighbor"]],
+  "Vowel Team Review::shield": ["shield wall", ["shield"]],
+  "Vowel Team Review::again": ["cried again", ["cried"]],
+  "Vowel Team Review::happy": ["happy family", ["happy"]],
+  "Plural S::and": ["cats and dogs", ["cats", "dogs"]],
+  "Plural S::red": ["red hats", ["hats"]],
+  "Plural S::paper": ["paper cups", ["cups"]],
+  "Plural S::library": ["library books", ["books"]],
+  "Plural S::big": ["big dogs", ["dogs"]],
+  "Plural S::pink": ["pink pigs", ["pigs"]],
+  "Plural S::soft": ["soft beds", ["beds"]],
+  "Plural S::sports": ["sports fans", ["fans"]],
+  "Plural S::school": ["school kids", ["kids"]],
+  "Plural ES::cardboard": ["cardboard boxes", ["boxes"]],
+  "Plural ES::red": ["red foxes", ["foxes"]],
+  "Plural ES::clean": ["clean dishes", ["dishes"]],
+  "Plural ES::birthday": ["birthday wishes", ["wishes"]],
+  "Plural ES::school": ["school buses", ["buses"]],
+  "Plural ES::big": ["big classes", ["classes"]],
+  "Plural ES::wrist": ["wrist watches", ["watches"]],
+  "Plural ES::park": ["park benches", ["benches"]],
+  "Plural ES::loud": ["loud buzzes", ["buzzes"]],
+  "Past ED::high": ["jumped high", ["jumped"]],
+  "Past ED::up": ["looked up", ["looked"]],
+  "Past ED::clean": ["washed dishes", ["washed"]],
+  "Past ED::games": ["played games", ["played"]],
+  "Past ED::hard": ["rained hard", ["rained"]],
+  "Past ED::home": ["called home", ["called"]],
+  "Past ED::help": ["wanted help", ["wanted"]],
+  "Past ED::rest": ["needed rest", ["needed"]],
+  "Past ED::walls": ["painted walls", ["painted"]],
+  "ING::rope": ["jumping rope", ["jumping"]],
+  "ING::fast": ["running fast", ["running"]],
+  "ING::down": ["sitting down", ["sitting"]],
+  "ING::games": ["playing games", ["playing"]],
+  "ING::books": ["reading books", ["reading"]],
+  "ING::up": ["looking up", ["looking"]],
+  "ING::cake": ["making cake", ["making"]],
+  "ING::bikes": ["riding bikes", ["riding"]],
+  "ING::pool": ["swimming pool", ["swimming"]],
+  "ER / EST::runner": ["faster runner", ["faster"]],
+  "ER / EST::race": ["fastest race", ["fastest"]],
+  "ER / EST::cup": ["smaller cup", ["smaller"]],
+  "ER / EST::box": ["smallest box", ["smallest"]],
+  "ER / EST::tree": ["taller tree", ["taller"]],
+  "ER / EST::tower": ["tallest tower", ["tallest"]],
+  "ER / EST::light": ["brighter light", ["brighter"]],
+  "ER / EST::star": ["brightest star", ["brightest"]],
+  "ER / EST::line": ["shorter line", ["shorter"]],
+  "Ending Review::big": ["big dogs", ["dogs"]],
+  "Ending Review::cardboard": ["cardboard boxes", ["boxes"]],
+  "Ending Review::high": ["jumped high", ["jumped"]],
+  "Ending Review::games": ["playing games", ["playing"]],
+  "Ending Review::runner": ["faster runner", ["faster"]],
+  "Ending Review::cup": ["smallest cup", ["smallest"]],
+  "Ending Review::birthday": ["birthday wishes", ["wishes"]],
+  "Ending Review::help": ["needed help", ["needed"]],
+  "Ending Review::bikes": ["riding bikes", ["riding"]],
   "Closed Syllables::little": ["little rabbit", ["rabbit"]],
   "Closed Syllables::picnic": ["picnic basket", ["basket"]],
   "Closed Syllables::family": ["family picnic", ["picnic"]],
@@ -2396,266 +2549,15 @@ function makeCollabPhrase(unit, sightWord, index, usedPhonicsWords, usedPhrases)
   if (override) return override;
 
   const phonicsWords = unit.words || [];
-  const lower = String(sightWord || "").toLowerCase();
-  const displaySight = displaySightWord(sightWord);
   const preferred = preferredCollabWords(unit.name, sightWord);
   const word = chooseCollabPhonicsWord(phonicsWords, index, sightWord, usedPhonicsWords, preferred);
-  const [firstPair, secondPair] = chooseCollabPair(phonicsWords, index, sightWord, usedPhonicsWords);
-  const article = articleFor(word);
-  const the = `the ${word}`;
-  const a = `${article} ${word}`;
-
-  const adjectiveStarters = new Set([
-    "blue", "black", "green", "brown", "yellow", "small", "large", "little", "big",
-    "great", "favorite", "different", "important", "beautiful", "perfect",
-    "complete", "first", "third", "last", "next", "best", "many", "every",
-    "two", "three", "four", "five", "six"
-  ]);
-  const determiners = new Set(["a", "the", "my", "this", "that", "these", "those", "some", "one", "all", "both"]);
-  const pronouns = new Set(["i", "we", "you", "he", "she", "they"]);
-  const modals = new Set(["can", "will", "may", "must"]);
-
-  let phrase = `${displaySight} ${word}`;
-  let phonicsTargets = [word];
-
-  if (["two", "three", "four", "five", "six", "eight", "many"].includes(lower)) {
-    phrase = `${displaySight} ${pluralizeForCollocation(word)}`;
-  } else if (lower === "all") {
-    phrase = `all the ${pluralizeForCollocation(word)}`;
-  } else if (lower === "so") {
-    phrase = `so many ${pluralizeForCollocation(word)}`;
-  } else if (lower === "now") {
-    phrase = `now see ${the}`;
-  } else if (lower === "how") {
-    phrase = `how about ${the}`;
-  } else if (lower === "soon") {
-    phrase = `soon by ${the}`;
-  } else if (lower === "and") {
-    phrase = `${firstPair} and ${secondPair}`;
-    phonicsTargets = [firstPair, secondPair];
-  } else if (determiners.has(lower) || adjectiveStarters.has(lower)) {
-    phrase = `${displaySight} ${word}`;
-  } else if (pronouns.has(lower)) {
-    phrase = `${displaySight} can see ${the}`;
-  } else if (modals.has(lower)) {
-    phrase = `${displaySight} see ${the}`;
-  } else if (lower === "am") {
-    phrase = `I am by ${the}`;
-  } else if (lower === "it" || lower === "is") {
-    phrase = `it is ${a}`;
-  } else if (lower === "in" || lower === "on" || lower === "under" || lower === "over") {
-    phrase = `${displaySight} ${the}`;
-  } else if (lower === "at" || lower === "by") {
-    phrase = `${displaySight} ${the}`;
-  } else if (lower === "before" || lower === "after" || lower === "about" || lower === "around") {
-    phrase = `${displaySight} ${the}`;
-  } else if (lower === "because") {
-    phrase = `because of ${the}`;
-  } else if (lower === "to") {
-    phrase = `to ${the}`;
-  } else if (lower === "for") {
-    phrase = `for ${the}`;
-  } else if (lower === "from") {
-    phrase = `from ${the}`;
-  } else if (lower === "with") {
-    phrase = `with ${the}`;
-  } else if (lower === "or") {
-    phrase = `${firstPair} or ${secondPair}`;
-    phonicsTargets = [firstPair, secondPair];
-  } else if (lower === "up") {
-    phrase = `up on ${the}`;
-  } else if (lower === "off") {
-    phrase = `off ${the}`;
-  } else if (lower === "back") {
-    phrase = `back to ${the}`;
-  } else if (lower === "down") {
-    phrase = `down by ${the}`;
-  } else if (lower === "out") {
-    phrase = `out of ${the}`;
-  } else if (lower === "not") {
-    phrase = `not ${a}`;
-  } else if (lower === "no") {
-    phrase = `no, not ${the}`;
-  } else if (lower === "yes") {
-    phrase = `yes, I see ${the}`;
-  } else if (lower === "see") {
-    phrase = `see ${the}`;
-  } else if (lower === "them") {
-    phrase = `show them ${the}`;
-  } else if (lower === "look" || lower === "looked") {
-    phrase = `look at ${the}`;
-  } else if (lower === "read" || lower === "reading") {
-    phrase = `read about ${the}`;
-  } else if (lower === "show") {
-    phrase = `show ${the}`;
-  } else if (lower === "write") {
-    phrase = `write about ${the}`;
-  } else if (lower === "say") {
-    phrase = `say ${the}`;
-  } else if (lower === "tell") {
-    phrase = `tell me about ${the}`;
-  } else if (lower === "think") {
-    phrase = `think about ${the}`;
-  } else if (lower === "thank") {
-    phrase = `thank you for ${the}`;
-  } else if (lower === "know") {
-    phrase = `know about ${the}`;
-  } else if (lower === "go" || lower === "going" || lower === "come") {
-    phrase = `${displaySight} to ${the}`;
-  } else if (lower === "do" || lower === "doing") {
-    phrase = `${displaySight} it with ${the}`;
-  } else if (lower === "make" || lower === "made" || lower === "making") {
-    phrase = `${displaySight} ${a}`;
-  } else if (lower === "take") {
-    phrase = `take ${the}`;
-  } else if (lower === "give") {
-    phrase = `give me ${the}`;
-  } else if (lower === "bring") {
-    phrase = `bring ${the}`;
-  } else if (lower === "use") {
-    phrase = `use ${the}`;
-  } else if (lower === "have") {
-    phrase = `have ${a}`;
-  } else if (lower === "want" || lower === "wanted") {
-    phrase = `${displaySight} ${the}`;
-  } else if (lower === "need" || lower === "needed") {
-    phrase = `${displaySight} ${the}`;
-  } else if (lower === "love" || lower === "like") {
-    phrase = `${displaySight} ${the}`;
-  } else if (lower === "move") {
-    phrase = `move ${the}`;
-  } else if (lower === "play" || lower === "played" || lower === "playing") {
-    phrase = `play with ${the}`;
-  } else if (lower === "please") {
-    phrase = `please see ${the}`;
-  } else if (lower === "drink") {
-    phrase = `drink after ${the}`;
-  } else if (lower === "eat") {
-    phrase = `eat ${the}`;
-  } else if (lower === "sleep") {
-    phrase = `sleep by ${the}`;
-  } else if (lower === "stop") {
-    phrase = `stop at ${the}`;
-  } else if (lower === "step") {
-    phrase = `step on ${the}`;
-  } else if (lower === "still") {
-    phrase = `still by ${the}`;
-  } else if (lower === "strong") {
-    phrase = `strong ${word}`;
-  } else if (lower === "me") {
-    phrase = `show me ${the}`;
-  } else if (lower === "so") {
-    phrase = `so ${word}`;
-  } else if (lower === "more") {
-    phrase = `more of ${the}`;
-  } else if (lower === "much" || lower === "such") {
-    phrase = `${displaySight} ${a}`;
-  } else if (lower === "what") {
-    phrase = `what is ${the}`;
-  } else if (lower === "which") {
-    phrase = `which ${word}`;
-  } else if (lower === "when") {
-    phrase = `when you see ${the}`;
-  } else if (lower === "where") {
-    phrase = `where is ${the}`;
-  } else if (lower === "why") {
-    phrase = `why not ${the}`;
-  } else if (lower === "who") {
-    phrase = `who has ${the}`;
-  } else if (lower === "then") {
-    phrase = `then ${the}`;
-  } else if (lower === "there") {
-    phrase = `there is ${a}`;
-  } else if (lower === "thing") {
-    phrase = `${a} thing`;
-  } else if (lower === "went") {
-    phrase = `went to ${the}`;
-  } else if (lower === "same") {
-    phrase = `the same ${word}`;
-  } else if (lower === "home") {
-    phrase = `home with ${the}`;
-  } else if (lower === "done") {
-    phrase = `done with ${the}`;
-  } else if (lower === "boat") {
-    phrase = `${word} boat`;
-  } else if (lower === "day" || lower === "night" || lower === "today" || lower === "tomorrow") {
-    phrase = `${displaySight} by ${the}`;
-  } else if (lower === "way") {
-    phrase = `the way to ${the}`;
-  } else if (lower === "right") {
-    phrase = `right by ${the}`;
-  } else if (lower === "light" || lower === "high") {
-    phrase = `${displaySight} ${word}`;
-  } else if (lower === "my" || lower === "by") {
-    phrase = `${displaySight} ${word}`;
-  } else if (lower === "once") {
-    phrase = `once around ${the}`;
-  } else if (lower === "again") {
-    phrase = `see ${the} again`;
-  } else if (lower === "away") {
-    phrase = `away from ${the}`;
-  } else if (lower === "together") {
-    phrase = `together by ${the}`;
-  } else if (lower === "number") {
-    phrase = `number the ${word}`;
-  } else if (lower === "another") {
-    phrase = `another ${word}`;
-  } else if (lower === "people") {
-    phrase = `people at ${the}`;
-  } else if (lower === "family" || lower === "mother" || lower === "father" || lower === "brother" || lower === "sister" || lower === "teacher" || lower === "student" || lower === "friend") {
-    phrase = `${displaySight} and ${the}`;
-  } else if (lower === "school" || lower === "house" || lower === "shop") {
-    phrase = `${displaySight} with ${the}`;
-  } else if (lower === "photo") {
-    phrase = `a photo of ${the}`;
-  } else if (lower === "phone") {
-    phrase = `phone the ${word}`;
-  } else if (lower === "chair") {
-    phrase = `a chair by ${the}`;
-  } else if (lower === "cheese" || lower === "food" || lower === "bread") {
-    phrase = `${displaySight} with ${the}`;
-  } else if (lower === "piece") {
-    phrase = `a piece of ${the}`;
-  } else if (lower === "field") {
-    phrase = `a field of ${word}`;
-  } else if (lower === "chief") {
-    phrase = `chief of ${the}`;
-  } else if (lower === "while") {
-    phrase = `while you see ${the}`;
-  } else if (lower === "city") {
-    phrase = `a place in the city`;
-  } else if (lower === "place") {
-    phrase = `a place for ${the}`;
-  } else if (lower === "space") {
-    phrase = `space ${word}`;
-  } else if (lower === "ice") {
-    phrase = `ice ${word}`;
-  } else if (lower === "face") {
-    phrase = `face the ${word}`;
-  } else if (lower === "page") {
-    phrase = `a page about ${the}`;
-  } else if (lower === "question") {
-    phrase = `a question about ${the}`;
-  } else if (lower === "cats" || lower === "dogs" || lower === "books" || lower === "kids" || lower === "boxes" || lower === "wishes") {
-    phrase = `${displaySight} and ${word}`;
-  } else if (lower === "called" || lower === "started" || lower === "helping") {
-    phrase = `${displaySight} with ${the}`;
-  } else if (lower === "faster" || lower === "fastest" || lower === "smaller") {
-    phrase = `${displaySight} than ${the}`;
-  } else if (lower === "always") {
-    phrase = `always near ${the}`;
-  }
-
-  if (usedPhrases.has(phrase.toLowerCase())) {
-    phrase = `${phrase} again`;
-  }
-
+  const fallback = makeDefaultCollocationPhrase(word, index);
   return {
-    phrase,
-    sightWord: displaySight,
+    phrase: fallback.phrase,
+    sightWord: fallback.sightWord,
     phonicsWord: word,
-    phonicsWords: phonicsTargets.filter(Boolean),
-    nextWord: phonicsTargets[1] || ""
+    phonicsWords: [word].filter(Boolean),
+    nextWord: ""
   };
 }
 

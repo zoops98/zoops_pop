@@ -1,7 +1,7 @@
 {
   "voice": "en-US-EmmaNeural",
   "rate": "-12%",
-  "uniqueCollabAudioFiles": 645,
+  "uniqueCollabAudioFiles": 631,
   "phrases": [
     {
       "key": "a_cat",
@@ -11,582 +11,575 @@
       "unitName": "Short A"
     },
     {
-      "key": "i_can_see_the_bat",
-      "phrase": "I can see the bat",
+      "key": "the_bat",
+      "phrase": "the bat",
       "section": "Section 1",
       "unitIndex": 1,
       "unitName": "Short A"
     },
     {
-      "key": "i_am_by_the_hat",
-      "phrase": "I am by the hat",
+      "key": "my_hat",
+      "phrase": "my hat",
       "section": "Section 1",
       "unitIndex": 1,
       "unitName": "Short A"
     },
     {
-      "key": "can_see_the_mat",
-      "phrase": "can see the mat",
+      "key": "little_mat",
+      "phrase": "little mat",
       "section": "Section 1",
       "unitIndex": 1,
       "unitName": "Short A"
     },
     {
-      "key": "rat_and_sat",
-      "phrase": "rat and sat",
+      "key": "big_rat",
+      "phrase": "big rat",
       "section": "Section 1",
       "unitIndex": 1,
       "unitName": "Short A"
     },
     {
-      "key": "the_can",
-      "phrase": "the can",
+      "key": "two_cans",
+      "phrase": "two cans",
       "section": "Section 1",
       "unitIndex": 1,
       "unitName": "Short A"
     },
     {
-      "key": "it_is_a_man",
-      "phrase": "it is a man",
+      "key": "man_sound",
+      "phrase": "man sound",
       "section": "Section 1",
       "unitIndex": 1,
       "unitName": "Short A"
     },
     {
-      "key": "in_the_fan",
-      "phrase": "in the fan",
+      "key": "fan_card",
+      "phrase": "fan card",
       "section": "Section 1",
       "unitIndex": 1,
       "unitName": "Short A"
     },
     {
-      "key": "it_is_a_pan",
-      "phrase": "it is a pan",
+      "key": "say_pan",
+      "phrase": "say pan",
       "section": "Section 1",
       "unitIndex": 1,
       "unitName": "Short A"
     },
     {
-      "key": "on_the_bed",
-      "phrase": "on the bed",
+      "key": "a_bed",
+      "phrase": "a bed",
       "section": "Section 1",
       "unitIndex": 2,
       "unitName": "Short E"
     },
     {
-      "key": "up_on_the_peg",
-      "phrase": "up on the peg",
+      "key": "the_peg",
+      "phrase": "the peg",
       "section": "Section 1",
       "unitIndex": 2,
       "unitName": "Short E"
     },
     {
-      "key": "not_a_leg",
-      "phrase": "not a leg",
+      "key": "my_leg",
+      "phrase": "my leg",
       "section": "Section 1",
       "unitIndex": 2,
       "unitName": "Short E"
     },
     {
-      "key": "my_men",
-      "phrase": "my men",
+      "key": "little_men",
+      "phrase": "little men",
       "section": "Section 1",
       "unitIndex": 2,
       "unitName": "Short E"
     },
     {
-      "key": "see_the_web",
-      "phrase": "see the web",
+      "key": "big_web",
+      "phrase": "big web",
       "section": "Section 1",
       "unitIndex": 2,
       "unitName": "Short E"
     },
     {
-      "key": "we_can_see_the_jet",
-      "phrase": "we can see the jet",
+      "key": "two_jets",
+      "phrase": "two jets",
       "section": "Section 1",
       "unitIndex": 2,
       "unitName": "Short E"
     },
     {
-      "key": "show_me_the_hen",
-      "phrase": "show me the hen",
+      "key": "hen_sound",
+      "phrase": "hen sound",
       "section": "Section 1",
       "unitIndex": 2,
       "unitName": "Short E"
     },
     {
-      "key": "he_can_see_the_pen",
-      "phrase": "he can see the pen",
+      "key": "pen_card",
+      "phrase": "pen card",
       "section": "Section 1",
       "unitIndex": 2,
       "unitName": "Short E"
     },
     {
-      "key": "she_can_see_the_net",
-      "phrase": "she can see the net",
+      "key": "say_net",
+      "phrase": "say net",
       "section": "Section 1",
       "unitIndex": 2,
       "unitName": "Short E"
     },
     {
-      "key": "yes_i_see_the_pig",
-      "phrase": "yes, I see the pig",
+      "key": "a_pig",
+      "phrase": "a pig",
       "section": "Section 1",
       "unitIndex": 3,
       "unitName": "Short I"
     },
     {
-      "key": "no_not_the_kid",
-      "phrase": "no, not the kid",
+      "key": "the_kid",
+      "phrase": "the kid",
       "section": "Section 1",
       "unitIndex": 3,
       "unitName": "Short I"
     },
     {
-      "key": "go_to_the_pin",
-      "phrase": "go to the pin",
+      "key": "my_pin",
+      "phrase": "my pin",
       "section": "Section 1",
       "unitIndex": 3,
       "unitName": "Short I"
     },
     {
-      "key": "so_many_fins",
-      "phrase": "so many fins",
+      "key": "little_fin",
+      "phrase": "little fin",
       "section": "Section 1",
       "unitIndex": 3,
       "unitName": "Short I"
     },
     {
-      "key": "to_the_lip",
-      "phrase": "to the lip",
+      "key": "big_lip",
+      "phrase": "big lip",
       "section": "Section 1",
       "unitIndex": 3,
       "unitName": "Short I"
     },
     {
-      "key": "do_it_with_the_zip",
-      "phrase": "do it with the zip",
+      "key": "two_zips",
+      "phrase": "two zips",
       "section": "Section 1",
       "unitIndex": 3,
       "unitName": "Short I"
     },
     {
-      "key": "a_win",
-      "phrase": "a win",
+      "key": "win_sound",
+      "phrase": "win sound",
       "section": "Section 1",
       "unitIndex": 3,
       "unitName": "Short I"
     },
     {
-      "key": "i_can_see_the_lid",
-      "phrase": "I can see the lid",
+      "key": "lid_card",
+      "phrase": "lid card",
       "section": "Section 1",
       "unitIndex": 3,
       "unitName": "Short I"
     },
     {
-      "key": "i_am_by_the_tip",
-      "phrase": "I am by the tip",
+      "key": "say_tip",
+      "phrase": "say tip",
       "section": "Section 1",
       "unitIndex": 3,
       "unitName": "Short I"
     },
     {
-      "key": "can_see_the_dog",
-      "phrase": "can see the dog",
+      "key": "a_dog",
+      "phrase": "a dog",
       "section": "Section 1",
       "unitIndex": 4,
       "unitName": "Short O"
     },
     {
-      "key": "log_and_fog",
-      "phrase": "log and fog",
+      "key": "the_log",
+      "phrase": "the log",
       "section": "Section 1",
       "unitIndex": 4,
       "unitName": "Short O"
     },
     {
-      "key": "the_pot",
-      "phrase": "the pot",
+      "key": "my_fog",
+      "phrase": "my fog",
       "section": "Section 1",
       "unitIndex": 4,
       "unitName": "Short O"
     },
     {
-      "key": "it_is_a_mop",
-      "phrase": "it is a mop",
+      "key": "little_pot",
+      "phrase": "little pot",
       "section": "Section 1",
       "unitIndex": 4,
       "unitName": "Short O"
     },
     {
-      "key": "in_the_cot",
-      "phrase": "in the cot",
+      "key": "big_mop",
+      "phrase": "big mop",
       "section": "Section 1",
       "unitIndex": 4,
       "unitName": "Short O"
     },
     {
-      "key": "it_is_a_rod",
-      "phrase": "it is a rod",
+      "key": "two_cots",
+      "phrase": "two cots",
       "section": "Section 1",
       "unitIndex": 4,
       "unitName": "Short O"
     },
     {
-      "key": "on_the_job",
-      "phrase": "on the job",
+      "key": "rod_sound",
+      "phrase": "rod sound",
       "section": "Section 1",
       "unitIndex": 4,
       "unitName": "Short O"
     },
     {
-      "key": "up_on_the_hop",
-      "phrase": "up on the hop",
+      "key": "job_card",
+      "phrase": "job card",
       "section": "Section 1",
       "unitIndex": 4,
       "unitName": "Short O"
     },
     {
-      "key": "not_a_dot",
-      "phrase": "not a dot",
+      "key": "say_hop",
+      "phrase": "say hop",
       "section": "Section 1",
       "unitIndex": 4,
       "unitName": "Short O"
     },
     {
-      "key": "my_bug",
-      "phrase": "my bug",
+      "key": "a_bug",
+      "phrase": "a bug",
       "section": "Section 1",
       "unitIndex": 5,
       "unitName": "Short U"
     },
     {
-      "key": "see_the_mug",
-      "phrase": "see the mug",
+      "key": "the_mug",
+      "phrase": "the mug",
       "section": "Section 1",
       "unitIndex": 5,
       "unitName": "Short U"
     },
     {
-      "key": "we_can_see_the_hug",
-      "phrase": "we can see the hug",
+      "key": "my_hug",
+      "phrase": "my hug",
       "section": "Section 1",
       "unitIndex": 5,
       "unitName": "Short U"
     },
     {
-      "key": "show_me_the_pup",
-      "phrase": "show me the pup",
+      "key": "little_pup",
+      "phrase": "little pup",
       "section": "Section 1",
       "unitIndex": 5,
       "unitName": "Short U"
     },
     {
-      "key": "he_can_see_the_nut",
-      "phrase": "he can see the nut",
+      "key": "big_nut",
+      "phrase": "big nut",
       "section": "Section 1",
       "unitIndex": 5,
       "unitName": "Short U"
     },
     {
-      "key": "she_can_see_the_gum",
-      "phrase": "she can see the gum",
+      "key": "two_gums",
+      "phrase": "two gums",
       "section": "Section 1",
       "unitIndex": 5,
       "unitName": "Short U"
     },
     {
-      "key": "yes_i_see_the_tub",
-      "phrase": "yes, I see the tub",
+      "key": "tub_sound",
+      "phrase": "tub sound",
       "section": "Section 1",
       "unitIndex": 5,
       "unitName": "Short U"
     },
     {
-      "key": "no_not_the_cup",
-      "phrase": "no, not the cup",
+      "key": "cup_card",
+      "phrase": "cup card",
       "section": "Section 1",
       "unitIndex": 5,
       "unitName": "Short U"
     },
     {
-      "key": "go_to_the_sun",
-      "phrase": "go to the sun",
+      "key": "say_sun",
+      "phrase": "say sun",
       "section": "Section 1",
       "unitIndex": 5,
       "unitName": "Short U"
     },
     {
-      "key": "so_many_maps",
-      "phrase": "so many maps",
+      "key": "a_map",
+      "phrase": "a map",
       "section": "Section 1",
       "unitIndex": 6,
       "unitName": "CVC Review"
     },
     {
-      "key": "to_the_bed",
-      "phrase": "to the bed",
+      "key": "the_bed",
+      "phrase": "the bed",
       "section": "Section 1",
       "unitIndex": 6,
       "unitName": "CVC Review"
     },
     {
-      "key": "do_it_with_the_fin",
-      "phrase": "do it with the fin",
+      "key": "my_fin",
+      "phrase": "my fin",
       "section": "Section 1",
       "unitIndex": 6,
       "unitName": "CVC Review"
     },
     {
-      "key": "a_log",
-      "phrase": "a log",
+      "key": "little_log",
+      "phrase": "little log",
       "section": "Section 1",
       "unitIndex": 6,
       "unitName": "CVC Review"
     },
     {
-      "key": "i_can_see_the_sun",
-      "phrase": "I can see the sun",
+      "key": "big_sun",
+      "phrase": "big sun",
       "section": "Section 1",
       "unitIndex": 6,
       "unitName": "CVC Review"
     },
     {
-      "key": "i_am_by_the_tap",
-      "phrase": "I am by the tap",
+      "key": "two_taps",
+      "phrase": "two taps",
       "section": "Section 1",
       "unitIndex": 6,
       "unitName": "CVC Review"
     },
     {
-      "key": "can_see_the_hen",
-      "phrase": "can see the hen",
+      "key": "sit_card",
+      "phrase": "sit card",
       "section": "Section 1",
       "unitIndex": 6,
       "unitName": "CVC Review"
     },
     {
-      "key": "sit_and_fox",
-      "phrase": "sit and fox",
+      "key": "say_fox",
+      "phrase": "say fox",
       "section": "Section 1",
       "unitIndex": 6,
       "unitName": "CVC Review"
     },
     {
-      "key": "the_cup",
-      "phrase": "the cup",
-      "section": "Section 1",
-      "unitIndex": 6,
-      "unitName": "CVC Review"
-    },
-    {
-      "key": "all_the_backs",
-      "phrase": "all the backs",
+      "key": "back_deck",
+      "phrase": "back deck",
       "section": "Section 2",
       "unitIndex": 1,
       "unitName": "Final CK"
     },
     {
-      "key": "will_see_the_neck",
-      "phrase": "will see the neck",
+      "key": "the_neck",
+      "phrase": "the neck",
       "section": "Section 2",
       "unitIndex": 1,
       "unitName": "Final CK"
     },
     {
-      "key": "tell_me_about_the_rock",
-      "phrase": "tell me about the rock",
+      "key": "my_rock",
+      "phrase": "my rock",
       "section": "Section 2",
       "unitIndex": 1,
       "unitName": "Final CK"
     },
     {
-      "key": "off_the_duck",
-      "phrase": "off the duck",
+      "key": "little_duck",
+      "phrase": "little duck",
       "section": "Section 2",
       "unitIndex": 1,
       "unitName": "Final CK"
     },
     {
-      "key": "back_to_the_pack",
-      "phrase": "back to the pack",
+      "key": "big_pack",
+      "phrase": "big pack",
       "section": "Section 2",
       "unitIndex": 1,
       "unitName": "Final CK"
     },
     {
-      "key": "look_at_the_deck",
-      "phrase": "look at the deck",
+      "key": "two_picks",
+      "phrase": "two picks",
       "section": "Section 2",
       "unitIndex": 1,
       "unitName": "Final CK"
     },
     {
-      "key": "little_pick",
-      "phrase": "little pick",
+      "key": "sock_sound",
+      "phrase": "sock sound",
       "section": "Section 2",
       "unitIndex": 1,
       "unitName": "Final CK"
     },
     {
-      "key": "a_sock_thing",
-      "phrase": "a sock thing",
+      "key": "luck_card",
+      "phrase": "luck card",
       "section": "Section 2",
       "unitIndex": 1,
       "unitName": "Final CK"
     },
     {
-      "key": "think_about_the_luck",
-      "phrase": "think about the luck",
+      "key": "say_clock",
+      "phrase": "say clock",
       "section": "Section 2",
       "unitIndex": 1,
       "unitName": "Final CK"
     },
     {
-      "key": "thank_you_for_the_puff",
-      "phrase": "thank you for the puff",
+      "key": "a_puff",
+      "phrase": "a puff",
       "section": "Section 2",
       "unitIndex": 2,
       "unitName": "Double Finals"
     },
     {
-      "key": "drink_after_the_bell",
-      "phrase": "drink after the bell",
+      "key": "the_bell",
+      "phrase": "the bell",
       "section": "Section 2",
       "unitIndex": 2,
       "unitName": "Double Finals"
     },
     {
-      "key": "with_the_hill",
-      "phrase": "with the hill",
+      "key": "my_hill",
+      "phrase": "my hill",
       "section": "Section 2",
       "unitIndex": 2,
       "unitName": "Double Finals"
     },
     {
-      "key": "this_dress",
-      "phrase": "this dress",
+      "key": "little_dress",
+      "phrase": "little dress",
       "section": "Section 2",
       "unitIndex": 2,
       "unitName": "Double Finals"
     },
     {
-      "key": "that_buzz",
-      "phrase": "that buzz",
+      "key": "big_buzz",
+      "phrase": "big buzz",
       "section": "Section 2",
       "unitIndex": 2,
       "unitName": "Double Finals"
     },
     {
-      "key": "then_the_fizz",
-      "phrase": "then the fizz",
+      "key": "two_fizzes",
+      "phrase": "two fizzes",
       "section": "Section 2",
       "unitIndex": 2,
       "unitName": "Double Finals"
     },
     {
-      "key": "show_them_the_staff",
-      "phrase": "show them the staff",
+      "key": "staff_sound",
+      "phrase": "staff sound",
       "section": "Section 2",
       "unitIndex": 2,
       "unitName": "Double Finals"
     },
     {
-      "key": "when_you_see_the_shell",
-      "phrase": "when you see the shell",
+      "key": "shell_card",
+      "phrase": "shell card",
       "section": "Section 2",
       "unitIndex": 2,
       "unitName": "Double Finals"
     },
     {
-      "key": "which_class",
-      "phrase": "which class",
+      "key": "say_class",
+      "phrase": "say class",
       "section": "Section 2",
       "unitIndex": 2,
       "unitName": "Double Finals"
     },
     {
-      "key": "much_a_bang",
-      "phrase": "much a bang",
+      "key": "a_bang",
+      "phrase": "a bang",
       "section": "Section 2",
       "unitIndex": 3,
       "unitName": "Final NG"
     },
     {
-      "key": "such_a_fang",
-      "phrase": "such a fang",
+      "key": "the_fang",
+      "phrase": "the fang",
       "section": "Section 2",
       "unitIndex": 3,
       "unitName": "Final NG"
     },
     {
-      "key": "went_to_the_ring",
-      "phrase": "went to the ring",
+      "key": "my_ring",
+      "phrase": "my ring",
       "section": "Section 2",
       "unitIndex": 3,
       "unitName": "Final NG"
     },
     {
-      "key": "want_the_king",
-      "phrase": "want the king",
+      "key": "little_king",
+      "phrase": "little king",
       "section": "Section 2",
       "unitIndex": 3,
       "unitName": "Final NG"
     },
     {
-      "key": "best_song",
-      "phrase": "best song",
+      "key": "big_song",
+      "phrase": "big song",
       "section": "Section 2",
       "unitIndex": 3,
       "unitName": "Final NG"
     },
     {
-      "key": "last_wing",
-      "phrase": "last wing",
+      "key": "two_wings",
+      "phrase": "two wings",
       "section": "Section 2",
       "unitIndex": 3,
       "unitName": "Final NG"
     },
     {
-      "key": "all_the_hangs",
-      "phrase": "all the hangs",
+      "key": "hang_sound",
+      "phrase": "hang sound",
       "section": "Section 2",
       "unitIndex": 3,
       "unitName": "Final NG"
     },
     {
-      "key": "will_see_the_lung",
-      "phrase": "will see the lung",
+      "key": "lung_card",
+      "phrase": "lung card",
       "section": "Section 2",
       "unitIndex": 3,
       "unitName": "Final NG"
     },
     {
-      "key": "tell_me_about_the_sung",
-      "phrase": "tell me about the sung",
+      "key": "say_sung",
+      "phrase": "say sung",
       "section": "Section 2",
       "unitIndex": 3,
       "unitName": "Final NG"
     },
     {
-      "key": "off_the_bank",
-      "phrase": "off the bank",
+      "key": "a_bank",
+      "phrase": "a bank",
       "section": "Section 2",
       "unitIndex": 4,
       "unitName": "Final NK"
     },
     {
-      "key": "back_to_the_tank",
-      "phrase": "back to the tank",
+      "key": "the_tank",
+      "phrase": "the tank",
       "section": "Section 2",
       "unitIndex": 4,
       "unitName": "Final NK"
     },
     {
-      "key": "look_at_the_sink",
-      "phrase": "look at the sink",
+      "key": "my_sink",
+      "phrase": "my sink",
       "section": "Section 2",
       "unitIndex": 4,
       "unitName": "Final NK"
@@ -599,1303 +592,1296 @@
       "unitName": "Final NK"
     },
     {
-      "key": "a_honk_thing",
-      "phrase": "a honk thing",
+      "key": "big_honk",
+      "phrase": "big honk",
       "section": "Section 2",
       "unitIndex": 4,
       "unitName": "Final NK"
     },
     {
-      "key": "think_about_the_junk",
-      "phrase": "think about the junk",
+      "key": "junk_box",
+      "phrase": "junk box",
       "section": "Section 2",
       "unitIndex": 4,
       "unitName": "Final NK"
     },
     {
-      "key": "thank_you_for_the_bunk",
-      "phrase": "thank you for the bunk",
+      "key": "bunk_sound",
+      "phrase": "bunk sound",
       "section": "Section 2",
       "unitIndex": 4,
       "unitName": "Final NK"
     },
     {
-      "key": "drink_after_the_blink",
-      "phrase": "drink after the blink",
+      "key": "blink_card",
+      "phrase": "blink card",
       "section": "Section 2",
       "unitIndex": 4,
       "unitName": "Final NK"
     },
     {
-      "key": "with_the_drink",
-      "phrase": "with the drink",
+      "key": "say_drink",
+      "phrase": "say drink",
       "section": "Section 2",
       "unitIndex": 4,
       "unitName": "Final NK"
     },
     {
-      "key": "this_hand",
-      "phrase": "this hand",
+      "key": "a_hand",
+      "phrase": "a hand",
       "section": "Section 2",
       "unitIndex": 5,
       "unitName": "Final Blends"
     },
     {
-      "key": "that_sand",
-      "phrase": "that sand",
+      "key": "the_sand",
+      "phrase": "the sand",
       "section": "Section 2",
       "unitIndex": 5,
       "unitName": "Final Blends"
     },
     {
-      "key": "then_the_tent",
-      "phrase": "then the tent",
+      "key": "my_tent",
+      "phrase": "my tent",
       "section": "Section 2",
       "unitIndex": 5,
       "unitName": "Final Blends"
     },
     {
-      "key": "show_them_the_mint",
-      "phrase": "show them the mint",
+      "key": "little_mint",
+      "phrase": "little mint",
       "section": "Section 2",
       "unitIndex": 5,
       "unitName": "Final Blends"
     },
     {
-      "key": "when_you_see_the_lamp",
-      "phrase": "when you see the lamp",
+      "key": "big_lamp",
+      "phrase": "big lamp",
       "section": "Section 2",
       "unitIndex": 5,
       "unitName": "Final Blends"
     },
     {
-      "key": "which_nest",
-      "phrase": "which nest",
+      "key": "two_nests",
+      "phrase": "two nests",
       "section": "Section 2",
       "unitIndex": 5,
       "unitName": "Final Blends"
     },
     {
-      "key": "much_a_bend",
-      "phrase": "much a bend",
+      "key": "bend_sound",
+      "phrase": "bend sound",
       "section": "Section 2",
       "unitIndex": 5,
       "unitName": "Final Blends"
     },
     {
-      "key": "such_a_hunt",
-      "phrase": "such a hunt",
+      "key": "hunt_card",
+      "phrase": "hunt card",
       "section": "Section 2",
       "unitIndex": 5,
       "unitName": "Final Blends"
     },
     {
-      "key": "went_to_the_camp",
-      "phrase": "went to the camp",
+      "key": "say_camp",
+      "phrase": "say camp",
       "section": "Section 2",
       "unitIndex": 5,
       "unitName": "Final Blends"
     },
     {
-      "key": "want_the_black",
-      "phrase": "want the black",
-      "section": "Section 2",
-      "unitIndex": 6,
-      "unitName": "CVC Endings Review"
-    },
-    {
-      "key": "best_spell",
-      "phrase": "best spell",
+      "key": "black_shell",
+      "phrase": "black shell",
       "section": "Section 2",
       "unitIndex": 6,
       "unitName": "CVC Endings Review"
     },
     {
-      "key": "last_grass",
-      "phrase": "last grass",
+      "key": "the_spell",
+      "phrase": "the spell",
       "section": "Section 2",
       "unitIndex": 6,
       "unitName": "CVC Endings Review"
     },
     {
-      "key": "all_the_buzzes",
-      "phrase": "all the buzzes",
+      "key": "my_grass",
+      "phrase": "my grass",
       "section": "Section 2",
       "unitIndex": 6,
       "unitName": "CVC Endings Review"
     },
     {
-      "key": "will_see_the_thing",
-      "phrase": "will see the thing",
+      "key": "little_buzz",
+      "phrase": "little buzz",
       "section": "Section 2",
       "unitIndex": 6,
       "unitName": "CVC Endings Review"
     },
     {
-      "key": "tell_me_about_the_think",
-      "phrase": "tell me about the think",
+      "key": "big_thing",
+      "phrase": "big thing",
       "section": "Section 2",
       "unitIndex": 6,
       "unitName": "CVC Endings Review"
     },
     {
-      "key": "off_the_clock",
-      "phrase": "off the clock",
+      "key": "think_fast",
+      "phrase": "think fast",
       "section": "Section 2",
       "unitIndex": 6,
       "unitName": "CVC Endings Review"
     },
     {
-      "key": "back_to_the_fluff",
-      "phrase": "back to the fluff",
+      "key": "clock_sound",
+      "phrase": "clock sound",
       "section": "Section 2",
       "unitIndex": 6,
       "unitName": "CVC Endings Review"
     },
     {
-      "key": "look_at_the_shell",
-      "phrase": "look at the shell",
+      "key": "fluff_card",
+      "phrase": "fluff card",
       "section": "Section 2",
       "unitIndex": 6,
       "unitName": "CVC Endings Review"
     },
     {
-      "key": "this_ship",
-      "phrase": "this ship",
+      "key": "say_swing",
+      "phrase": "say swing",
+      "section": "Section 2",
+      "unitIndex": 6,
+      "unitName": "CVC Endings Review"
+    },
+    {
+      "key": "a_ship",
+      "phrase": "a ship",
       "section": "Section 3",
       "unitIndex": 1,
       "unitName": "SH"
     },
     {
-      "key": "that_shop",
-      "phrase": "that shop",
+      "key": "the_shop",
+      "phrase": "the shop",
       "section": "Section 3",
       "unitIndex": 1,
       "unitName": "SH"
     },
     {
-      "key": "show_them_the_shed",
-      "phrase": "show them the shed",
+      "key": "my_shed",
+      "phrase": "my shed",
       "section": "Section 3",
       "unitIndex": 1,
       "unitName": "SH"
     },
     {
-      "key": "then_the_shin",
-      "phrase": "then the shin",
+      "key": "little_shin",
+      "phrase": "little shin",
       "section": "Section 3",
       "unitIndex": 1,
       "unitName": "SH"
     },
     {
-      "key": "with_the_shell",
-      "phrase": "with the shell",
+      "key": "big_shell",
+      "phrase": "big shell",
       "section": "Section 3",
       "unitIndex": 1,
       "unitName": "SH"
     },
     {
-      "key": "when_you_see_the_fish",
-      "phrase": "when you see the fish",
+      "key": "two_fishes",
+      "phrase": "two fishes",
       "section": "Section 3",
       "unitIndex": 1,
       "unitName": "SH"
     },
     {
-      "key": "where_is_the_dish",
-      "phrase": "where is the dish",
+      "key": "dish_sound",
+      "phrase": "dish sound",
       "section": "Section 3",
       "unitIndex": 1,
       "unitName": "SH"
     },
     {
-      "key": "which_cash",
-      "phrase": "which cash",
+      "key": "cash_card",
+      "phrase": "cash card",
       "section": "Section 3",
       "unitIndex": 1,
       "unitName": "SH"
     },
     {
-      "key": "while_you_see_the_brush",
-      "phrase": "while you see the brush",
+      "key": "say_brush",
+      "phrase": "say brush",
       "section": "Section 3",
       "unitIndex": 1,
       "unitName": "SH"
     },
     {
-      "key": "why_not_the_chat",
-      "phrase": "why not the chat",
+      "key": "a_chat",
+      "phrase": "a chat",
       "section": "Section 3",
       "unitIndex": 2,
       "unitName": "CH"
     },
     {
-      "key": "what_is_the_chin",
-      "phrase": "what is the chin",
+      "key": "the_chin",
+      "phrase": "the chin",
       "section": "Section 3",
       "unitIndex": 2,
       "unitName": "CH"
     },
     {
-      "key": "who_has_the_chop",
-      "phrase": "who has the chop",
+      "key": "my_chop",
+      "phrase": "my chop",
       "section": "Section 3",
       "unitIndex": 2,
       "unitName": "CH"
     },
     {
-      "key": "there_is_a_lunch",
-      "phrase": "there is a lunch",
+      "key": "little_lunch",
+      "phrase": "little lunch",
       "section": "Section 3",
       "unitIndex": 2,
       "unitName": "CH"
     },
     {
-      "key": "they_can_see_the_bench",
-      "phrase": "they can see the bench",
+      "key": "big_bench",
+      "phrase": "big bench",
       "section": "Section 3",
       "unitIndex": 2,
       "unitName": "CH"
     },
     {
-      "key": "three_chests",
-      "phrase": "three chests",
+      "key": "two_chests",
+      "phrase": "two chests",
       "section": "Section 3",
       "unitIndex": 2,
       "unitName": "CH"
     },
     {
-      "key": "phone_the_chick",
-      "phrase": "phone the chick",
+      "key": "chick_sound",
+      "phrase": "chick sound",
       "section": "Section 3",
       "unitIndex": 2,
       "unitName": "CH"
     },
     {
-      "key": "a_photo_of_the_match",
-      "phrase": "a photo of the match",
+      "key": "match_card",
+      "phrase": "match card",
       "section": "Section 3",
       "unitIndex": 2,
       "unitName": "CH"
     },
     {
-      "key": "school_with_the_patch",
-      "phrase": "school with the patch",
+      "key": "say_patch",
+      "phrase": "say patch",
       "section": "Section 3",
       "unitIndex": 2,
       "unitName": "CH"
     },
     {
-      "key": "a_chair_by_the_thumb",
-      "phrase": "a chair by the thumb",
+      "key": "a_thumb",
+      "phrase": "a thumb",
       "section": "Section 3",
       "unitIndex": 3,
       "unitName": "TH"
     },
     {
-      "key": "cheese_with_the_bath",
-      "phrase": "cheese with the bath",
+      "key": "the_bath",
+      "phrase": "the bath",
       "section": "Section 3",
       "unitIndex": 3,
       "unitName": "TH"
     },
     {
-      "key": "ship_moth",
-      "phrase": "ship moth",
+      "key": "my_moth",
+      "phrase": "my moth",
       "section": "Section 3",
       "unitIndex": 3,
       "unitName": "TH"
     },
     {
-      "key": "shop_with_the_father",
-      "phrase": "shop with the father",
+      "key": "little_father",
+      "phrase": "little father",
       "section": "Section 3",
       "unitIndex": 3,
       "unitName": "TH"
     },
     {
-      "key": "thank_you_for_the_bath",
-      "phrase": "thank you for the bath",
+      "key": "big_bath",
+      "phrase": "big bath",
       "section": "Section 3",
       "unitIndex": 3,
       "unitName": "TH"
     },
     {
-      "key": "think_about_the_moth",
-      "phrase": "think about the moth",
+      "key": "two_moths",
+      "phrase": "two moths",
       "section": "Section 3",
       "unitIndex": 3,
       "unitName": "TH"
     },
     {
-      "key": "this_father",
-      "phrase": "this father",
+      "key": "father_sound",
+      "phrase": "father sound",
       "section": "Section 3",
       "unitIndex": 3,
       "unitName": "TH"
     },
     {
-      "key": "that_father",
-      "phrase": "that father",
+      "key": "father_card",
+      "phrase": "father card",
       "section": "Section 3",
       "unitIndex": 3,
       "unitName": "TH"
     },
     {
-      "key": "show_them_the_father",
-      "phrase": "show them the father",
+      "key": "say_father",
+      "phrase": "say father",
       "section": "Section 3",
       "unitIndex": 3,
       "unitName": "TH"
     },
     {
-      "key": "then_the_when",
-      "phrase": "then the when",
+      "key": "when_and_where",
+      "phrase": "when and where",
       "section": "Section 3",
       "unitIndex": 4,
       "unitName": "WH"
     },
     {
-      "key": "with_the_whip",
-      "phrase": "with the whip",
+      "key": "the_whip",
+      "phrase": "the whip",
       "section": "Section 3",
       "unitIndex": 4,
       "unitName": "WH"
     },
     {
-      "key": "when_you_see_the_whale",
-      "phrase": "when you see the whale",
+      "key": "my_whale",
+      "phrase": "my whale",
       "section": "Section 3",
       "unitIndex": 4,
       "unitName": "WH"
     },
     {
-      "key": "where_is_the_wheel",
-      "phrase": "where is the wheel",
+      "key": "little_wheel",
+      "phrase": "little wheel",
       "section": "Section 3",
       "unitIndex": 4,
       "unitName": "WH"
     },
     {
-      "key": "which_wheat",
-      "phrase": "which wheat",
+      "key": "big_wheat",
+      "phrase": "big wheat",
       "section": "Section 3",
       "unitIndex": 4,
       "unitName": "WH"
     },
     {
-      "key": "while_you_see_the_whisk",
-      "phrase": "while you see the whisk",
+      "key": "two_whisks",
+      "phrase": "two whisks",
       "section": "Section 3",
       "unitIndex": 4,
       "unitName": "WH"
     },
     {
-      "key": "why_not_the_whisper",
-      "phrase": "why not the whisper",
+      "key": "whisper_sound",
+      "phrase": "whisper sound",
       "section": "Section 3",
       "unitIndex": 4,
       "unitName": "WH"
     },
     {
-      "key": "what_is_the_wheat",
-      "phrase": "what is the wheat",
+      "key": "wheat_card",
+      "phrase": "wheat card",
       "section": "Section 3",
       "unitIndex": 4,
       "unitName": "WH"
     },
     {
-      "key": "who_has_the_whisk",
-      "phrase": "who has the whisk",
+      "key": "say_whisk",
+      "phrase": "say whisk",
       "section": "Section 3",
       "unitIndex": 4,
       "unitName": "WH"
     },
     {
-      "key": "there_is_a_phone",
-      "phrase": "there is a phone",
+      "key": "a_phone",
+      "phrase": "a phone",
       "section": "Section 3",
       "unitIndex": 5,
       "unitName": "PH"
     },
     {
-      "key": "they_can_see_the_photo",
-      "phrase": "they can see the photo",
+      "key": "the_photo",
+      "phrase": "the photo",
       "section": "Section 3",
       "unitIndex": 5,
       "unitName": "PH"
     },
     {
-      "key": "three_graphs",
-      "phrase": "three graphs",
+      "key": "my_graph",
+      "phrase": "my graph",
       "section": "Section 3",
       "unitIndex": 5,
       "unitName": "PH"
     },
     {
-      "key": "phone_the_dolphin",
-      "phrase": "phone the dolphin",
+      "key": "little_dolphin",
+      "phrase": "little dolphin",
       "section": "Section 3",
       "unitIndex": 5,
       "unitName": "PH"
     },
     {
-      "key": "a_photo_of_the_elephant",
-      "phrase": "a photo of the elephant",
+      "key": "big_elephant",
+      "phrase": "big elephant",
       "section": "Section 3",
       "unitIndex": 5,
       "unitName": "PH"
     },
     {
-      "key": "school_with_the_alphabet",
-      "phrase": "school with the alphabet",
+      "key": "two_alphabets",
+      "phrase": "two alphabets",
       "section": "Section 3",
       "unitIndex": 5,
       "unitName": "PH"
     },
     {
-      "key": "a_chair_by_the_phrase",
-      "phrase": "a chair by the phrase",
+      "key": "phrase_sound",
+      "phrase": "phrase sound",
       "section": "Section 3",
       "unitIndex": 5,
       "unitName": "PH"
     },
     {
-      "key": "cheese_with_the_trophy",
-      "phrase": "cheese with the trophy",
+      "key": "trophy_card",
+      "phrase": "trophy card",
       "section": "Section 3",
       "unitIndex": 5,
       "unitName": "PH"
     },
     {
-      "key": "ship_phantom",
-      "phrase": "ship phantom",
+      "key": "say_phantom",
+      "phrase": "say phantom",
       "section": "Section 3",
       "unitIndex": 5,
       "unitName": "PH"
     },
     {
-      "key": "shop_with_the_quiz",
-      "phrase": "shop with the quiz",
+      "key": "a_quiz",
+      "phrase": "a quiz",
       "section": "Section 3",
       "unitIndex": 6,
       "unitName": "QU and Digraph Review"
     },
     {
-      "key": "thank_you_for_the_quack",
-      "phrase": "thank you for the quack",
+      "key": "the_quack",
+      "phrase": "the quack",
       "section": "Section 3",
       "unitIndex": 6,
       "unitName": "QU and Digraph Review"
     },
     {
-      "key": "think_about_the_queen",
-      "phrase": "think about the queen",
+      "key": "my_queen",
+      "phrase": "my queen",
       "section": "Section 3",
       "unitIndex": 6,
       "unitName": "QU and Digraph Review"
     },
     {
-      "key": "this_shell",
-      "phrase": "this shell",
+      "key": "little_shell",
+      "phrase": "little shell",
       "section": "Section 3",
       "unitIndex": 6,
       "unitName": "QU and Digraph Review"
     },
     {
-      "key": "that_chick",
-      "phrase": "that chick",
+      "key": "big_chick",
+      "phrase": "big chick",
       "section": "Section 3",
       "unitIndex": 6,
       "unitName": "QU and Digraph Review"
     },
     {
-      "key": "show_them_the_thumb",
-      "phrase": "show them the thumb",
+      "key": "two_thumbs",
+      "phrase": "two thumbs",
       "section": "Section 3",
       "unitIndex": 6,
       "unitName": "QU and Digraph Review"
     },
     {
-      "key": "then_the_whale",
-      "phrase": "then the whale",
+      "key": "whale_sound",
+      "phrase": "whale sound",
       "section": "Section 3",
       "unitIndex": 6,
       "unitName": "QU and Digraph Review"
     },
     {
-      "key": "with_the_squid",
-      "phrase": "with the squid",
+      "key": "squid_card",
+      "phrase": "squid card",
       "section": "Section 3",
       "unitIndex": 6,
       "unitName": "QU and Digraph Review"
     },
     {
-      "key": "when_you_see_the_brush",
-      "phrase": "when you see the brush",
-      "section": "Section 3",
-      "unitIndex": 6,
-      "unitName": "QU and Digraph Review"
-    },
-    {
-      "key": "blue_black",
-      "phrase": "blue black",
+      "key": "black_flag",
+      "phrase": "black flag",
       "section": "Section 4",
       "unitIndex": 1,
       "unitName": "L Blends"
     },
     {
-      "key": "black_clap",
-      "phrase": "black clap",
+      "key": "the_clap",
+      "phrase": "the clap",
       "section": "Section 4",
       "unitIndex": 1,
       "unitName": "L Blends"
     },
     {
-      "key": "play_with_the_flag",
-      "phrase": "play with the flag",
+      "key": "my_plan",
+      "phrase": "my plan",
       "section": "Section 4",
       "unitIndex": 1,
       "unitName": "L Blends"
     },
     {
-      "key": "please_see_the_plan",
-      "phrase": "please see the plan",
+      "key": "little_slip",
+      "phrase": "little slip",
       "section": "Section 4",
       "unitIndex": 1,
       "unitName": "L Blends"
     },
     {
-      "key": "sleep_by_the_slip",
-      "phrase": "sleep by the slip",
+      "key": "big_clock",
+      "phrase": "big clock",
       "section": "Section 4",
       "unitIndex": 1,
       "unitName": "L Blends"
     },
     {
-      "key": "small_clock",
-      "phrase": "small clock",
+      "key": "two_flats",
+      "phrase": "two flats",
       "section": "Section 4",
       "unitIndex": 1,
       "unitName": "L Blends"
     },
     {
-      "key": "stop_at_the_flat",
-      "phrase": "stop at the flat",
+      "key": "flat_tire",
+      "phrase": "flat tire",
       "section": "Section 4",
       "unitIndex": 1,
       "unitName": "L Blends"
     },
     {
-      "key": "step_on_the_glass",
-      "phrase": "step on the glass",
+      "key": "glass_card",
+      "phrase": "glass card",
       "section": "Section 4",
       "unitIndex": 1,
       "unitName": "L Blends"
     },
     {
-      "key": "still_by_the_plug",
-      "phrase": "still by the plug",
+      "key": "say_plug",
+      "phrase": "say plug",
       "section": "Section 4",
       "unitIndex": 1,
       "unitName": "L Blends"
     },
     {
-      "key": "strong_brag",
-      "phrase": "strong brag",
+      "key": "a_brag",
+      "phrase": "a brag",
       "section": "Section 4",
       "unitIndex": 2,
       "unitName": "R Blends"
     },
     {
-      "key": "street_crab",
-      "phrase": "street crab",
+      "key": "the_crab",
+      "phrase": "the crab",
       "section": "Section 4",
       "unitIndex": 2,
       "unitName": "R Blends"
     },
     {
-      "key": "friend_and_the_drum",
-      "phrase": "friend and the drum",
+      "key": "my_drum",
+      "phrase": "my drum",
       "section": "Section 4",
       "unitIndex": 2,
       "unitName": "R Blends"
     },
     {
-      "key": "from_the_frog",
-      "phrase": "from the frog",
+      "key": "little_frog",
+      "phrase": "little frog",
       "section": "Section 4",
       "unitIndex": 2,
       "unitName": "R Blends"
     },
     {
-      "key": "bring_the_grin",
-      "phrase": "bring the grin",
+      "key": "big_grin",
+      "phrase": "big grin",
       "section": "Section 4",
       "unitIndex": 2,
       "unitName": "R Blends"
     },
     {
-      "key": "drink_after_the_trip",
-      "phrase": "drink after the trip",
+      "key": "two_trips",
+      "phrase": "two trips",
       "section": "Section 4",
       "unitIndex": 2,
       "unitName": "R Blends"
     },
     {
-      "key": "green_brick",
-      "phrase": "green brick",
+      "key": "brick_sound",
+      "phrase": "brick sound",
       "section": "Section 4",
       "unitIndex": 2,
       "unitName": "R Blends"
     },
     {
-      "key": "brown_crop",
-      "phrase": "brown crop",
+      "key": "crop_card",
+      "phrase": "crop card",
       "section": "Section 4",
       "unitIndex": 2,
       "unitName": "R Blends"
     },
     {
-      "key": "every_track",
-      "phrase": "every track",
+      "key": "say_track",
+      "phrase": "say track",
       "section": "Section 4",
       "unitIndex": 2,
       "unitName": "R Blends"
     },
     {
-      "key": "after_the_scan",
-      "phrase": "after the scan",
+      "key": "a_scan",
+      "phrase": "a scan",
       "section": "Section 4",
       "unitIndex": 3,
       "unitName": "S Blends"
     },
     {
-      "key": "under_the_skip",
-      "phrase": "under the skip",
+      "key": "the_skip",
+      "phrase": "the skip",
       "section": "Section 4",
       "unitIndex": 3,
       "unitName": "S Blends"
     },
     {
-      "key": "just_smell",
-      "phrase": "just smell",
+      "key": "smell_a_snack",
+      "phrase": "smell a snack",
       "section": "Section 4",
       "unitIndex": 3,
       "unitName": "S Blends"
     },
     {
-      "key": "must_see_the_snack",
-      "phrase": "must see the snack",
+      "key": "little_spin",
+      "phrase": "little spin",
       "section": "Section 4",
       "unitIndex": 3,
       "unitName": "S Blends"
     },
     {
-      "key": "first_spin",
-      "phrase": "first spin",
+      "key": "big_skin",
+      "phrase": "big skin",
       "section": "Section 4",
       "unitIndex": 3,
       "unitName": "S Blends"
     },
     {
-      "key": "last_skin",
-      "phrase": "last skin",
+      "key": "two_spots",
+      "phrase": "two spots",
       "section": "Section 4",
       "unitIndex": 3,
       "unitName": "S Blends"
     },
     {
-      "key": "blue_spot",
-      "phrase": "blue spot",
+      "key": "step_sound",
+      "phrase": "step sound",
       "section": "Section 4",
       "unitIndex": 3,
       "unitName": "S Blends"
     },
     {
-      "key": "black_step",
-      "phrase": "black step",
+      "key": "skin_card",
+      "phrase": "skin card",
       "section": "Section 4",
       "unitIndex": 3,
       "unitName": "S Blends"
     },
     {
-      "key": "play_with_the_spot",
-      "phrase": "play with the spot",
+      "key": "say_spot",
+      "phrase": "say spot",
       "section": "Section 4",
       "unitIndex": 3,
       "unitName": "S Blends"
     },
     {
-      "key": "please_see_the_gift",
-      "phrase": "please see the gift",
+      "key": "a_gift",
+      "phrase": "a gift",
       "section": "Section 4",
       "unitIndex": 4,
       "unitName": "Final Blends"
     },
     {
-      "key": "sleep_by_the_gold",
-      "phrase": "sleep by the gold",
+      "key": "the_gold",
+      "phrase": "the gold",
       "section": "Section 4",
       "unitIndex": 4,
       "unitName": "Final Blends"
     },
     {
-      "key": "small_milk",
-      "phrase": "small milk",
+      "key": "my_milk",
+      "phrase": "my milk",
       "section": "Section 4",
       "unitIndex": 4,
       "unitName": "Final Blends"
     },
     {
-      "key": "stop_at_the_silk",
-      "phrase": "stop at the silk",
+      "key": "little_silk",
+      "phrase": "little silk",
       "section": "Section 4",
       "unitIndex": 4,
       "unitName": "Final Blends"
     },
     {
-      "key": "step_on_the_help",
-      "phrase": "step on the help",
+      "key": "big_help",
+      "phrase": "big help",
       "section": "Section 4",
       "unitIndex": 4,
       "unitName": "Final Blends"
     },
     {
-      "key": "still_by_the_yelp",
-      "phrase": "still by the yelp",
+      "key": "two_yelps",
+      "phrase": "two yelps",
       "section": "Section 4",
       "unitIndex": 4,
       "unitName": "Final Blends"
     },
     {
-      "key": "strong_belt",
-      "phrase": "strong belt",
+      "key": "belt_sound",
+      "phrase": "belt sound",
       "section": "Section 4",
       "unitIndex": 4,
       "unitName": "Final Blends"
     },
     {
-      "key": "street_melt",
-      "phrase": "street melt",
+      "key": "melt_card",
+      "phrase": "melt card",
       "section": "Section 4",
       "unitIndex": 4,
       "unitName": "Final Blends"
     },
     {
-      "key": "friend_and_the_child",
-      "phrase": "friend and the child",
+      "key": "say_child",
+      "phrase": "say child",
       "section": "Section 4",
       "unitIndex": 4,
       "unitName": "Final Blends"
     },
     {
-      "key": "from_the_scrap",
-      "phrase": "from the scrap",
+      "key": "a_scrap",
+      "phrase": "a scrap",
       "section": "Section 4",
       "unitIndex": 5,
       "unitName": "Three-Letter Blends"
     },
     {
-      "key": "bring_the_scrub",
-      "phrase": "bring the scrub",
+      "key": "the_scrub",
+      "phrase": "the scrub",
       "section": "Section 4",
       "unitIndex": 5,
       "unitName": "Three-Letter Blends"
     },
     {
-      "key": "drink_after_the_splash",
-      "phrase": "drink after the splash",
+      "key": "my_splash",
+      "phrase": "my splash",
       "section": "Section 4",
       "unitIndex": 5,
       "unitName": "Three-Letter Blends"
     },
     {
-      "key": "green_split",
-      "phrase": "green split",
+      "key": "little_split",
+      "phrase": "little split",
       "section": "Section 4",
       "unitIndex": 5,
       "unitName": "Three-Letter Blends"
     },
     {
-      "key": "brown_spring",
-      "phrase": "brown spring",
+      "key": "big_spring",
+      "phrase": "big spring",
       "section": "Section 4",
       "unitIndex": 5,
       "unitName": "Three-Letter Blends"
     },
     {
-      "key": "every_strap",
-      "phrase": "every strap",
+      "key": "two_straps",
+      "phrase": "two straps",
       "section": "Section 4",
       "unitIndex": 5,
       "unitName": "Three-Letter Blends"
     },
     {
-      "key": "after_the_string",
-      "phrase": "after the string",
+      "key": "string_sound",
+      "phrase": "string sound",
       "section": "Section 4",
       "unitIndex": 5,
       "unitName": "Three-Letter Blends"
     },
     {
-      "key": "under_the_scratch",
-      "phrase": "under the scratch",
+      "key": "scratch_card",
+      "phrase": "scratch card",
       "section": "Section 4",
       "unitIndex": 5,
       "unitName": "Three-Letter Blends"
     },
     {
-      "key": "just_sprint",
-      "phrase": "just sprint",
+      "key": "say_sprint",
+      "phrase": "say sprint",
       "section": "Section 4",
       "unitIndex": 5,
       "unitName": "Three-Letter Blends"
     },
     {
-      "key": "must_see_the_plant",
-      "phrase": "must see the plant",
+      "key": "a_plant",
+      "phrase": "a plant",
       "section": "Section 4",
       "unitIndex": 6,
       "unitName": "Blend Review"
     },
     {
-      "key": "first_brush",
-      "phrase": "first brush",
+      "key": "the_brush",
+      "phrase": "the brush",
       "section": "Section 4",
       "unitIndex": 6,
       "unitName": "Blend Review"
     },
     {
-      "key": "last_stamp",
-      "phrase": "last stamp",
+      "key": "my_stamp",
+      "phrase": "my stamp",
       "section": "Section 4",
       "unitIndex": 6,
       "unitName": "Blend Review"
     },
     {
-      "key": "blue_crust",
-      "phrase": "blue crust",
+      "key": "little_crust",
+      "phrase": "little crust",
       "section": "Section 4",
       "unitIndex": 6,
       "unitName": "Blend Review"
     },
     {
-      "key": "black_grand",
-      "phrase": "black grand",
+      "key": "big_grand",
+      "phrase": "big grand",
       "section": "Section 4",
       "unitIndex": 6,
       "unitName": "Blend Review"
     },
     {
-      "key": "play_with_the_flint",
-      "phrase": "play with the flint",
+      "key": "two_flints",
+      "phrase": "two flints",
       "section": "Section 4",
       "unitIndex": 6,
       "unitName": "Blend Review"
     },
     {
-      "key": "please_see_the_blend",
-      "phrase": "please see the blend",
+      "key": "blend_sound",
+      "phrase": "blend sound",
       "section": "Section 4",
       "unitIndex": 6,
       "unitName": "Blend Review"
     },
     {
-      "key": "sleep_by_the_stand",
-      "phrase": "sleep by the stand",
+      "key": "stand_card",
+      "phrase": "stand card",
       "section": "Section 4",
       "unitIndex": 6,
       "unitName": "Blend Review"
     },
     {
-      "key": "small_print",
-      "phrase": "small print",
+      "key": "say_print",
+      "phrase": "say print",
       "section": "Section 4",
       "unitIndex": 6,
       "unitName": "Blend Review"
     },
     {
-      "key": "make_a_cake",
-      "phrase": "make a cake",
+      "key": "a_cake",
+      "phrase": "a cake",
       "section": "Section 5",
       "unitIndex": 1,
       "unitName": "Long A: a_e"
     },
     {
-      "key": "made_a_lake",
-      "phrase": "made a lake",
+      "key": "the_lake",
+      "phrase": "the lake",
       "section": "Section 5",
       "unitIndex": 1,
       "unitName": "Long A: a_e"
     },
     {
-      "key": "came_name",
-      "phrase": "came name",
+      "key": "my_name",
+      "phrase": "my name",
       "section": "Section 5",
       "unitIndex": 1,
       "unitName": "Long A: a_e"
     },
     {
-      "key": "the_same_game",
-      "phrase": "the same game",
+      "key": "little_game",
+      "phrase": "little game",
       "section": "Section 5",
       "unitIndex": 1,
       "unitName": "Long A: a_e"
     },
     {
-      "key": "take_the_date",
-      "phrase": "take the date",
+      "key": "big_date",
+      "phrase": "big date",
       "section": "Section 5",
       "unitIndex": 1,
       "unitName": "Long A: a_e"
     },
     {
-      "key": "name_gate",
-      "phrase": "name gate",
+      "key": "two_gates",
+      "phrase": "two gates",
       "section": "Section 5",
       "unitIndex": 1,
       "unitName": "Long A: a_e"
     },
     {
-      "key": "like_the_cave",
-      "phrase": "like the cave",
+      "key": "cave_sound",
+      "phrase": "cave sound",
       "section": "Section 5",
       "unitIndex": 1,
       "unitName": "Long A: a_e"
     },
     {
-      "key": "time_wave",
-      "phrase": "time wave",
+      "key": "wave_card",
+      "phrase": "wave card",
       "section": "Section 5",
       "unitIndex": 1,
       "unitName": "Long A: a_e"
     },
     {
-      "key": "home_with_the_brave",
-      "phrase": "home with the brave",
+      "key": "say_brave",
+      "phrase": "say brave",
       "section": "Section 5",
       "unitIndex": 1,
       "unitName": "Long A: a_e"
     },
     {
-      "key": "those_bike",
-      "phrase": "those bike",
+      "key": "a_bike",
+      "phrase": "a bike",
       "section": "Section 5",
       "unitIndex": 2,
       "unitName": "Long I: i_e"
     },
     {
-      "key": "use_the_time",
-      "phrase": "use the time",
+      "key": "the_time",
+      "phrase": "the time",
       "section": "Section 5",
       "unitIndex": 2,
       "unitName": "Long I: i_e"
     },
     {
-      "key": "these_lime",
-      "phrase": "these lime",
+      "key": "my_lime",
+      "phrase": "my lime",
       "section": "Section 5",
       "unitIndex": 2,
       "unitName": "Long I: i_e"
     },
     {
-      "key": "have_a_fine",
-      "phrase": "have a fine",
+      "key": "little_fine",
+      "phrase": "little fine",
       "section": "Section 5",
       "unitIndex": 2,
       "unitName": "Long I: i_e"
     },
     {
-      "key": "give_me_the_line",
-      "phrase": "give me the line",
+      "key": "big_line",
+      "phrase": "big line",
       "section": "Section 5",
       "unitIndex": 2,
       "unitName": "Long I: i_e"
     },
     {
-      "key": "live_slide",
-      "phrase": "live slide",
+      "key": "two_slides",
+      "phrase": "two slides",
       "section": "Section 5",
       "unitIndex": 2,
       "unitName": "Long I: i_e"
     },
     {
-      "key": "come_to_the_slide",
-      "phrase": "come to the slide",
+      "key": "slide_sound",
+      "phrase": "slide sound",
       "section": "Section 5",
       "unitIndex": 2,
       "unitName": "Long I: i_e"
     },
     {
-      "key": "some_slide",
-      "phrase": "some slide",
+      "key": "slide_card",
+      "phrase": "slide card",
       "section": "Section 5",
       "unitIndex": 2,
       "unitName": "Long I: i_e"
     },
     {
-      "key": "one_slide",
-      "phrase": "one slide",
+      "key": "say_slide",
+      "phrase": "say slide",
       "section": "Section 5",
       "unitIndex": 2,
       "unitName": "Long I: i_e"
     },
     {
-      "key": "done_with_the_home",
-      "phrase": "done with the home",
+      "key": "a_home",
+      "phrase": "a home",
       "section": "Section 5",
       "unitIndex": 3,
       "unitName": "Long O: o_e"
     },
     {
-      "key": "love_the_hope",
-      "phrase": "love the hope",
+      "key": "the_hope",
+      "phrase": "the hope",
       "section": "Section 5",
       "unitIndex": 3,
       "unitName": "Long O: o_e"
     },
     {
-      "key": "move_the_rope",
-      "phrase": "move the rope",
+      "key": "my_rope",
+      "phrase": "my rope",
       "section": "Section 5",
       "unitIndex": 3,
       "unitName": "Long O: o_e"
     },
     {
-      "key": "every_nose",
-      "phrase": "every nose",
+      "key": "little_nose",
+      "phrase": "little nose",
       "section": "Section 5",
       "unitIndex": 3,
       "unitName": "Long O: o_e"
     },
     {
-      "key": "there_is_a_rose",
-      "phrase": "there is a rose",
+      "key": "big_rose",
+      "phrase": "big rose",
       "section": "Section 5",
       "unitIndex": 3,
       "unitName": "Long O: o_e"
     },
     {
-      "key": "where_is_the_stone",
-      "phrase": "where is the stone",
+      "key": "two_stones",
+      "phrase": "two stones",
       "section": "Section 5",
       "unitIndex": 3,
       "unitName": "Long O: o_e"
     },
     {
-      "key": "make_a_phone",
-      "phrase": "make a phone",
+      "key": "phone_sound",
+      "phrase": "phone sound",
       "section": "Section 5",
       "unitIndex": 3,
       "unitName": "Long O: o_e"
     },
     {
-      "key": "made_a_joke",
-      "phrase": "made a joke",
+      "key": "joke_card",
+      "phrase": "joke card",
       "section": "Section 5",
       "unitIndex": 3,
       "unitName": "Long O: o_e"
     },
     {
-      "key": "came_smoke",
-      "phrase": "came smoke",
+      "key": "say_smoke",
+      "phrase": "say smoke",
       "section": "Section 5",
       "unitIndex": 3,
       "unitName": "Long O: o_e"
     },
     {
-      "key": "the_same_cube",
-      "phrase": "the same cube",
+      "key": "a_cube",
+      "phrase": "a cube",
       "section": "Section 5",
       "unitIndex": 4,
       "unitName": "Long U: u_e"
     },
     {
-      "key": "take_the_tube",
-      "phrase": "take the tube",
+      "key": "the_tube",
+      "phrase": "the tube",
       "section": "Section 5",
       "unitIndex": 4,
       "unitName": "Long U: u_e"
     },
     {
-      "key": "name_cute",
-      "phrase": "name cute",
+      "key": "cute_mule",
+      "phrase": "cute mule",
       "section": "Section 5",
       "unitIndex": 4,
       "unitName": "Long U: u_e"
     },
     {
-      "key": "like_the_mule",
-      "phrase": "like the mule",
+      "key": "little_rule",
+      "phrase": "little rule",
       "section": "Section 5",
       "unitIndex": 4,
       "unitName": "Long U: u_e"
     },
     {
-      "key": "time_rule",
-      "phrase": "time rule",
+      "key": "big_june",
+      "phrase": "big June",
       "section": "Section 5",
       "unitIndex": 4,
       "unitName": "Long U: u_e"
     },
     {
-      "key": "home_with_the_june",
-      "phrase": "home with the June",
+      "key": "two_tunes",
+      "phrase": "two tunes",
       "section": "Section 5",
       "unitIndex": 4,
       "unitName": "Long U: u_e"
     },
     {
-      "key": "those_tune",
-      "phrase": "those tune",
+      "key": "flute_sound",
+      "phrase": "flute sound",
       "section": "Section 5",
       "unitIndex": 4,
       "unitName": "Long U: u_e"
     },
     {
-      "key": "use_the_flute",
-      "phrase": "use the flute",
+      "key": "dune_card",
+      "phrase": "dune card",
       "section": "Section 5",
       "unitIndex": 4,
       "unitName": "Long U: u_e"
     },
     {
-      "key": "these_dune",
-      "phrase": "these dune",
+      "key": "say_dune",
+      "phrase": "say dune",
       "section": "Section 5",
       "unitIndex": 4,
       "unitName": "Long U: u_e"
     },
     {
-      "key": "have_a_cap",
-      "phrase": "have a cap",
+      "key": "a_cap",
+      "phrase": "a cap",
       "section": "Section 5",
       "unitIndex": 5,
       "unitName": "Silent E Contrast"
     },
     {
-      "key": "give_me_the_cape",
-      "phrase": "give me the cape",
+      "key": "the_cape",
+      "phrase": "the cape",
       "section": "Section 5",
       "unitIndex": 5,
       "unitName": "Silent E Contrast"
     },
     {
-      "key": "live_kit",
-      "phrase": "live kit",
+      "key": "my_kit",
+      "phrase": "my kit",
       "section": "Section 5",
       "unitIndex": 5,
       "unitName": "Silent E Contrast"
     },
     {
-      "key": "come_to_the_kite",
-      "phrase": "come to the kite",
+      "key": "little_kite",
+      "phrase": "little kite",
       "section": "Section 5",
       "unitIndex": 5,
       "unitName": "Silent E Contrast"
     },
     {
-      "key": "some_hop",
-      "phrase": "some hop",
+      "key": "big_hop",
+      "phrase": "big hop",
       "section": "Section 5",
       "unitIndex": 5,
       "unitName": "Silent E Contrast"
     },
     {
-      "key": "one_hope",
-      "phrase": "one hope",
+      "key": "two_hopes",
+      "phrase": "two hopes",
       "section": "Section 5",
       "unitIndex": 5,
       "unitName": "Silent E Contrast"
     },
     {
-      "key": "done_with_the_cub",
-      "phrase": "done with the cub",
+      "key": "cub_sound",
+      "phrase": "cub sound",
       "section": "Section 5",
       "unitIndex": 5,
       "unitName": "Silent E Contrast"
     },
     {
-      "key": "love_the_cube",
-      "phrase": "love the cube",
+      "key": "cube_card",
+      "phrase": "cube card",
       "section": "Section 5",
       "unitIndex": 5,
       "unitName": "Silent E Contrast"
     },
     {
-      "key": "move_the_mad",
-      "phrase": "move the mad",
+      "key": "say_mad",
+      "phrase": "say mad",
       "section": "Section 5",
       "unitIndex": 5,
       "unitName": "Silent E Contrast"
     },
     {
-      "key": "every_snake",
-      "phrase": "every snake",
+      "key": "a_snake",
+      "phrase": "a snake",
       "section": "Section 5",
       "unitIndex": 6,
       "unitName": "Silent E Review"
     },
     {
-      "key": "there_is_a_grape",
-      "phrase": "there is a grape",
+      "key": "the_grape",
+      "phrase": "the grape",
       "section": "Section 5",
       "unitIndex": 6,
       "unitName": "Silent E Review"
     },
     {
-      "key": "where_is_the_prize",
-      "phrase": "where is the prize",
+      "key": "my_prize",
+      "phrase": "my prize",
       "section": "Section 5",
       "unitIndex": 6,
       "unitName": "Silent E Review"
     },
     {
-      "key": "make_a_stone",
-      "phrase": "make a stone",
+      "key": "little_stone",
+      "phrase": "little stone",
       "section": "Section 5",
       "unitIndex": 6,
       "unitName": "Silent E Review"
     },
     {
-      "key": "made_a_spoke",
-      "phrase": "made a spoke",
+      "key": "big_spoke",
+      "phrase": "big spoke",
       "section": "Section 5",
       "unitIndex": 6,
       "unitName": "Silent E Review"
     },
     {
-      "key": "came_flute",
-      "phrase": "came flute",
+      "key": "two_flutes",
+      "phrase": "two flutes",
       "section": "Section 5",
       "unitIndex": 6,
       "unitName": "Silent E Review"
     },
     {
-      "key": "the_same_bride",
-      "phrase": "the same bride",
+      "key": "bride_sound",
+      "phrase": "bride sound",
       "section": "Section 5",
       "unitIndex": 6,
       "unitName": "Silent E Review"
     },
     {
-      "key": "take_the_plane",
-      "phrase": "take the plane",
+      "key": "plane_card",
+      "phrase": "plane card",
       "section": "Section 5",
       "unitIndex": 6,
       "unitName": "Silent E Review"
     },
     {
-      "key": "name_tune",
-      "phrase": "name tune",
+      "key": "say_tune",
+      "phrase": "say tune",
       "section": "Section 5",
       "unitIndex": 6,
       "unitName": "Silent E Review"
     },
     {
-      "key": "day_by_the_rain",
-      "phrase": "day by the rain",
+      "key": "a_rain",
+      "phrase": "a rain",
       "section": "Section 6",
       "unitIndex": 1,
       "unitName": "AI / AY"
@@ -1908,162 +1894,162 @@
       "unitName": "AI / AY"
     },
     {
-      "key": "may_see_the_mail",
-      "phrase": "may see the mail",
+      "key": "my_mail",
+      "phrase": "my mail",
       "section": "Section 6",
       "unitIndex": 1,
       "unitName": "AI / AY"
     },
     {
-      "key": "the_way_to_the_paint",
-      "phrase": "the way to the paint",
+      "key": "little_paint",
+      "phrase": "little paint",
       "section": "Section 6",
       "unitIndex": 1,
       "unitName": "AI / AY"
     },
     {
-      "key": "play_with_the_chain",
-      "phrase": "play with the chain",
+      "key": "big_chain",
+      "phrase": "big chain",
       "section": "Section 6",
       "unitIndex": 1,
       "unitName": "AI / AY"
     },
     {
-      "key": "they_can_see_the_brain",
-      "phrase": "they can see the brain",
+      "key": "two_brains",
+      "phrase": "two brains",
       "section": "Section 6",
       "unitIndex": 1,
       "unitName": "AI / AY"
     },
     {
-      "key": "see_the_day",
-      "phrase": "see the day",
+      "key": "day_sound",
+      "phrase": "day sound",
       "section": "Section 6",
       "unitIndex": 1,
       "unitName": "AI / AY"
     },
     {
-      "key": "green_tray",
-      "phrase": "green tray",
+      "key": "tray_card",
+      "phrase": "tray card",
       "section": "Section 6",
       "unitIndex": 1,
       "unitName": "AI / AY"
     },
     {
-      "key": "three_trays",
-      "phrase": "three trays",
+      "key": "say_tray",
+      "phrase": "say tray",
       "section": "Section 6",
       "unitIndex": 1,
       "unitName": "AI / AY"
     },
     {
-      "key": "read_about_the_bee",
-      "phrase": "read about the bee",
+      "key": "a_bee",
+      "phrase": "a bee",
       "section": "Section 6",
       "unitIndex": 2,
       "unitName": "EE / EA"
     },
     {
-      "key": "eat_the_tree",
-      "phrase": "eat the tree",
+      "key": "the_tree",
+      "phrase": "the tree",
       "section": "Section 6",
       "unitIndex": 2,
       "unitName": "EE / EA"
     },
     {
-      "key": "please_see_the_feet",
-      "phrase": "please see the feet",
+      "key": "my_feet",
+      "phrase": "my feet",
       "section": "Section 6",
       "unitIndex": 2,
       "unitName": "EE / EA"
     },
     {
-      "key": "green_boat",
-      "phrase": "green boat",
+      "key": "green_tree",
+      "phrase": "green tree",
       "section": "Section 6",
       "unitIndex": 2,
       "unitName": "EE / EA"
     },
     {
-      "key": "show_the_sheep",
-      "phrase": "show the sheep",
+      "key": "big_sheep",
+      "phrase": "big sheep",
       "section": "Section 6",
       "unitIndex": 2,
       "unitName": "EE / EA"
     },
     {
-      "key": "yellow_sea",
-      "phrase": "yellow sea",
+      "key": "two_seas",
+      "phrase": "two seas",
       "section": "Section 6",
       "unitIndex": 2,
       "unitName": "EE / EA"
     },
     {
-      "key": "new_beach",
-      "phrase": "new beach",
+      "key": "beach_sound",
+      "phrase": "beach sound",
       "section": "Section 6",
       "unitIndex": 2,
       "unitName": "EE / EA"
     },
     {
-      "key": "few_leaf",
-      "phrase": "few leaf",
+      "key": "leaf_card",
+      "phrase": "leaf card",
       "section": "Section 6",
       "unitIndex": 2,
       "unitName": "EE / EA"
     },
     {
-      "key": "blue_dream",
-      "phrase": "blue dream",
+      "key": "say_dream",
+      "phrase": "say dream",
       "section": "Section 6",
       "unitIndex": 2,
       "unitName": "EE / EA"
     },
     {
-      "key": "right_by_the_boat",
-      "phrase": "right by the boat",
+      "key": "a_boat",
+      "phrase": "a boat",
       "section": "Section 6",
       "unitIndex": 3,
       "unitName": "OA / OW"
     },
     {
-      "key": "light_coat",
-      "phrase": "light coat",
+      "key": "the_coat",
+      "phrase": "the coat",
       "section": "Section 6",
       "unitIndex": 3,
       "unitName": "OA / OW"
     },
     {
-      "key": "night_by_the_road",
-      "phrase": "night by the road",
+      "key": "my_road",
+      "phrase": "my road",
       "section": "Section 6",
       "unitIndex": 3,
       "unitName": "OA / OW"
     },
     {
-      "key": "my_goat",
-      "phrase": "my goat",
+      "key": "little_goat",
+      "phrase": "little goat",
       "section": "Section 6",
       "unitIndex": 3,
       "unitName": "OA / OW"
     },
     {
-      "key": "by_the_soap",
-      "phrase": "by the soap",
+      "key": "big_soap",
+      "phrase": "big soap",
       "section": "Section 6",
       "unitIndex": 3,
       "unitName": "OA / OW"
     },
     {
-      "key": "why_not_the_float",
-      "phrase": "why not the float",
+      "key": "two_floats",
+      "phrase": "two floats",
       "section": "Section 6",
       "unitIndex": 3,
       "unitName": "OA / OW"
     },
     {
-      "key": "day_by_the_snow",
-      "phrase": "day by the snow",
+      "key": "snow_sound",
+      "phrase": "snow sound",
       "section": "Section 6",
       "unitIndex": 3,
       "unitName": "OA / OW"
@@ -2076,162 +2062,162 @@
       "unitName": "OA / OW"
     },
     {
-      "key": "may_see_the_window",
-      "phrase": "may see the window",
+      "key": "say_window",
+      "phrase": "say window",
       "section": "Section 6",
       "unitIndex": 3,
       "unitName": "OA / OW"
     },
     {
-      "key": "the_way_to_the_clue",
-      "phrase": "the way to the clue",
+      "key": "a_clue",
+      "phrase": "a clue",
       "section": "Section 6",
       "unitIndex": 4,
       "unitName": "UE / EW"
     },
     {
-      "key": "play_with_the_glue",
-      "phrase": "play with the glue",
+      "key": "the_glue",
+      "phrase": "the glue",
       "section": "Section 6",
       "unitIndex": 4,
       "unitName": "UE / EW"
     },
     {
-      "key": "they_can_see_the_true",
-      "phrase": "they can see the true",
+      "key": "true_blue",
+      "phrase": "true blue",
       "section": "Section 6",
       "unitIndex": 4,
       "unitName": "UE / EW"
     },
     {
-      "key": "see_the_due",
-      "phrase": "see the due",
+      "key": "due_date",
+      "phrase": "due date",
       "section": "Section 6",
       "unitIndex": 4,
       "unitName": "UE / EW"
     },
     {
-      "key": "green_rescue",
-      "phrase": "green rescue",
+      "key": "big_rescue",
+      "phrase": "big rescue",
       "section": "Section 6",
       "unitIndex": 4,
       "unitName": "UE / EW"
     },
     {
-      "key": "three_stews",
-      "phrase": "three stews",
+      "key": "two_stews",
+      "phrase": "two stews",
       "section": "Section 6",
       "unitIndex": 4,
       "unitName": "UE / EW"
     },
     {
-      "key": "read_about_the_stew",
-      "phrase": "read about the stew",
+      "key": "stew_sound",
+      "phrase": "stew sound",
       "section": "Section 6",
       "unitIndex": 4,
       "unitName": "UE / EW"
     },
     {
-      "key": "eat_the_stew",
-      "phrase": "eat the stew",
+      "key": "stew_card",
+      "phrase": "stew card",
       "section": "Section 6",
       "unitIndex": 4,
       "unitName": "UE / EW"
     },
     {
-      "key": "please_see_the_stew",
-      "phrase": "please see the stew",
+      "key": "say_stew",
+      "phrase": "say stew",
       "section": "Section 6",
       "unitIndex": 4,
       "unitName": "UE / EW"
     },
     {
-      "key": "light_boat",
-      "phrase": "light boat",
+      "key": "a_light",
+      "phrase": "a light",
       "section": "Section 6",
       "unitIndex": 5,
       "unitName": "IGH / IE / Y"
     },
     {
-      "key": "show_the_night",
-      "phrase": "show the night",
+      "key": "the_night",
+      "phrase": "the night",
       "section": "Section 6",
       "unitIndex": 5,
       "unitName": "IGH / IE / Y"
     },
     {
-      "key": "yellow_pie",
-      "phrase": "yellow pie",
+      "key": "my_pie",
+      "phrase": "my pie",
       "section": "Section 6",
       "unitIndex": 5,
       "unitName": "IGH / IE / Y"
     },
     {
-      "key": "new_tie",
-      "phrase": "new tie",
+      "key": "little_tie",
+      "phrase": "little tie",
       "section": "Section 6",
       "unitIndex": 5,
       "unitName": "IGH / IE / Y"
     },
     {
-      "key": "few_sky",
-      "phrase": "few sky",
+      "key": "big_sky",
+      "phrase": "big sky",
       "section": "Section 6",
       "unitIndex": 5,
       "unitName": "IGH / IE / Y"
     },
     {
-      "key": "blue_cry",
-      "phrase": "blue cry",
+      "key": "two_cries",
+      "phrase": "two cries",
       "section": "Section 6",
       "unitIndex": 5,
       "unitName": "IGH / IE / Y"
     },
     {
-      "key": "right_by_the_sky",
-      "phrase": "right by the sky",
+      "key": "sky_sound",
+      "phrase": "sky sound",
       "section": "Section 6",
       "unitIndex": 5,
       "unitName": "IGH / IE / Y"
     },
     {
-      "key": "light_sky",
-      "phrase": "light sky",
+      "key": "sky_card",
+      "phrase": "sky card",
       "section": "Section 6",
       "unitIndex": 5,
       "unitName": "IGH / IE / Y"
     },
     {
-      "key": "night_by_the_sky",
-      "phrase": "night by the sky",
+      "key": "say_sky",
+      "phrase": "say sky",
       "section": "Section 6",
       "unitIndex": 5,
       "unitName": "IGH / IE / Y"
     },
     {
-      "key": "my_paint",
-      "phrase": "my paint",
+      "key": "a_paint",
+      "phrase": "a paint",
       "section": "Section 6",
       "unitIndex": 6,
       "unitName": "Long Vowel Review"
     },
     {
-      "key": "by_the_sheep",
-      "phrase": "by the sheep",
+      "key": "the_sheep",
+      "phrase": "the sheep",
       "section": "Section 6",
       "unitIndex": 6,
       "unitName": "Long Vowel Review"
     },
     {
-      "key": "why_not_the_dream",
-      "phrase": "why not the dream",
+      "key": "my_dream",
+      "phrase": "my dream",
       "section": "Section 6",
       "unitIndex": 6,
       "unitName": "Long Vowel Review"
     },
     {
-      "key": "day_by_the_float",
-      "phrase": "day by the float",
+      "key": "little_float",
+      "phrase": "little float",
       "section": "Section 6",
       "unitIndex": 6,
       "unitName": "Long Vowel Review"
@@ -2244,813 +2230,820 @@
       "unitName": "Long Vowel Review"
     },
     {
-      "key": "may_see_the_snow",
-      "phrase": "may see the snow",
+      "key": "two_snows",
+      "phrase": "two snows",
       "section": "Section 6",
       "unitIndex": 6,
       "unitName": "Long Vowel Review"
     },
     {
-      "key": "play_with_the_train",
-      "phrase": "play with the train",
+      "key": "clue_sound",
+      "phrase": "clue sound",
       "section": "Section 6",
       "unitIndex": 6,
       "unitName": "Long Vowel Review"
     },
     {
-      "key": "they_can_see_the_train",
-      "phrase": "they can see the train",
+      "key": "train_card",
+      "phrase": "train card",
       "section": "Section 6",
       "unitIndex": 6,
       "unitName": "Long Vowel Review"
     },
     {
-      "key": "for_the_car",
-      "phrase": "for the car",
+      "key": "say_train",
+      "phrase": "say train",
+      "section": "Section 6",
+      "unitIndex": 6,
+      "unitName": "Long Vowel Review"
+    },
+    {
+      "key": "a_car",
+      "phrase": "a car",
       "section": "Section 7",
       "unitIndex": 1,
       "unitName": "AR"
     },
     {
-      "key": "far_or_jar",
-      "phrase": "far or jar",
+      "key": "far_away",
+      "phrase": "far away",
       "section": "Section 7",
       "unitIndex": 1,
       "unitName": "AR"
     },
     {
-      "key": "more_of_the_star",
-      "phrase": "more of the star",
+      "key": "my_jar",
+      "phrase": "my jar",
       "section": "Section 7",
       "unitIndex": 1,
       "unitName": "AR"
     },
     {
-      "key": "before_the_park",
-      "phrase": "before the park",
+      "key": "little_star",
+      "phrase": "little star",
       "section": "Section 7",
       "unitIndex": 1,
       "unitName": "AR"
     },
     {
-      "key": "her_dark",
-      "phrase": "her dark",
+      "key": "big_park",
+      "phrase": "big park",
       "section": "Section 7",
       "unitIndex": 1,
       "unitName": "AR"
     },
     {
-      "key": "first_shark",
-      "phrase": "first shark",
+      "key": "dark_park",
+      "phrase": "dark park",
       "section": "Section 7",
       "unitIndex": 1,
       "unitName": "AR"
     },
     {
-      "key": "third_farm",
-      "phrase": "third farm",
+      "key": "shark_sound",
+      "phrase": "shark sound",
       "section": "Section 7",
       "unitIndex": 1,
       "unitName": "AR"
     },
     {
-      "key": "turn_cart",
-      "phrase": "turn cart",
+      "key": "farm_card",
+      "phrase": "farm card",
       "section": "Section 7",
       "unitIndex": 1,
       "unitName": "AR"
     },
     {
-      "key": "our_start",
-      "phrase": "our start",
+      "key": "say_cart",
+      "phrase": "say cart",
       "section": "Section 7",
       "unitIndex": 1,
       "unitName": "AR"
     },
     {
-      "key": "your_corn",
-      "phrase": "your corn",
+      "key": "a_corn",
+      "phrase": "a corn",
       "section": "Section 7",
       "unitIndex": 2,
       "unitName": "OR"
     },
     {
-      "key": "their_horn",
-      "phrase": "their horn",
+      "key": "the_horn",
+      "phrase": "the horn",
       "section": "Section 7",
       "unitIndex": 2,
       "unitName": "OR"
     },
     {
-      "key": "there_is_a_storm",
-      "phrase": "there is a storm",
+      "key": "my_storm",
+      "phrase": "my storm",
       "section": "Section 7",
       "unitIndex": 2,
       "unitName": "OR"
     },
     {
-      "key": "under_the_fork",
-      "phrase": "under the fork",
+      "key": "little_fork",
+      "phrase": "little fork",
       "section": "Section 7",
       "unitIndex": 2,
       "unitName": "OR"
     },
     {
-      "key": "after_the_cork",
-      "phrase": "after the cork",
+      "key": "big_cork",
+      "phrase": "big cork",
       "section": "Section 7",
       "unitIndex": 2,
       "unitName": "OR"
     },
     {
-      "key": "over_the_horse",
-      "phrase": "over the horse",
+      "key": "two_horses",
+      "phrase": "two horses",
       "section": "Section 7",
       "unitIndex": 2,
       "unitName": "OR"
     },
     {
-      "key": "every_sport",
-      "phrase": "every sport",
+      "key": "sport_sound",
+      "phrase": "sport sound",
       "section": "Section 7",
       "unitIndex": 2,
       "unitName": "OR"
     },
     {
-      "key": "mother_and_the_north",
-      "phrase": "mother and the north",
+      "key": "north_card",
+      "phrase": "north card",
       "section": "Section 7",
       "unitIndex": 2,
       "unitName": "OR"
     },
     {
-      "key": "father_and_the_porch",
-      "phrase": "father and the porch",
+      "key": "say_porch",
+      "phrase": "say porch",
       "section": "Section 7",
       "unitIndex": 2,
       "unitName": "OR"
     },
     {
-      "key": "sister_and_the_term",
-      "phrase": "sister and the term",
+      "key": "a_term",
+      "phrase": "a term",
       "section": "Section 7",
       "unitIndex": 3,
       "unitName": "ER"
     },
     {
-      "key": "brother_and_the_fern",
-      "phrase": "brother and the fern",
+      "key": "the_fern",
+      "phrase": "the fern",
       "section": "Section 7",
       "unitIndex": 3,
       "unitName": "ER"
     },
     {
-      "key": "water_germ",
-      "phrase": "water germ",
+      "key": "my_germ",
+      "phrase": "my germ",
       "section": "Section 7",
       "unitIndex": 3,
       "unitName": "ER"
     },
     {
-      "key": "work_stern",
-      "phrase": "work stern",
+      "key": "little_stern",
+      "phrase": "little stern",
       "section": "Section 7",
       "unitIndex": 3,
       "unitName": "ER"
     },
     {
-      "key": "world_person",
-      "phrase": "world person",
+      "key": "big_person",
+      "phrase": "big person",
       "section": "Section 7",
       "unitIndex": 3,
       "unitName": "ER"
     },
     {
-      "key": "learn_winter",
-      "phrase": "learn winter",
+      "key": "two_winters",
+      "phrase": "two winters",
       "section": "Section 7",
       "unitIndex": 3,
       "unitName": "ER"
     },
     {
-      "key": "for_the_sister",
-      "phrase": "for the sister",
+      "key": "sister_sound",
+      "phrase": "sister sound",
       "section": "Section 7",
       "unitIndex": 3,
       "unitName": "ER"
     },
     {
-      "key": "under_or_river",
-      "phrase": "under or river",
+      "key": "under_the_river",
+      "phrase": "under the river",
       "section": "Section 7",
       "unitIndex": 3,
       "unitName": "ER"
     },
     {
-      "key": "more_of_the_number",
-      "phrase": "more of the number",
+      "key": "say_number",
+      "phrase": "say number",
       "section": "Section 7",
       "unitIndex": 3,
       "unitName": "ER"
     },
     {
-      "key": "before_the_bird",
-      "phrase": "before the bird",
+      "key": "a_bird",
+      "phrase": "a bird",
       "section": "Section 7",
       "unitIndex": 4,
       "unitName": "IR"
     },
     {
-      "key": "her_girl",
-      "phrase": "her girl",
+      "key": "the_girl",
+      "phrase": "the girl",
       "section": "Section 7",
       "unitIndex": 4,
       "unitName": "IR"
     },
     {
-      "key": "first_shirt",
-      "phrase": "first shirt",
+      "key": "my_shirt",
+      "phrase": "my shirt",
       "section": "Section 7",
       "unitIndex": 4,
       "unitName": "IR"
     },
     {
-      "key": "third_skirt",
-      "phrase": "third skirt",
+      "key": "little_skirt",
+      "phrase": "little skirt",
       "section": "Section 7",
       "unitIndex": 4,
       "unitName": "IR"
     },
     {
-      "key": "turn_dirt",
-      "phrase": "turn dirt",
+      "key": "big_dirt",
+      "phrase": "big dirt",
       "section": "Section 7",
       "unitIndex": 4,
       "unitName": "IR"
     },
     {
-      "key": "our_stir",
-      "phrase": "our stir",
+      "key": "two_stirs",
+      "phrase": "two stirs",
       "section": "Section 7",
       "unitIndex": 4,
       "unitName": "IR"
     },
     {
-      "key": "your_firm",
-      "phrase": "your firm",
+      "key": "firm_sound",
+      "phrase": "firm sound",
       "section": "Section 7",
       "unitIndex": 4,
       "unitName": "IR"
     },
     {
-      "key": "their_birth",
-      "phrase": "their birth",
+      "key": "birth_card",
+      "phrase": "birth card",
       "section": "Section 7",
       "unitIndex": 4,
       "unitName": "IR"
     },
     {
-      "key": "there_is_a_chirp",
-      "phrase": "there is a chirp",
+      "key": "say_chirp",
+      "phrase": "say chirp",
       "section": "Section 7",
       "unitIndex": 4,
       "unitName": "IR"
     },
     {
-      "key": "under_the_fur",
-      "phrase": "under the fur",
+      "key": "fur_coat",
+      "phrase": "fur coat",
       "section": "Section 7",
       "unitIndex": 5,
       "unitName": "UR"
     },
     {
-      "key": "after_the_turn",
-      "phrase": "after the turn",
+      "key": "turn_around",
+      "phrase": "turn around",
       "section": "Section 7",
       "unitIndex": 5,
       "unitName": "UR"
     },
     {
-      "key": "over_the_burn",
-      "phrase": "over the burn",
+      "key": "burn_mark",
+      "phrase": "burn mark",
       "section": "Section 7",
       "unitIndex": 5,
       "unitName": "UR"
     },
     {
-      "key": "every_surf",
-      "phrase": "every surf",
+      "key": "little_surf",
+      "phrase": "little surf",
       "section": "Section 7",
       "unitIndex": 5,
       "unitName": "UR"
     },
     {
-      "key": "mother_and_the_curl",
-      "phrase": "mother and the curl",
+      "key": "big_curl",
+      "phrase": "big curl",
       "section": "Section 7",
       "unitIndex": 5,
       "unitName": "UR"
     },
     {
-      "key": "father_and_the_burst",
-      "phrase": "father and the burst",
+      "key": "two_bursts",
+      "phrase": "two bursts",
       "section": "Section 7",
       "unitIndex": 5,
       "unitName": "UR"
     },
     {
-      "key": "sister_and_the_nurse",
-      "phrase": "sister and the nurse",
+      "key": "nurse_sound",
+      "phrase": "nurse sound",
       "section": "Section 7",
       "unitIndex": 5,
       "unitName": "UR"
     },
     {
-      "key": "brother_and_the_purse",
-      "phrase": "brother and the purse",
+      "key": "purse_card",
+      "phrase": "purse card",
       "section": "Section 7",
       "unitIndex": 5,
       "unitName": "UR"
     },
     {
-      "key": "water_church",
-      "phrase": "water church",
+      "key": "say_church",
+      "phrase": "say church",
       "section": "Section 7",
       "unitIndex": 5,
       "unitName": "UR"
     },
     {
-      "key": "work_farm",
-      "phrase": "work farm",
+      "key": "a_farm",
+      "phrase": "a farm",
       "section": "Section 7",
       "unitIndex": 6,
       "unitName": "R-Controlled Review"
     },
     {
-      "key": "world_storm",
-      "phrase": "world storm",
+      "key": "the_storm",
+      "phrase": "the storm",
       "section": "Section 7",
       "unitIndex": 6,
       "unitName": "R-Controlled Review"
     },
     {
-      "key": "learn_fern",
-      "phrase": "learn fern",
+      "key": "my_fern",
+      "phrase": "my fern",
       "section": "Section 7",
       "unitIndex": 6,
       "unitName": "R-Controlled Review"
     },
     {
-      "key": "for_the_bird",
-      "phrase": "for the bird",
+      "key": "little_bird",
+      "phrase": "little bird",
       "section": "Section 7",
       "unitIndex": 6,
       "unitName": "R-Controlled Review"
     },
     {
-      "key": "turn_or_market",
-      "phrase": "turn or market",
+      "key": "big_turn",
+      "phrase": "big turn",
       "section": "Section 7",
       "unitIndex": 6,
       "unitName": "R-Controlled Review"
     },
     {
-      "key": "more_of_the_corner",
-      "phrase": "more of the corner",
+      "key": "two_markets",
+      "phrase": "two markets",
       "section": "Section 7",
       "unitIndex": 6,
       "unitName": "R-Controlled Review"
     },
     {
-      "key": "before_the_winter",
-      "phrase": "before the winter",
+      "key": "corner_sound",
+      "phrase": "corner sound",
       "section": "Section 7",
       "unitIndex": 6,
       "unitName": "R-Controlled Review"
     },
     {
-      "key": "her_circle",
-      "phrase": "her circle",
+      "key": "winter_card",
+      "phrase": "winter card",
       "section": "Section 7",
       "unitIndex": 6,
       "unitName": "R-Controlled Review"
     },
     {
-      "key": "first_purple",
-      "phrase": "first purple",
+      "key": "say_circle",
+      "phrase": "say circle",
       "section": "Section 7",
       "unitIndex": 6,
       "unitName": "R-Controlled Review"
     },
     {
-      "key": "out_of_the_oil",
-      "phrase": "out of the oil",
+      "key": "an_oil",
+      "phrase": "an oil",
       "section": "Section 8",
       "unitIndex": 1,
       "unitName": "OI / OY"
     },
     {
-      "key": "about_the_coin",
-      "phrase": "about the coin",
+      "key": "the_coin",
+      "phrase": "the coin",
       "section": "Section 8",
       "unitIndex": 1,
       "unitName": "OI / OY"
     },
     {
-      "key": "around_the_soil",
-      "phrase": "around the soil",
+      "key": "my_soil",
+      "phrase": "my soil",
       "section": "Section 8",
       "unitIndex": 1,
       "unitName": "OI / OY"
     },
     {
-      "key": "down_by_the_boil",
-      "phrase": "down by the boil",
+      "key": "little_boil",
+      "phrase": "little boil",
       "section": "Section 8",
       "unitIndex": 1,
       "unitName": "OI / OY"
     },
     {
-      "key": "now_see_the_point",
-      "phrase": "now see the point",
+      "key": "big_point",
+      "phrase": "big point",
       "section": "Section 8",
       "unitIndex": 1,
       "unitName": "OI / OY"
     },
     {
-      "key": "how_about_the_join",
-      "phrase": "how about the join",
+      "key": "join_in",
+      "phrase": "join in",
       "section": "Section 8",
       "unitIndex": 1,
       "unitName": "OI / OY"
     },
     {
-      "key": "brown_boy",
-      "phrase": "brown boy",
+      "key": "boy_sound",
+      "phrase": "boy sound",
       "section": "Section 8",
       "unitIndex": 1,
       "unitName": "OI / OY"
     },
     {
-      "key": "found_toy",
-      "phrase": "found toy",
+      "key": "toy_card",
+      "phrase": "toy card",
       "section": "Section 8",
       "unitIndex": 1,
       "unitName": "OI / OY"
     },
     {
-      "key": "good_joy",
-      "phrase": "good joy",
+      "key": "say_joy",
+      "phrase": "say joy",
       "section": "Section 8",
       "unitIndex": 1,
       "unitName": "OI / OY"
     },
     {
-      "key": "look_at_the_cloud",
-      "phrase": "look at the cloud",
+      "key": "a_cloud",
+      "phrase": "a cloud",
       "section": "Section 8",
       "unitIndex": 2,
       "unitName": "OU / OW"
     },
     {
-      "key": "book_round",
-      "phrase": "book round",
+      "key": "round_town",
+      "phrase": "round town",
       "section": "Section 8",
       "unitIndex": 2,
       "unitName": "OU / OW"
     },
     {
-      "key": "school_with_the_sound",
-      "phrase": "school with the sound",
+      "key": "sound_wave",
+      "phrase": "sound wave",
       "section": "Section 8",
       "unitIndex": 2,
       "unitName": "OU / OW"
     },
     {
-      "key": "soon_by_the_house",
-      "phrase": "soon by the house",
+      "key": "little_house",
+      "phrase": "little house",
       "section": "Section 8",
       "unitIndex": 2,
       "unitName": "OU / OW"
     },
     {
-      "key": "too_mouse",
-      "phrase": "too mouse",
+      "key": "big_mouse",
+      "phrase": "big mouse",
       "section": "Section 8",
       "unitIndex": 2,
       "unitName": "OU / OW"
     },
     {
-      "key": "food_with_the_cow",
-      "phrase": "food with the cow",
+      "key": "two_cows",
+      "phrase": "two cows",
       "section": "Section 8",
       "unitIndex": 2,
       "unitName": "OU / OW"
     },
     {
-      "key": "boy_town",
-      "phrase": "boy town",
+      "key": "clown_sound",
+      "phrase": "clown sound",
       "section": "Section 8",
       "unitIndex": 2,
       "unitName": "OU / OW"
     },
     {
-      "key": "toy_clown",
-      "phrase": "toy clown",
+      "key": "town_card",
+      "phrase": "town card",
       "section": "Section 8",
       "unitIndex": 2,
       "unitName": "OU / OW"
     },
     {
-      "key": "joy_town",
-      "phrase": "joy town",
+      "key": "say_town",
+      "phrase": "say town",
       "section": "Section 8",
       "unitIndex": 2,
       "unitName": "OU / OW"
     },
     {
-      "key": "saw_moon",
-      "phrase": "saw moon",
+      "key": "a_moon",
+      "phrase": "a moon",
       "section": "Section 8",
       "unitIndex": 3,
       "unitName": "OO as in Moon"
     },
     {
-      "key": "draw_food",
-      "phrase": "draw food",
+      "key": "the_food",
+      "phrase": "the food",
       "section": "Section 8",
       "unitIndex": 3,
       "unitName": "OO as in Moon"
     },
     {
-      "key": "because_of_the_room",
-      "phrase": "because of the room",
+      "key": "my_room",
+      "phrase": "my room",
       "section": "Section 8",
       "unitIndex": 3,
       "unitName": "OO as in Moon"
     },
     {
-      "key": "house_with_the_soon",
-      "phrase": "house with the soon",
+      "key": "soon_after",
+      "phrase": "soon after",
       "section": "Section 8",
       "unitIndex": 3,
       "unitName": "OO as in Moon"
     },
     {
-      "key": "sound_zoo",
-      "phrase": "sound zoo",
+      "key": "big_zoo",
+      "phrase": "big zoo",
       "section": "Section 8",
       "unitIndex": 3,
       "unitName": "OO as in Moon"
     },
     {
-      "key": "round_boot",
-      "phrase": "round boot",
+      "key": "two_boots",
+      "phrase": "two boots",
       "section": "Section 8",
       "unitIndex": 3,
       "unitName": "OO as in Moon"
     },
     {
-      "key": "out_of_the_root",
-      "phrase": "out of the root",
+      "key": "root_sound",
+      "phrase": "root sound",
       "section": "Section 8",
       "unitIndex": 3,
       "unitName": "OO as in Moon"
     },
     {
-      "key": "about_the_spoon",
-      "phrase": "about the spoon",
+      "key": "spoon_card",
+      "phrase": "spoon card",
       "section": "Section 8",
       "unitIndex": 3,
       "unitName": "OO as in Moon"
     },
     {
-      "key": "around_the_school",
-      "phrase": "around the school",
+      "key": "say_school",
+      "phrase": "say school",
       "section": "Section 8",
       "unitIndex": 3,
       "unitName": "OO as in Moon"
     },
     {
-      "key": "down_by_the_book",
-      "phrase": "down by the book",
+      "key": "a_book",
+      "phrase": "a book",
       "section": "Section 8",
       "unitIndex": 4,
       "unitName": "OO as in Book"
     },
     {
-      "key": "now_see_the_look",
-      "phrase": "now see the look",
+      "key": "look_at_the_book",
+      "phrase": "look at the book",
       "section": "Section 8",
       "unitIndex": 4,
       "unitName": "OO as in Book"
     },
     {
-      "key": "how_about_the_cook",
-      "phrase": "how about the cook",
+      "key": "cook_food",
+      "phrase": "cook food",
       "section": "Section 8",
       "unitIndex": 4,
       "unitName": "OO as in Book"
     },
     {
-      "key": "brown_hook",
-      "phrase": "brown hook",
+      "key": "little_hook",
+      "phrase": "little hook",
       "section": "Section 8",
       "unitIndex": 4,
       "unitName": "OO as in Book"
     },
     {
-      "key": "found_foot",
-      "phrase": "found foot",
+      "key": "big_foot",
+      "phrase": "big foot",
       "section": "Section 8",
       "unitIndex": 4,
       "unitName": "OO as in Book"
     },
     {
-      "key": "good_wood",
-      "phrase": "good wood",
+      "key": "two_woods",
+      "phrase": "two woods",
       "section": "Section 8",
       "unitIndex": 4,
       "unitName": "OO as in Book"
     },
     {
-      "key": "look_at_the_wool",
-      "phrase": "look at the wool",
+      "key": "wool_sound",
+      "phrase": "wool sound",
       "section": "Section 8",
       "unitIndex": 4,
       "unitName": "OO as in Book"
     },
     {
-      "key": "book_brook",
-      "phrase": "book brook",
+      "key": "brook_card",
+      "phrase": "brook card",
       "section": "Section 8",
       "unitIndex": 4,
       "unitName": "OO as in Book"
     },
     {
-      "key": "school_with_the_shook",
-      "phrase": "school with the shook",
+      "key": "say_shook",
+      "phrase": "say shook",
       "section": "Section 8",
       "unitIndex": 4,
       "unitName": "OO as in Book"
     },
     {
-      "key": "soon_by_the_haul",
-      "phrase": "soon by the haul",
+      "key": "a_haul",
+      "phrase": "a haul",
       "section": "Section 8",
       "unitIndex": 5,
       "unitName": "AU / AW"
     },
     {
-      "key": "too_paul",
-      "phrase": "too Paul",
+      "key": "paul_saw",
+      "phrase": "Paul saw",
       "section": "Section 8",
       "unitIndex": 5,
       "unitName": "AU / AW"
     },
     {
-      "key": "food_with_the_fault",
-      "phrase": "food with the fault",
+      "key": "fault_line",
+      "phrase": "fault line",
       "section": "Section 8",
       "unitIndex": 5,
       "unitName": "AU / AW"
     },
     {
-      "key": "boy_cause",
-      "phrase": "boy cause",
+      "key": "cause_and_effect",
+      "phrase": "cause and effect",
       "section": "Section 8",
       "unitIndex": 5,
       "unitName": "AU / AW"
     },
     {
-      "key": "toy_pause",
-      "phrase": "toy pause",
+      "key": "pause_button",
+      "phrase": "pause button",
       "section": "Section 8",
       "unitIndex": 5,
       "unitName": "AU / AW"
     },
     {
-      "key": "joy_launch",
-      "phrase": "joy launch",
+      "key": "two_launches",
+      "phrase": "two launches",
       "section": "Section 8",
       "unitIndex": 5,
       "unitName": "AU / AW"
     },
     {
-      "key": "saw_paw",
-      "phrase": "saw paw",
+      "key": "paw_sound",
+      "phrase": "paw sound",
       "section": "Section 8",
       "unitIndex": 5,
       "unitName": "AU / AW"
     },
     {
-      "key": "draw_straw",
-      "phrase": "draw straw",
+      "key": "straw_card",
+      "phrase": "straw card",
       "section": "Section 8",
       "unitIndex": 5,
       "unitName": "AU / AW"
     },
     {
-      "key": "because_of_the_lawn",
-      "phrase": "because of the lawn",
+      "key": "say_lawn",
+      "phrase": "say lawn",
       "section": "Section 8",
       "unitIndex": 5,
       "unitName": "AU / AW"
     },
     {
-      "key": "house_with_the_point",
-      "phrase": "house with the point",
+      "key": "a_point",
+      "phrase": "a point",
       "section": "Section 8",
       "unitIndex": 6,
       "unitName": "Diphthong Review"
     },
     {
-      "key": "sound_enjoy",
-      "phrase": "sound enjoy",
+      "key": "enjoy_school",
+      "phrase": "enjoy school",
       "section": "Section 8",
       "unitIndex": 6,
       "unitName": "Diphthong Review"
     },
     {
-      "key": "round_cloud",
-      "phrase": "round cloud",
+      "key": "my_cloud",
+      "phrase": "my cloud",
       "section": "Section 8",
       "unitIndex": 6,
       "unitName": "Diphthong Review"
     },
     {
-      "key": "out_of_the_spoon",
-      "phrase": "out of the spoon",
+      "key": "little_spoon",
+      "phrase": "little spoon",
       "section": "Section 8",
       "unitIndex": 6,
       "unitName": "Diphthong Review"
     },
     {
-      "key": "about_the_book",
-      "phrase": "about the book",
+      "key": "big_book",
+      "phrase": "big book",
       "section": "Section 8",
       "unitIndex": 6,
       "unitName": "Diphthong Review"
     },
     {
-      "key": "around_the_fault",
-      "phrase": "around the fault",
+      "key": "two_faults",
+      "phrase": "two faults",
       "section": "Section 8",
       "unitIndex": 6,
       "unitName": "Diphthong Review"
     },
     {
-      "key": "down_by_the_round",
-      "phrase": "down by the round",
+      "key": "round_sound",
+      "phrase": "round sound",
       "section": "Section 8",
       "unitIndex": 6,
       "unitName": "Diphthong Review"
     },
     {
-      "key": "now_see_the_toy",
-      "phrase": "now see the toy",
+      "key": "say_crawl",
+      "phrase": "say crawl",
       "section": "Section 8",
       "unitIndex": 6,
       "unitName": "Diphthong Review"
     },
     {
-      "key": "how_about_the_school",
-      "phrase": "how about the school",
-      "section": "Section 8",
-      "unitIndex": 6,
-      "unitName": "Diphthong Review"
-    },
-    {
-      "key": "they_can_see_the_meat",
-      "phrase": "they can see the meat",
+      "key": "eat_meat",
+      "phrase": "eat meat",
       "section": "Section 9",
       "unitIndex": 1,
       "unitName": "EA Variations"
     },
     {
-      "key": "their_team",
-      "phrase": "their team",
+      "key": "meat_pie",
+      "phrase": "meat pie",
       "section": "Section 9",
       "unitIndex": 1,
       "unitName": "EA Variations"
     },
     {
-      "key": "eight_dreams",
-      "phrase": "eight dreams",
+      "key": "dream_team",
+      "phrase": "dream team",
       "section": "Section 9",
       "unitIndex": 1,
       "unitName": "EA Variations"
     },
     {
-      "key": "weigh_head",
-      "phrase": "weigh head",
+      "key": "head_start",
+      "phrase": "head start",
       "section": "Section 9",
       "unitIndex": 1,
       "unitName": "EA Variations"
     },
     {
-      "key": "neighbor_bread",
-      "phrase": "neighbor bread",
+      "key": "bread_slice",
+      "phrase": "bread slice",
+      "section": "Section 9",
+      "unitIndex": 1,
+      "unitName": "EA Variations"
+    },
+    {
+      "key": "ready_to_eat",
+      "phrase": "ready to eat",
       "section": "Section 9",
       "unitIndex": 1,
       "unitName": "EA Variations"
@@ -3063,232 +3056,232 @@
       "unitName": "EA Variations"
     },
     {
-      "key": "break_steak",
-      "phrase": "break steak",
+      "key": "steak_dinner",
+      "phrase": "steak dinner",
       "section": "Section 9",
       "unitIndex": 1,
       "unitName": "EA Variations"
     },
     {
-      "key": "ready_steak",
-      "phrase": "ready steak",
+      "key": "heavy_head",
+      "phrase": "heavy head",
       "section": "Section 9",
       "unitIndex": 1,
       "unitName": "EA Variations"
     },
     {
-      "key": "head_steak",
-      "phrase": "head steak",
-      "section": "Section 9",
-      "unitIndex": 1,
-      "unitName": "EA Variations"
-    },
-    {
-      "key": "bread_with_the_snow",
-      "phrase": "bread with the snow",
+      "key": "snow_day",
+      "phrase": "snow day",
       "section": "Section 9",
       "unitIndex": 2,
       "unitName": "OW Variations"
     },
     {
-      "key": "read_about_the_window",
-      "phrase": "read about the window",
+      "key": "grow_up",
+      "phrase": "grow up",
       "section": "Section 9",
       "unitIndex": 2,
       "unitName": "OW Variations"
     },
     {
-      "key": "a_piece_of_the_cow",
-      "phrase": "a piece of the cow",
+      "key": "show_me",
+      "phrase": "show me",
       "section": "Section 9",
       "unitIndex": 2,
       "unitName": "OW Variations"
     },
     {
-      "key": "a_field_of_clown",
-      "phrase": "a field of clown",
+      "key": "yellow_flower",
+      "phrase": "yellow flower",
       "section": "Section 9",
       "unitIndex": 2,
       "unitName": "OW Variations"
     },
     {
-      "key": "chief_of_the_flower",
-      "phrase": "chief of the flower",
+      "key": "open_window",
+      "phrase": "open window",
       "section": "Section 9",
       "unitIndex": 2,
       "unitName": "OW Variations"
     },
     {
-      "key": "baby_shower",
-      "phrase": "baby shower",
+      "key": "brown_cow",
+      "phrase": "brown cow",
       "section": "Section 9",
       "unitIndex": 2,
       "unitName": "OW Variations"
     },
     {
-      "key": "happy_clown",
-      "phrase": "happy clown",
+      "key": "funny_clown",
+      "phrase": "funny clown",
       "section": "Section 9",
       "unitIndex": 2,
       "unitName": "OW Variations"
     },
     {
-      "key": "family_and_the_clown",
-      "phrase": "family and the clown",
+      "key": "rain_shower",
+      "phrase": "rain shower",
       "section": "Section 9",
       "unitIndex": 2,
       "unitName": "OW Variations"
     },
     {
-      "key": "every_clown",
-      "phrase": "every clown",
+      "key": "right_now",
+      "phrase": "right now",
       "section": "Section 9",
       "unitIndex": 2,
       "unitName": "OW Variations"
     },
     {
-      "key": "very_eight",
-      "phrase": "very eight",
+      "key": "eight_days",
+      "phrase": "eight days",
       "section": "Section 9",
       "unitIndex": 3,
       "unitName": "EIGH / EI / EY"
     },
     {
-      "key": "many_weights",
-      "phrase": "many weights",
+      "key": "heavy_weight",
+      "phrase": "heavy weight",
       "section": "Section 9",
       "unitIndex": 3,
       "unitName": "EIGH / EI / EY"
     },
     {
-      "key": "only_sleigh",
-      "phrase": "only sleigh",
+      "key": "sleigh_ride",
+      "phrase": "sleigh ride",
       "section": "Section 9",
       "unitIndex": 3,
       "unitName": "EIGH / EI / EY"
     },
     {
-      "key": "both_freight",
-      "phrase": "both freight",
+      "key": "freight_train",
+      "phrase": "freight train",
       "section": "Section 9",
       "unitIndex": 3,
       "unitName": "EIGH / EI / EY"
     },
     {
-      "key": "see_the_weigh_again",
-      "phrase": "see the weigh again",
+      "key": "weigh_in",
+      "phrase": "weigh in",
       "section": "Section 9",
       "unitIndex": 3,
       "unitName": "EIGH / EI / EY"
     },
     {
-      "key": "away_from_the_neighbor",
-      "phrase": "away from the neighbor",
+      "key": "good_neighbor",
+      "phrase": "good neighbor",
       "section": "Section 9",
       "unitIndex": 3,
       "unitName": "EIGH / EI / EY"
     },
     {
-      "key": "they_can_see_the_vein",
-      "phrase": "they can see the vein",
+      "key": "blue_vein",
+      "phrase": "blue vein",
       "section": "Section 9",
       "unitIndex": 3,
       "unitName": "EIGH / EI / EY"
     },
     {
-      "key": "their_rein",
-      "phrase": "their rein",
+      "key": "horse_rein",
+      "phrase": "horse rein",
       "section": "Section 9",
       "unitIndex": 3,
       "unitName": "EIGH / EI / EY"
     },
     {
-      "key": "eight_weights",
-      "phrase": "eight weights",
+      "key": "obey_rules",
+      "phrase": "obey rules",
       "section": "Section 9",
       "unitIndex": 3,
       "unitName": "EIGH / EI / EY"
     },
     {
-      "key": "weigh_pie",
-      "phrase": "weigh pie",
+      "key": "pie_slice",
+      "phrase": "pie slice",
       "section": "Section 9",
       "unitIndex": 4,
       "unitName": "IE Variations"
     },
     {
-      "key": "neighbor_tie",
-      "phrase": "neighbor tie",
+      "key": "tie_shoes",
+      "phrase": "tie shoes",
       "section": "Section 9",
       "unitIndex": 4,
       "unitName": "IE Variations"
     },
     {
-      "key": "great_fries",
-      "phrase": "great fries",
+      "key": "white_lie",
+      "phrase": "white lie",
       "section": "Section 9",
       "unitIndex": 4,
       "unitName": "IE Variations"
     },
     {
-      "key": "break_chief",
-      "phrase": "break chief",
+      "key": "tried_again",
+      "phrase": "tried again",
       "section": "Section 9",
       "unitIndex": 4,
       "unitName": "IE Variations"
     },
     {
-      "key": "ready_brief",
-      "phrase": "ready brief",
+      "key": "french_fries",
+      "phrase": "french fries",
       "section": "Section 9",
       "unitIndex": 4,
       "unitName": "IE Variations"
     },
     {
-      "key": "head_field",
-      "phrase": "head field",
+      "key": "brief_note",
+      "phrase": "brief note",
       "section": "Section 9",
       "unitIndex": 4,
       "unitName": "IE Variations"
     },
     {
-      "key": "bread_with_the_piece",
-      "phrase": "bread with the piece",
+      "key": "open_field",
+      "phrase": "open field",
       "section": "Section 9",
       "unitIndex": 4,
       "unitName": "IE Variations"
     },
     {
-      "key": "read_about_the_shield",
-      "phrase": "read about the shield",
+      "key": "puzzle_piece",
+      "phrase": "puzzle piece",
       "section": "Section 9",
       "unitIndex": 4,
       "unitName": "IE Variations"
     },
     {
-      "key": "a_piece_of_the_thief",
-      "phrase": "a piece of the thief",
+      "key": "sneaky_thief",
+      "phrase": "sneaky thief",
       "section": "Section 9",
       "unitIndex": 4,
       "unitName": "IE Variations"
     },
     {
-      "key": "a_field_of_cry",
-      "phrase": "a field of cry",
+      "key": "fly_high",
+      "phrase": "fly high",
       "section": "Section 9",
       "unitIndex": 5,
       "unitName": "Y as a Vowel"
     },
     {
-      "key": "chief_of_the_sky",
-      "phrase": "chief of the sky",
+      "key": "cry_baby",
+      "phrase": "cry baby",
       "section": "Section 9",
       "unitIndex": 5,
       "unitName": "Y as a Vowel"
     },
     {
-      "key": "baby_candy",
-      "phrase": "baby candy",
+      "key": "blue_sky",
+      "phrase": "blue sky",
+      "section": "Section 9",
+      "unitIndex": 5,
+      "unitName": "Y as a Vowel"
+    },
+    {
+      "key": "shy_puppy",
+      "phrase": "shy puppy",
       "section": "Section 9",
       "unitIndex": 5,
       "unitName": "Y as a Vowel"
@@ -3301,99 +3294,57 @@
       "unitName": "Y as a Vowel"
     },
     {
-      "key": "family_and_the_puppy",
-      "phrase": "family and the puppy",
+      "key": "sunny_day",
+      "phrase": "sunny day",
       "section": "Section 9",
       "unitIndex": 5,
       "unitName": "Y as a Vowel"
     },
     {
-      "key": "every_family",
-      "phrase": "every family",
+      "key": "candy_shop",
+      "phrase": "candy shop",
       "section": "Section 9",
       "unitIndex": 5,
       "unitName": "Y as a Vowel"
     },
     {
-      "key": "very_baby",
-      "phrase": "very baby",
+      "key": "family_dinner",
+      "phrase": "family dinner",
       "section": "Section 9",
       "unitIndex": 5,
       "unitName": "Y as a Vowel"
     },
     {
-      "key": "many_candies",
-      "phrase": "many candies",
+      "key": "puppy_dog",
+      "phrase": "puppy dog",
       "section": "Section 9",
       "unitIndex": 5,
       "unitName": "Y as a Vowel"
     },
     {
-      "key": "only_candy",
-      "phrase": "only candy",
-      "section": "Section 9",
-      "unitIndex": 5,
-      "unitName": "Y as a Vowel"
-    },
-    {
-      "key": "both_bread",
-      "phrase": "both bread",
+      "key": "flower_garden",
+      "phrase": "flower garden",
       "section": "Section 9",
       "unitIndex": 6,
       "unitName": "Vowel Team Review"
     },
     {
-      "key": "see_the_steak_again",
-      "phrase": "see the steak again",
+      "key": "shield_wall",
+      "phrase": "shield wall",
       "section": "Section 9",
       "unitIndex": 6,
       "unitName": "Vowel Team Review"
     },
     {
-      "key": "away_from_the_flower",
-      "phrase": "away from the flower",
+      "key": "cried_again",
+      "phrase": "cried again",
       "section": "Section 9",
       "unitIndex": 6,
       "unitName": "Vowel Team Review"
     },
     {
-      "key": "they_can_see_the_window",
-      "phrase": "they can see the window",
-      "section": "Section 9",
-      "unitIndex": 6,
-      "unitName": "Vowel Team Review"
-    },
-    {
-      "key": "their_eight",
-      "phrase": "their eight",
-      "section": "Section 9",
-      "unitIndex": 6,
-      "unitName": "Vowel Team Review"
-    },
-    {
-      "key": "eight_shields",
-      "phrase": "eight shields",
-      "section": "Section 9",
-      "unitIndex": 6,
-      "unitName": "Vowel Team Review"
-    },
-    {
-      "key": "weigh_sky",
-      "phrase": "weigh sky",
-      "section": "Section 9",
-      "unitIndex": 6,
-      "unitName": "Vowel Team Review"
-    },
-    {
-      "key": "neighbor_sky",
-      "phrase": "neighbor sky",
-      "section": "Section 9",
-      "unitIndex": 6,
-      "unitName": "Vowel Team Review"
-    },
-    {
-      "key": "great_neighbor",
-      "phrase": "great neighbor",
+      "key": "happy_family",
+      "phrase": "happy family",
       "section": "Section 9",
       "unitIndex": 6,
       "unitName": "Vowel Team Review"
@@ -3651,6 +3602,13 @@
       "unitName": "MB / GH"
     },
     {
+      "key": "the_cup",
+      "phrase": "the cup",
+      "section": "Section 10",
+      "unitIndex": 5,
+      "unitName": "C / K / CK"
+    },
+    {
       "key": "my_kid",
       "phrase": "my kid",
       "section": "Section 10",
@@ -3763,379 +3721,330 @@
       "unitName": "X / QU"
     },
     {
-      "key": "cats_and_hats",
-      "phrase": "cats and hats",
+      "key": "cats_and_dogs",
+      "phrase": "cats and dogs",
       "section": "Section 11",
       "unitIndex": 1,
       "unitName": "Plural S"
     },
     {
-      "key": "dogs_and_kids",
-      "phrase": "dogs and kids",
+      "key": "red_hats",
+      "phrase": "red hats",
       "section": "Section 11",
       "unitIndex": 1,
       "unitName": "Plural S"
     },
     {
-      "key": "books_and_cups",
-      "phrase": "books and cups",
+      "key": "paper_cups",
+      "phrase": "paper cups",
       "section": "Section 11",
       "unitIndex": 1,
       "unitName": "Plural S"
     },
     {
-      "key": "kids_and_books",
-      "phrase": "kids and books",
+      "key": "library_books",
+      "phrase": "library books",
       "section": "Section 11",
       "unitIndex": 1,
       "unitName": "Plural S"
     },
     {
-      "key": "boxes_and_dogs",
-      "phrase": "boxes and dogs",
+      "key": "big_dogs",
+      "phrase": "big dogs",
       "section": "Section 11",
       "unitIndex": 1,
       "unitName": "Plural S"
     },
     {
-      "key": "wishes_and_pigs",
-      "phrase": "wishes and pigs",
+      "key": "pink_pigs",
+      "phrase": "pink pigs",
       "section": "Section 11",
       "unitIndex": 1,
       "unitName": "Plural S"
     },
     {
-      "key": "play_with_the_beds",
-      "phrase": "play with the beds",
+      "key": "soft_beds",
+      "phrase": "soft beds",
       "section": "Section 11",
       "unitIndex": 1,
       "unitName": "Plural S"
     },
     {
-      "key": "look_at_the_fans",
-      "phrase": "look at the fans",
+      "key": "sports_fans",
+      "phrase": "sports fans",
       "section": "Section 11",
       "unitIndex": 1,
       "unitName": "Plural S"
     },
     {
-      "key": "wanted_the_rugs",
-      "phrase": "wanted the rugs",
+      "key": "school_kids",
+      "phrase": "school kids",
       "section": "Section 11",
       "unitIndex": 1,
       "unitName": "Plural S"
     },
     {
-      "key": "needed_the_boxes",
-      "phrase": "needed the boxes",
+      "key": "cardboard_boxes",
+      "phrase": "cardboard boxes",
       "section": "Section 11",
       "unitIndex": 2,
       "unitName": "Plural ES"
     },
     {
-      "key": "started_with_the_foxes",
-      "phrase": "started with the foxes",
+      "key": "red_foxes",
+      "phrase": "red foxes",
       "section": "Section 11",
       "unitIndex": 2,
       "unitName": "Plural ES"
     },
     {
-      "key": "called_with_the_dishes",
-      "phrase": "called with the dishes",
+      "key": "clean_dishes",
+      "phrase": "clean dishes",
       "section": "Section 11",
       "unitIndex": 2,
       "unitName": "Plural ES"
     },
     {
-      "key": "read_about_the_wishes",
-      "phrase": "read about the wishes",
+      "key": "birthday_wishes",
+      "phrase": "birthday wishes",
       "section": "Section 11",
       "unitIndex": 2,
       "unitName": "Plural ES"
     },
     {
-      "key": "play_with_the_buses",
-      "phrase": "play with the buses",
+      "key": "school_buses",
+      "phrase": "school buses",
       "section": "Section 11",
       "unitIndex": 2,
       "unitName": "Plural ES"
     },
     {
-      "key": "going_to_the_classes",
-      "phrase": "going to the classes",
+      "key": "big_classes",
+      "phrase": "big classes",
       "section": "Section 11",
       "unitIndex": 2,
       "unitName": "Plural ES"
     },
     {
-      "key": "doing_it_with_the_watches",
-      "phrase": "doing it with the watches",
+      "key": "wrist_watches",
+      "phrase": "wrist watches",
       "section": "Section 11",
       "unitIndex": 2,
       "unitName": "Plural ES"
     },
     {
-      "key": "helping_with_the_benches",
-      "phrase": "helping with the benches",
+      "key": "park_benches",
+      "phrase": "park benches",
       "section": "Section 11",
       "unitIndex": 2,
       "unitName": "Plural ES"
     },
     {
-      "key": "faster_than_the_buzzes",
-      "phrase": "faster than the buzzes",
+      "key": "loud_buzzes",
+      "phrase": "loud buzzes",
       "section": "Section 11",
       "unitIndex": 2,
       "unitName": "Plural ES"
     },
     {
-      "key": "fastest_than_the_jumped",
-      "phrase": "fastest than the jumped",
+      "key": "jumped_high",
+      "phrase": "jumped high",
       "section": "Section 11",
       "unitIndex": 3,
       "unitName": "Past ED"
     },
     {
-      "key": "smaller_than_the_looked",
-      "phrase": "smaller than the looked",
+      "key": "looked_up",
+      "phrase": "looked up",
       "section": "Section 11",
       "unitIndex": 3,
       "unitName": "Past ED"
     },
     {
-      "key": "every_washed",
-      "phrase": "every washed",
+      "key": "washed_dishes",
+      "phrase": "washed dishes",
       "section": "Section 11",
       "unitIndex": 3,
       "unitName": "Past ED"
     },
     {
-      "key": "always_near_the_played",
-      "phrase": "always near the played",
+      "key": "played_games",
+      "phrase": "played games",
       "section": "Section 11",
       "unitIndex": 3,
       "unitName": "Past ED"
     },
     {
-      "key": "today_by_the_rained",
-      "phrase": "today by the rained",
+      "key": "rained_hard",
+      "phrase": "rained hard",
       "section": "Section 11",
       "unitIndex": 3,
       "unitName": "Past ED"
     },
     {
-      "key": "tomorrow_by_the_called",
-      "phrase": "tomorrow by the called",
+      "key": "called_home",
+      "phrase": "called home",
       "section": "Section 11",
       "unitIndex": 3,
       "unitName": "Past ED"
     },
     {
-      "key": "cats_and_wanted",
-      "phrase": "cats and wanted",
+      "key": "wanted_help",
+      "phrase": "wanted help",
       "section": "Section 11",
       "unitIndex": 3,
       "unitName": "Past ED"
     },
     {
-      "key": "dogs_and_needed",
-      "phrase": "dogs and needed",
+      "key": "needed_rest",
+      "phrase": "needed rest",
       "section": "Section 11",
       "unitIndex": 3,
       "unitName": "Past ED"
     },
     {
-      "key": "books_and_painted",
-      "phrase": "books and painted",
+      "key": "painted_walls",
+      "phrase": "painted walls",
       "section": "Section 11",
       "unitIndex": 3,
       "unitName": "Past ED"
     },
     {
-      "key": "kids_and_jumping",
-      "phrase": "kids and jumping",
+      "key": "jumping_rope",
+      "phrase": "jumping rope",
       "section": "Section 11",
       "unitIndex": 4,
       "unitName": "ING"
     },
     {
-      "key": "boxes_and_running",
-      "phrase": "boxes and running",
+      "key": "running_fast",
+      "phrase": "running fast",
       "section": "Section 11",
       "unitIndex": 4,
       "unitName": "ING"
     },
     {
-      "key": "wishes_and_sitting",
-      "phrase": "wishes and sitting",
+      "key": "sitting_down",
+      "phrase": "sitting down",
       "section": "Section 11",
       "unitIndex": 4,
       "unitName": "ING"
     },
     {
-      "key": "play_with_the_playing",
-      "phrase": "play with the playing",
+      "key": "playing_games",
+      "phrase": "playing games",
       "section": "Section 11",
       "unitIndex": 4,
       "unitName": "ING"
     },
     {
-      "key": "look_at_the_reading",
-      "phrase": "look at the reading",
+      "key": "reading_books",
+      "phrase": "reading books",
       "section": "Section 11",
       "unitIndex": 4,
       "unitName": "ING"
     },
     {
-      "key": "wanted_the_looking",
-      "phrase": "wanted the looking",
+      "key": "looking_up",
+      "phrase": "looking up",
       "section": "Section 11",
       "unitIndex": 4,
       "unitName": "ING"
     },
     {
-      "key": "needed_the_making",
-      "phrase": "needed the making",
+      "key": "making_cake",
+      "phrase": "making cake",
       "section": "Section 11",
       "unitIndex": 4,
       "unitName": "ING"
     },
     {
-      "key": "started_with_the_riding",
-      "phrase": "started with the riding",
+      "key": "riding_bikes",
+      "phrase": "riding bikes",
       "section": "Section 11",
       "unitIndex": 4,
       "unitName": "ING"
     },
     {
-      "key": "called_with_the_swimming",
-      "phrase": "called with the swimming",
+      "key": "swimming_pool",
+      "phrase": "swimming pool",
       "section": "Section 11",
       "unitIndex": 4,
       "unitName": "ING"
     },
     {
-      "key": "read_about_the_faster",
-      "phrase": "read about the faster",
+      "key": "faster_runner",
+      "phrase": "faster runner",
       "section": "Section 11",
       "unitIndex": 5,
       "unitName": "ER / EST"
     },
     {
-      "key": "play_with_the_fastest",
-      "phrase": "play with the fastest",
+      "key": "fastest_race",
+      "phrase": "fastest race",
       "section": "Section 11",
       "unitIndex": 5,
       "unitName": "ER / EST"
     },
     {
-      "key": "going_to_the_smaller",
-      "phrase": "going to the smaller",
+      "key": "smaller_cup",
+      "phrase": "smaller cup",
       "section": "Section 11",
       "unitIndex": 5,
       "unitName": "ER / EST"
     },
     {
-      "key": "doing_it_with_the_smallest",
-      "phrase": "doing it with the smallest",
+      "key": "smallest_box",
+      "phrase": "smallest box",
       "section": "Section 11",
       "unitIndex": 5,
       "unitName": "ER / EST"
     },
     {
-      "key": "helping_with_the_taller",
-      "phrase": "helping with the taller",
+      "key": "taller_tree",
+      "phrase": "taller tree",
       "section": "Section 11",
       "unitIndex": 5,
       "unitName": "ER / EST"
     },
     {
-      "key": "faster_than_the_tallest",
-      "phrase": "faster than the tallest",
+      "key": "tallest_tower",
+      "phrase": "tallest tower",
       "section": "Section 11",
       "unitIndex": 5,
       "unitName": "ER / EST"
     },
     {
-      "key": "fastest_than_the_brighter",
-      "phrase": "fastest than the brighter",
+      "key": "brighter_light",
+      "phrase": "brighter light",
       "section": "Section 11",
       "unitIndex": 5,
       "unitName": "ER / EST"
     },
     {
-      "key": "smaller_than_the_brightest",
-      "phrase": "smaller than the brightest",
+      "key": "brightest_star",
+      "phrase": "brightest star",
       "section": "Section 11",
       "unitIndex": 5,
       "unitName": "ER / EST"
     },
     {
-      "key": "every_shorter",
-      "phrase": "every shorter",
+      "key": "shorter_line",
+      "phrase": "shorter line",
       "section": "Section 11",
       "unitIndex": 5,
       "unitName": "ER / EST"
     },
     {
-      "key": "always_near_the_dogs",
-      "phrase": "always near the dogs",
+      "key": "smallest_cup",
+      "phrase": "smallest cup",
       "section": "Section 11",
       "unitIndex": 6,
       "unitName": "Ending Review"
     },
     {
-      "key": "today_by_the_boxes",
-      "phrase": "today by the boxes",
-      "section": "Section 11",
-      "unitIndex": 6,
-      "unitName": "Ending Review"
-    },
-    {
-      "key": "tomorrow_by_the_wishes",
-      "phrase": "tomorrow by the wishes",
-      "section": "Section 11",
-      "unitIndex": 6,
-      "unitName": "Ending Review"
-    },
-    {
-      "key": "cats_and_wishes",
-      "phrase": "cats and wishes",
-      "section": "Section 11",
-      "unitIndex": 6,
-      "unitName": "Ending Review"
-    },
-    {
-      "key": "dogs_and_cats",
-      "phrase": "dogs and cats",
-      "section": "Section 11",
-      "unitIndex": 6,
-      "unitName": "Ending Review"
-    },
-    {
-      "key": "books_and_wishes",
-      "phrase": "books and wishes",
-      "section": "Section 11",
-      "unitIndex": 6,
-      "unitName": "Ending Review"
-    },
-    {
-      "key": "kids_and_wishes",
-      "phrase": "kids and wishes",
-      "section": "Section 11",
-      "unitIndex": 6,
-      "unitName": "Ending Review"
-    },
-    {
-      "key": "boxes_and_cats",
-      "phrase": "boxes and cats",
-      "section": "Section 11",
-      "unitIndex": 6,
-      "unitName": "Ending Review"
-    },
-    {
-      "key": "wishes_and_cats",
-      "phrase": "wishes and cats",
+      "key": "needed_help",
+      "phrase": "needed help",
       "section": "Section 11",
       "unitIndex": 6,
       "unitName": "Ending Review"
@@ -4395,13 +4304,6 @@
     {
       "key": "farmers_market",
       "phrase": "farmers market",
-      "section": "Section 12",
-      "unitIndex": 5,
-      "unitName": "R-Controlled Syllables"
-    },
-    {
-      "key": "flower_garden",
-      "phrase": "flower garden",
       "section": "Section 12",
       "unitIndex": 5,
       "unitName": "R-Controlled Syllables"

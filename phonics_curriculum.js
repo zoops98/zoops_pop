@@ -221,6 +221,14 @@ var SIGHT_WORD_POOLS = {
 var SIGHT_WORDS_PER_UNIT = 9;
 
 var SIGHT_WORD_UNIT_OVERRIDES = {
+  "Section 9": {
+    "EA Variations": ["eat", "pie", "dream", "start", "slice", "ready", "great", "dinner", "heavy"],
+    "OW Variations": ["snow", "up", "show", "yellow", "open", "brown", "funny", "rain", "right"],
+    "EIGH / EI / EY": ["eight", "heavy", "ride", "train", "weigh", "good", "blue", "horse", "rules"],
+    "IE Variations": ["slice", "shoes", "white", "again", "french", "brief", "open", "puzzle", "sneaky"],
+    "Y as a Vowel": ["high", "baby", "blue", "shy", "happy", "sunny", "candy", "family", "puppy"],
+    "Vowel Team Review": ["slice", "dinner", "garden", "open", "eight", "good", "shield", "again", "happy"]
+  },
   "Section 10": {
     "Soft C": ["a", "the", "in", "on", "with", "my", "see", "little", "big"],
     "Soft G / DGE": ["a", "the", "my", "see", "write", "on", "under", "next", "big"],
@@ -228,6 +236,14 @@ var SIGHT_WORD_UNIT_OVERRIDES = {
     "MB / GH": ["a", "the", "my", "see", "with", "at", "high", "bright", "right"],
     "C / K / CK": ["a", "the", "my", "in", "on", "with", "six", "quick", "little"],
     "X / QU": ["a", "the", "my", "six", "quick", "next", "because", "with", "again"]
+  },
+  "Section 11": {
+    "Plural S": ["and", "red", "paper", "library", "big", "pink", "soft", "sports", "school"],
+    "Plural ES": ["cardboard", "red", "clean", "birthday", "school", "big", "wrist", "park", "loud"],
+    "Past ED": ["high", "up", "clean", "games", "hard", "home", "help", "rest", "walls"],
+    "ING": ["rope", "fast", "down", "games", "books", "up", "cake", "bikes", "pool"],
+    "ER / EST": ["runner", "race", "cup", "box", "tree", "tower", "light", "star", "line"],
+    "Ending Review": ["big", "cardboard", "high", "games", "runner", "cup", "birthday", "help", "bikes"]
   },
   "Section 12": {
     "Closed Syllables": ["little", "picnic", "family", "sky", "paper", "bike", "garden", "math", "fridge"],
