@@ -1814,6 +1814,7 @@ let gameState = {
 };
 
 async function initializeStudentSession() {
+  if (enableLocalStaffPreview()) return;
   if (!authClient) return;
 
   const { data: { session } } = await authClient.auth.getSession();
@@ -1844,6 +1845,22 @@ async function initializeStudentSession() {
     await loadGameState();
   }
   if (academyStaffProfile) renderMain();
+}
+
+function enableLocalStaffPreview() {
+  const host = window.location.hostname;
+  const isLocalHost = ["127.0.0.1", "localhost", ""].includes(host);
+  const isPreview = new URLSearchParams(window.location.search).get("staffPreview") === "1";
+  if (!isLocalHost || !isPreview) return false;
+
+  academyStaffProfile = {
+    academy_id: "local-preview",
+    role: "academy_owner",
+    display_name: "Local Preview"
+  };
+  studentSignOut.hidden = true;
+  renderMain();
+  return true;
 }
 
 studentSignOut.addEventListener("click", async () => {
