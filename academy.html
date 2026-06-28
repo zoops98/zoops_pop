@@ -328,6 +328,10 @@
         setupPanel.classList.remove("hidden");
         return;
       }
+      if (profile.role === "super_admin") {
+        location.href = "admin.html";
+        return;
+      }
       if (!["academy_owner", "teacher"].includes(profile.role)) {
         location.href = "phonics.html";
         return;

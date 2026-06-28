@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zoops PoP Admin</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --ink: #17151f;
+      --muted: #646170;
+      --line: #d8dde8;
+      --paper: #fff;
+      --wash: #f6f8fb;
+      --hot: #ff263d;
+      --blue: #1498d5;
+      --sun: #ffe500;
+      --green: #2f9d59;
+      --shadow: 0 14px 28px rgba(23, 21, 31, .08);
+    }
+    body {
+      margin: 0;
+      background: var(--wash);
+      color: var(--ink);
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+    header {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 26px;
+      border-bottom: 3px solid var(--ink);
+      background: var(--paper);
+    }
+    h1, h2, h3 { margin: 0; letter-spacing: 0; }
+    h1 { font-size: 28px; }
+    h2 { font-size: 21px; }
+    p { margin: 6px 0 0; }
+    main {
+      width: min(1240px, calc(100% - 32px));
+      margin: 22px auto 36px;
+    }
+    button, .nav-button {
+      min-height: 40px;
+      padding: 8px 14px;
+      border: 2px solid var(--ink);
+      border-radius: 6px;
+      background: var(--sun);
+      color: var(--ink);
+      cursor: pointer;
+      font-weight: 900;
+      text-decoration: none;
+    }
+    button.secondary { background: #fff; }
+    button.danger { background: var(--hot); color: #fff; }
+    button:disabled { cursor: wait; opacity: .55; }
+    input, select {
+      min-height: 42px;
+      width: 100%;
+      padding: 8px 10px;
+      border: 2px solid var(--ink);
+      border-radius: 6px;
+      background: #fff;
+      font: inherit;
+      font-weight: 750;
+    }
+    label {
+      display: grid;
+      gap: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+    .hidden { display: none !important; }
+    .header-actions, .row-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+    .panel {
+      margin-bottom: 18px;
+      padding: 18px;
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+    .panel-head {
+      display: flex;
+      gap: 14px;
+      align-items: end;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .muted { color: var(--muted); font-weight: 750; }
+    .message {
+      min-height: 22px;
+      color: #c9142e;
+      font-weight: 850;
+    }
+    .message.ok { color: var(--green); }
+    .create-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .create-grid .wide { grid-column: span 2; }
+    .form-actions {
+      display: flex;
+      align-items: end;
+      gap: 10px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .stat {
+      padding: 14px;
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+    .stat b {
+      display: block;
+      margin-top: 5px;
+      font-size: 25px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 11px 8px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: middle;
+    }
+    th {
+      background: #eef8fc;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    td strong { display: block; }
+    .code-pill {
+      display: inline-flex;
+      margin-top: 4px;
+      padding: 2px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .status-select { min-width: 128px; }
+    .limit-input { max-width: 96px; }
+    .empty {
+      padding: 28px;
+      color: var(--muted);
+      text-align: center;
+      font-weight: 850;
+    }
+    @media (max-width: 960px) {
+      .create-grid, .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .create-grid .wide { grid-column: span 2; }
+      table, thead, tbody, tr, th, td { display: block; }
+      thead { display: none; }
+      tr { padding: 12px 0; border-bottom: 2px solid var(--ink); }
+      td { border: 0; padding: 6px 0; }
+      .row-actions { justify-content: flex-start; }
+    }
+    @media (max-width: 640px) {
+      header { align-items: flex-start; flex-direction: column; }
+      .create-grid, .stats { grid-template-columns: 1fr; }
+      .create-grid .wide { grid-column: span 1; }
+      .panel-head { align-items: start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Zoops PoP Super Admin</h1>
+      <p id="adminSubtitle" class="muted">학원장 계정과 학원 상태를 관리합니다.</p>
+    </div>
+    <div class="header-actions">
+      <button id="refreshButton" class="secondary" type="button">새로고침</button>
+      <button id="signOut" type="button">로그아웃</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="accessPanel" class="panel">
+      <h2>권한 확인 중</h2>
+      <p id="accessMessage" class="message">최고 관리자 계정을 확인하고 있습니다...</p>
+    </section>
+
+    <section id="dashboardPanel" class="hidden">
+      <div class="stats">
+        <div class="stat"><span>Academies</span><b id="academyCount">0</b></div>
+        <div class="stat"><span>Active</span><b id="activeCount">0</b></div>
+        <div class="stat"><span>Students</span><b id="studentCount">0</b></div>
+        <div class="stat"><span>Capacity</span><b id="capacityCount">0</b></div>
+      </div>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>학원장 계정 만들기</h2>
+            <p class="muted">새 학원, 학원장 로그인, 프로필을 한 번에 생성합니다.</p>
+          </div>
+        </div>
+        <form id="ownerCreateForm" class="create-grid">
+          <label class="wide">Academy name
+            <input id="academyName" autocomplete="organization" required>
+          </label>
+          <label>Academy code
+            <input id="academyCode" inputmode="latin" placeholder="ZOOPS01" required>
+          </label>
+          <label>Status
+            <select id="academyStatus">
+              <option value="trial">trial</option>
+              <option value="active" selected>active</option>
+              <option value="suspended">suspended</option>
+              <option value="expired">expired</option>
+            </select>
+          </label>
+          <label>Owner name
+            <input id="ownerName" autocomplete="name" required>
+          </label>
+          <label class="wide">Owner email
+            <input id="ownerEmail" type="email" autocomplete="email" required>
+          </label>
+          <label>Temp password
+            <input id="ownerPassword" type="password" minlength="8" autocomplete="new-password" required>
+          </label>
+          <label>Student limit
+            <input id="studentLimit" type="number" min="1" max="5000" value="100" required>
+          </label>
+          <div class="form-actions">
+            <button id="createOwnerButton" type="submit">학원장 생성</button>
+          </div>
+        </form>
+        <p id="createMessage" class="message" aria-live="polite"></p>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>학원장 계정 목록</h2>
+            <p class="muted">상태와 학생 한도는 저장 버튼을 눌러 반영합니다.</p>
+          </div>
+        </div>
+        <div id="emptyRows" class="empty hidden">등록된 학원이 없습니다.</div>
+        <table id="academyTable">
+          <thead>
+            <tr>
+              <th>Academy</th>
+              <th>Owner</th>
+              <th>Status</th>
+              <th>Students</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="academyRows"></tbody>
+        </table>
+        <p id="tableMessage" class="message" aria-live="polite"></p>
+      </section>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase_config.js"></script>
+  <script>
+    const client = supabase.createClient(
+      ZOOPS_SUPABASE.url,
+      ZOOPS_SUPABASE.publishableKey
+    );
+    const portalUrl = new URL("portal.html", window.location.href).href;
+    const accessPanel = document.getElementById("accessPanel");
+    const dashboardPanel = document.getElementById("dashboardPanel");
+    const accessMessage = document.getElementById("accessMessage");
+    const createMessage = document.getElementById("createMessage");
+    const tableMessage = document.getElementById("tableMessage");
+    let academies = [];
+
+    async function start() {
+      const { data: { user }, error: userError } = await client.auth.getUser();
+      if (userError) {
+        if (userError.message === "Auth session missing!") {
+          location.href = "portal.html";
+          return;
+        }
+        accessMessage.textContent = userError.message;
+        return;
+      }
+      if (!user) {
+        location.href = "portal.html";
+        return;
+      }
+
+      const { data: profile, error: profileError } = await client
+        .from("profiles")
+        .select("role, display_name")
+        .eq("id", user.id)
+        .maybeSingle();
+      if (profileError) {
+        accessMessage.textContent = profileError.message;
+        return;
+      }
+      if (profile?.role !== "super_admin") {
+        location.href = "academy.html";
+        return;
+      }
+
+      document.getElementById("adminSubtitle").textContent =
+        `${profile.display_name || "Super Admin"} 님, 학원장 계정을 관리합니다.`;
+      accessPanel.classList.add("hidden");
+      dashboardPanel.classList.remove("hidden");
+      await loadAcademies();
+    }
+
+    async function loadAcademies() {
+      tableMessage.textContent = "학원 목록을 불러오는 중입니다...";
+      const { data, error } = await client.rpc("get_super_admin_academy_dashboard");
+      if (error) {
+        tableMessage.textContent = error.message;
+        return;
+      }
+      academies = data || [];
+      renderStats();
+      renderRows();
+      tableMessage.textContent = academies.length
+        ? "학원 목록을 불러왔습니다."
+        : "";
+      tableMessage.classList.toggle("ok", academies.length > 0);
+    }
+
+    function renderStats() {
+      const active = academies.filter(item => item.status === "active" || item.status === "trial");
+      document.getElementById("academyCount").textContent = academies.length;
+      document.getElementById("activeCount").textContent = active.length;
+      document.getElementById("studentCount").textContent =
+        academies.reduce((sum, item) => sum + Number(item.student_count || 0), 0);
+      document.getElementById("capacityCount").textContent =
+        academies.reduce((sum, item) => sum + Number(item.student_limit || 0), 0);
+    }
+
+    function renderRows() {
+      document.getElementById("emptyRows").classList.toggle("hidden", academies.length > 0);
+      document.getElementById("academyTable").classList.toggle("hidden", academies.length === 0);
+      document.getElementById("academyRows").innerHTML = academies.map(item => `
+        <tr data-academy-id="${escapeAttribute(item.academy_id)}">
+          <td>
+            <strong>${escapeText(item.academy_name)}</strong>
+            <span class="code-pill">${escapeText(item.academy_code)}</span>
+          </td>
+          <td>
+            <strong>${escapeText(item.owner_display_name || "-")}</strong>
+            <span class="muted">${escapeText(item.owner_email || "이메일 기록 없음")}</span>
+          </td>
+          <td>
+            <select class="status-select" data-field="status">
+              ${["trial", "active", "suspended", "expired"].map(status => `
+                <option value="${status}" ${item.status === status ? "selected" : ""}>${status}</option>
+              `).join("")}
+            </select>
+          </td>
+          <td>
+            <input class="limit-input" data-field="limit" type="number" min="1" max="5000" value="${Number(item.student_limit || 1)}">
+            <div class="muted">${Number(item.active_student_count || 0)} active / ${Number(item.student_count || 0)} total</div>
+          </td>
+          <td>${formatDate(item.created_at)}</td>
+          <td>
+            <div class="row-actions">
+              <button type="button" onclick="saveAcademy('${escapeAttribute(item.academy_id)}')">저장</button>
+              <button class="secondary" type="button" onclick="sendPasswordReset('${escapeAttribute(item.owner_email || "")}')">비밀번호 재설정</button>
+            </div>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    document.getElementById("ownerCreateForm").onsubmit = async event => {
+      event.preventDefault();
+      const button = document.getElementById("createOwnerButton");
+      button.disabled = true;
+      createMessage.classList.remove("ok");
+      createMessage.textContent = "학원장 계정을 생성하는 중입니다...";
+
+      const body = {
+        academy_name: document.getElementById("academyName").value.trim(),
+        academy_code: document.getElementById("academyCode").value.trim(),
+        owner_display_name: document.getElementById("ownerName").value.trim(),
+        owner_email: document.getElementById("ownerEmail").value.trim(),
+        password: document.getElementById("ownerPassword").value,
+        status: document.getElementById("academyStatus").value,
+        student_limit: Number(document.getElementById("studentLimit").value),
+      };
+
+      const { data, error } = await client.functions.invoke("create-academy-owner", { body });
+      if (error || data?.error) {
+        createMessage.textContent = data?.error || error.message;
+      } else {
+        event.target.reset();
+        document.getElementById("studentLimit").value = 100;
+        document.getElementById("academyStatus").value = "active";
+        createMessage.classList.add("ok");
+        createMessage.textContent = "학원장 계정과 학원이 생성되었습니다.";
+        await loadAcademies();
+      }
+      button.disabled = false;
+    };
+
+    async function saveAcademy(academyId) {
+      const row = document.querySelector(`tr[data-academy-id="${cssEscape(academyId)}"]`);
+      if (!row) return;
+      const status = row.querySelector('[data-field="status"]').value;
+      const limit = Number(row.querySelector('[data-field="limit"]').value);
+      tableMessage.classList.remove("ok");
+      tableMessage.textContent = "학원 설정을 저장하는 중입니다...";
+
+      const { error } = await client.rpc("update_super_admin_academy", {
+        p_academy_id: academyId,
+        p_status: status,
+        p_student_limit: limit,
+      });
+      if (error) {
+        tableMessage.textContent = error.message;
+      } else {
+        tableMessage.classList.add("ok");
+        tableMessage.textContent = "학원 설정을 저장했습니다.";
+        await loadAcademies();
+      }
+    }
+
+    async function sendPasswordReset(ownerEmail) {
+      if (!ownerEmail) {
+        tableMessage.classList.remove("ok");
+        tableMessage.textContent = "이 학원장 계정에는 이메일 기록이 없습니다.";
+        return;
+      }
+      tableMessage.textContent = "비밀번호 재설정 메일을 보내는 중입니다...";
+      const { error } = await client.auth.resetPasswordForEmail(ownerEmail, {
+        redirectTo: portalUrl,
+      });
+      tableMessage.classList.toggle("ok", !error);
+      tableMessage.textContent = error
+        ? error.message
+        : "비밀번호 재설정 메일을 보냈습니다.";
+    }
+
+    document.getElementById("refreshButton").onclick = loadAcademies;
+    document.getElementById("signOut").onclick = async () => {
+      await client.auth.signOut();
+      location.href = "portal.html";
+    };
+
+    function formatDate(value) {
+      return value ? new Date(value).toLocaleDateString("ko-KR") : "-";
+    }
+
+    function escapeText(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      }[char]));
+    }
+
+    function escapeAttribute(value) {
+      return escapeText(value).replace(/`/g, "&#96;");
+    }
+
+    function cssEscape(value) {
+      if (window.CSS?.escape) return CSS.escape(value);
+      return String(value).replace(/["\\]/g, "\\$&");
+    }
+
+    start();
+  </script>
+</body>
+</html>
