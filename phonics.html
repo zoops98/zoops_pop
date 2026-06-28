@@ -969,8 +969,9 @@
   .article-art img {
     display: block;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: 210px;
+    object-fit: contain;
+    background: #fffdf4;
   }
 
   .article-art-placeholder {
@@ -3823,7 +3824,9 @@ async function generateArticleImage(apiKey, draft) {
   const prompt = [
     `${draft.picturePrompt}`,
     "Small watercolor illustration for a children's phonics reading worksheet.",
-    "Soft colors, white background, simple scene, no letters, no text, no watermark.",
+    "Soft colors, white background, simple centered scene, no close-up crop.",
+    "Leave gentle margins around the subject so it fits inside a small worksheet frame.",
+    "No letters, no text, no watermark.",
     "The image should support this article:",
     draft.article
   ].join("\n");
@@ -3912,11 +3915,22 @@ function exportArticleHtml() {
 }
 
 function buildArticleHtmlDocument(draft) {
+  const imageStateClass = draft.imageDataUri ? "has-image" : "no-image";
+  const artSceneMarkup = `
+        <div class="art-scene" aria-hidden="true">
+          <span class="sun"></span>
+          <span class="hill"></span>
+          <span class="pond"></span>
+          <span class="book"></span>
+          <span class="brush"></span>
+          <span class="paint-card"></span>
+        </div>`;
   const imageMarkup = draft.imageDataUri
-    ? `<img src="${escapeAttribute(draft.imageDataUri)}" alt="${escapeAttribute(draft.title)} watercolor illustration">`
-    : `<div class="image-placeholder">Watercolor illustration</div>`;
+    ? `${artSceneMarkup}
+        <img class="generated-art" src="${escapeAttribute(draft.imageDataUri)}" alt="${escapeAttribute(draft.title)} watercolor illustration">`
+    : artSceneMarkup;
   const wordBank = (draft.wordBank || [])
-    .map(word => `<span>${escapeHtml(word)}</span>`)
+    .map(word => `<span class="word-chip">${escapeHtml(word)}</span>`)
     .join("");
 
   return `<!DOCTYPE html>
@@ -3926,11 +3940,22 @@ function buildArticleHtmlDocument(draft) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${escapeHtml(draft.title)}</title>
 <style>
-  @page { size: A4; margin: 12mm; }
+  @page { size: A4; margin: 10mm; }
   * { box-sizing: border-box; }
+  :root {
+    --ink: #17151f;
+    --muted: #625f6f;
+    --line: #201d2b;
+    --red: #ff263d;
+    --blue: #1498d5;
+    --green: #32a85a;
+    --yellow: #ffe14d;
+    --paper: #fffdf4;
+    --shadow: 3px 4px 0 rgba(32, 29, 43, .18);
+  }
   body {
     margin: 0;
-    color: #17151f;
+    color: var(--ink);
     background: #f6f1df;
     font-family: "Segoe UI", Arial, sans-serif;
   }
@@ -3938,78 +3963,333 @@ function buildArticleHtmlDocument(draft) {
     width: 210mm;
     min-height: 297mm;
     margin: 0 auto;
-    padding: 14mm;
-    background: #fffdf4;
-    border: 2px solid #201d2b;
+    padding: 12mm;
+    background:
+      linear-gradient(90deg, rgba(255, 225, 77, .13) 0 8mm, transparent 8mm),
+      var(--paper);
+    border: 2px solid var(--line);
   }
   .header {
-    display: flex;
-    justify-content: space-between;
-    gap: 10mm;
-    padding-bottom: 5mm;
-    border-bottom: 2px solid #201d2b;
-  }
-  .brand { font-weight: 900; color: #ff263d; }
-  .unit { font-size: 11pt; font-weight: 800; color: #625f6f; text-align: right; }
-  h1 { margin: 7mm 0 4mm; font-size: 27pt; line-height: 1.05; }
-  .content {
     display: grid;
-    grid-template-columns: 1fr 58mm;
+    grid-template-columns: 1fr 56mm;
     gap: 8mm;
+    align-items: stretch;
+    padding-bottom: 6mm;
+    border-bottom: 3px solid var(--line);
+  }
+  .brand {
+    margin: 0 0 3mm;
+    color: var(--red);
+    font-size: 12pt;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0;
+  }
+  h1 {
+    margin: 0;
+    max-width: 118mm;
+    font-size: 28pt;
+    line-height: 1.05;
+  }
+  .focus {
+    margin: 4mm 0 0;
+    color: var(--muted);
+    font-size: 11pt;
+    font-weight: 800;
+  }
+  .unit-card {
+    padding: 4mm;
+    border: 2px solid var(--line);
+    border-radius: 4mm;
+    background: #eaf7ff;
+    box-shadow: var(--shadow);
+  }
+  .unit-card span {
+    display: block;
+    margin-bottom: 2mm;
+    color: var(--red);
+    font-size: 10pt;
+    font-weight: 950;
+  }
+  .unit-card b {
+    display: block;
+    font-size: 13pt;
+    line-height: 1.2;
+  }
+  .unit-card small {
+    display: block;
+    margin-top: 2mm;
+    color: var(--muted);
+    font-size: 10pt;
+    font-weight: 800;
+  }
+  .unit {
+    align-self: start;
+    justify-self: end;
+    max-width: 56mm;
+    padding: 4mm;
+    border: 2px solid var(--line);
+    border-radius: 4mm;
+    background: #eaf7ff;
+    box-shadow: var(--shadow);
+    color: var(--muted);
+    font-size: 11pt;
+    font-weight: 850;
+    line-height: 1.35;
+    text-align: right;
+  }
+  .page > h1 {
+    margin: 7mm 0 5mm;
+  }
+  .content,
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 66mm;
+    gap: 8mm;
+    margin-top: 8mm;
     align-items: start;
   }
+  .reading-card,
+  .article,
+  .art,
+  .art-card,
+  .word-bank,
+  .practice-card {
+    border: 2px solid var(--line);
+    border-radius: 5mm;
+    background: #fff;
+    box-shadow: var(--shadow);
+  }
+  .reading-card,
   .article {
-    font-size: 17pt;
-    font-weight: 650;
-    line-height: 1.75;
-    white-space: pre-line;
+    padding: 6mm;
   }
-  .art {
-    min-height: 58mm;
-    border: 2px solid #201d2b;
-    border-radius: 4mm;
-    overflow: hidden;
-    background: #eef9ff;
+  .section-label {
+    display: inline-block;
+    margin-bottom: 4mm;
+    padding: 1.8mm 3.5mm;
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    background: var(--yellow);
+    color: var(--red);
+    font-size: 10pt;
+    font-weight: 950;
   }
-  .art img {
-    display: block;
-    width: 100%;
-    height: 58mm;
-    object-fit: cover;
-  }
-  .image-placeholder {
+  .article,
+  .article-text {
     display: grid;
-    place-items: center;
-    height: 58mm;
-    color: #625f6f;
+    gap: 3mm;
+    margin: 0;
+    font-size: 16.5pt;
+    font-weight: 720;
+    line-height: 1.58;
+  }
+  .sentence {
+    display: block;
+    padding-bottom: 2.5mm;
+    border-bottom: 1px dashed rgba(32, 29, 43, .25);
+  }
+  .sentence:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+  .art,
+  .art-card {
+    position: relative;
+    min-height: 86mm;
+    overflow: hidden;
+    background: linear-gradient(180deg, #eaf7ff 0%, #fffdf4 100%);
+  }
+  .generated-art {
+    position: absolute;
+    inset: 5mm;
+    display: block;
+    width: calc(100% - 10mm);
+    height: calc(100% - 10mm);
+    object-fit: contain;
+    border-radius: 4mm;
+    background: rgba(255, 253, 244, .86);
+    z-index: 2;
+  }
+  .art-scene {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .has-image .art-scene {
+    opacity: .22;
+  }
+  .image-failed .generated-art {
+    display: none;
+  }
+  .image-failed .art-scene {
+    opacity: 1;
+  }
+  .sun,
+  .hill,
+  .pond,
+  .book,
+  .brush,
+  .paint-card {
+    position: absolute;
+    display: block;
+  }
+  .sun {
+    top: 8mm;
+    right: 9mm;
+    width: 18mm;
+    height: 18mm;
+    border: 2px solid rgba(32, 29, 43, .16);
+    border-radius: 50%;
+    background: #ffd75a;
+  }
+  .hill {
+    left: -12mm;
+    right: -12mm;
+    bottom: -16mm;
+    height: 42mm;
+    border-radius: 50% 50% 0 0;
+    background: #bfeeb5;
+  }
+  .pond {
+    right: 10mm;
+    bottom: 10mm;
+    width: 34mm;
+    height: 12mm;
+    border-radius: 50%;
+    background: rgba(20, 152, 213, .28);
+  }
+  .book {
+    left: 11mm;
+    bottom: 14mm;
+    width: 30mm;
+    height: 20mm;
+    border: 2px solid rgba(32, 29, 43, .24);
+    border-radius: 3mm;
+    background: #fff;
+    transform: rotate(-6deg);
+  }
+  .book::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 2mm;
+    bottom: 2mm;
+    border-left: 2px dashed rgba(32, 29, 43, .2);
+  }
+  .brush {
+    left: 24mm;
+    top: 22mm;
+    width: 29mm;
+    height: 4mm;
+    border-radius: 999px;
+    background: var(--blue);
+    transform: rotate(-28deg);
+  }
+  .brush::after {
+    content: "";
+    position: absolute;
+    right: -5mm;
+    top: -1.8mm;
+    width: 7mm;
+    height: 7mm;
+    border-radius: 50% 50% 50% 0;
+    background: var(--red);
+    transform: rotate(45deg);
+  }
+  .paint-card {
+    left: 12mm;
+    top: 15mm;
+    width: 28mm;
+    height: 17mm;
+    border: 2px solid rgba(32, 29, 43, .2);
+    border-radius: 4mm;
+    background: rgba(255, 255, 255, .8);
+  }
+  .image-note {
+    position: absolute;
+    left: 5mm;
+    right: 5mm;
+    bottom: 5mm;
+    z-index: 3;
+    padding: 2mm 3mm;
+    border: 1.5px solid rgba(32, 29, 43, .25);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .84);
+    color: var(--muted);
+    font-size: 9pt;
     font-weight: 900;
     text-align: center;
+  }
+  .has-image .image-note {
+    display: none;
   }
   .word-bank {
     display: flex;
     flex-wrap: wrap;
     gap: 3mm;
     margin-top: 8mm;
-    padding-top: 5mm;
-    border-top: 2px dashed #201d2b;
-  }
-  .word-bank span {
-    padding: 2mm 3.5mm;
-    border: 1.5px solid #201d2b;
-    border-radius: 999px;
-    background: #ffe8a6;
-    color: #ff263d;
-    font-weight: 900;
+    padding: 5mm;
   }
   .footer {
+    display: none;
+  }
+  .word-bank h2,
+  .practice-card h2 {
+    margin: 0 0 3mm;
+    font-size: 13pt;
+  }
+  .chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3mm;
+  }
+  .word-chip {
+    padding: 2mm 3.5mm;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    background: #ffe8a6;
+    color: var(--red);
+    font-size: 11pt;
+    font-weight: 900;
+  }
+  .practice-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6mm;
     margin-top: 8mm;
-    color: #625f6f;
-    font-size: 10pt;
-    font-weight: 800;
+  }
+  .practice-card {
+    min-height: 34mm;
+    padding: 5mm;
+  }
+  .check-line {
+    display: flex;
+    align-items: center;
+    gap: 3mm;
+    margin-top: 3mm;
+    color: var(--muted);
+    font-weight: 850;
+  }
+  .box {
+    width: 5mm;
+    height: 5mm;
+    border: 2px solid var(--line);
+    border-radius: 1mm;
+    background: #fff;
+  }
+  .writing-line {
+    display: block;
+    height: 9mm;
+    border-bottom: 1.8px solid rgba(32, 29, 43, .45);
   }
   @media print {
     body { background: #fff; }
-    .page { margin: 0; border: 0; }
+    .page {
+      margin: 0;
+      border: 0;
+      box-shadow: none;
+    }
   }
 </style>
 </head>
@@ -4022,11 +4302,45 @@ function buildArticleHtmlDocument(draft) {
     <h1>${escapeHtml(draft.title)}</h1>
     <section class="content">
       <p class="article">${escapeHtml(draft.article)}</p>
-      <figure class="art">${imageMarkup}</figure>
+      <figure class="art ${imageStateClass}">${imageMarkup}<span class="image-note">Watercolor illustration</span></figure>
     </section>
     <section class="word-bank">${wordBank}</section>
-    <div class="footer">Generated from Study Board, Sight Words, Collocation, Spelling Check, and Listen & Select words.</div>
   </main>
+  <script>
+    (function () {
+      var article = document.querySelector(".article");
+      var escapeText = function (value) {
+        return String(value).replace(/[&<>"']/g, function (character) {
+          return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+          }[character];
+        });
+      };
+      if (article) {
+        var sentences = article.textContent.trim().split(/(?<=[.!?])\\s+/).filter(Boolean);
+        if (sentences.length > 1) {
+          article.innerHTML = sentences.map(function (sentence) {
+            return '<span class="sentence">' + escapeText(sentence) + '</span>';
+          }).join("");
+        }
+      }
+      var art = document.querySelector(".art");
+      var image = art ? art.querySelector("img") : null;
+      if (image) {
+        image.addEventListener("error", function () {
+          art.classList.add("image-failed");
+        });
+        if (image.complete && image.naturalWidth === 0) {
+          art.classList.add("image-failed");
+        }
+      }
+      document.documentElement.classList.add("ready");
+    }());
+  <\/script>
 </body>
 </html>`;
 }
