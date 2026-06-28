@@ -1840,6 +1840,9 @@ async function initializeStudentSession() {
     ? staffResult.data
     : null;
   studentSignOut.textContent = academyStaffProfile ? "관리자 로그아웃" : "로그아웃";
+  if (academyStaffProfile && shouldOpenArticleMaker()) {
+    state.mode = "article";
+  }
   if (learnerProfile) {
     playerHud.hidden = false;
     await loadGameState();
@@ -1858,9 +1861,16 @@ function enableLocalStaffPreview() {
     role: "academy_owner",
     display_name: "Local Preview"
   };
+  if (shouldOpenArticleMaker()) {
+    state.mode = "article";
+  }
   studentSignOut.hidden = true;
   renderMain();
   return true;
+}
+
+function shouldOpenArticleMaker() {
+  return new URLSearchParams(window.location.search).get("articleMaker") === "1";
 }
 
 studentSignOut.addEventListener("click", async () => {

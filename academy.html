@@ -32,7 +32,8 @@
     }
     h1, h2, h3 { margin: 0; letter-spacing: 0; }
     h2 { margin-bottom: 8px; }
-    button {
+    button,
+    .nav-button {
       min-height: 42px;
       padding: 8px 14px;
       border: 3px solid var(--ink);
@@ -41,7 +42,19 @@
       cursor: pointer;
       font-weight: 900;
     }
+    .nav-button {
+      display: inline-flex;
+      align-items: center;
+      color: var(--ink);
+      text-decoration: none;
+    }
     button:disabled { cursor: wait; opacity: .6; }
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
     main { width: min(1180px, calc(100% - 28px)); margin: 22px auto; }
     .panel {
       margin-bottom: 18px;
@@ -89,9 +102,24 @@
       border-radius: 6px;
       background: #f5fcff;
     }
+    .teacher-tools {
+      margin: 18px 0;
+      padding: 14px;
+      border: 3px solid var(--ink);
+      border-radius: 6px;
+      background: #fff9d6;
+    }
+    .teacher-tools h3 { margin-bottom: 5px; }
+    .tool-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+    }
     .api-settings h3 { margin-bottom: 5px; }
     .api-row { grid-template-columns: minmax(220px, 1fr) auto auto; }
     .student-action { min-height: 34px; padding: 4px 10px; background: #fff; }
+    .student-action.is-open { background: var(--hot); color: #fff; }
     .metrics {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -124,7 +152,7 @@
       font-weight: 800;
     }
     @media (max-width: 850px) {
-      form, .api-row { grid-template-columns: 1fr; }
+      form, .api-row, .tool-row { grid-template-columns: 1fr; }
       .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .section-head { align-items: start; flex-direction: column; }
     }
@@ -145,7 +173,10 @@
       <h1>Zoops PoP Academy</h1>
       <strong id="academyTitle">원장님 관리</strong>
     </div>
-    <button id="signOut">로그아웃</button>
+    <div class="header-actions">
+      <a class="nav-button" href="phonics.html?articleMaker=1">Article Maker 자료 만들기</a>
+      <button id="signOut">로그아웃</button>
+    </div>
   </header>
 
   <main>
@@ -177,6 +208,16 @@
       </form>
       <p id="message" class="message" aria-live="polite"></p>
 
+      <div class="teacher-tools">
+        <div class="tool-row">
+          <div>
+            <h3>Article Maker 자료 만들기</h3>
+            <p class="muted">파닉스 단어, sight words, collocation을 묶어 A4 한 장짜리 읽기 자료와 수채화풍 그림을 만듭니다.</p>
+          </div>
+          <a class="nav-button" href="phonics.html?articleMaker=1">자료 만들기 열기</a>
+        </div>
+      </div>
+
       <div class="api-settings">
         <h3>Gemini AI 피드백 설정</h3>
         <p class="muted">Gemini 2.5 Flash API 키는 이 브라우저의 로컬 저장소에만 저장됩니다.</p>
@@ -203,7 +244,10 @@
           <h2 id="progressTitle">학생 성취도</h2>
           <p id="progressSubtitle" class="muted"></p>
         </div>
-        <button id="refreshProgress" type="button">새로고침</button>
+        <div class="header-actions">
+          <button id="refreshProgress" type="button">새로고침</button>
+          <button id="closeProgress" type="button">접기</button>
+        </div>
       </div>
 
       <div id="metricCards" class="metrics"></div>
@@ -357,7 +401,11 @@
           <td>${escapeText(student.student_login_id)}</td>
           <td>${escapeText(student.status)}</td>
           <td>${new Date(student.created_at).toLocaleDateString("ko-KR")}</td>
-          <td><button class="student-action" type="button" onclick="openStudentProgress('${student.id}')">성취도 보기</button></td>
+          <td>
+            <button class="student-action ${selectedStudent?.id === student.id && !progressPanel.classList.contains("hidden") ? "is-open" : ""}" type="button" onclick="openStudentProgress('${student.id}')">
+              ${selectedStudent?.id === student.id && !progressPanel.classList.contains("hidden") ? "성취도 접기" : "성취도 보기"}
+            </button>
+          </td>
         </tr>
       `).join("");
     }
@@ -382,10 +430,14 @@
     };
 
     async function openStudentProgress(studentId) {
+      if (selectedStudent?.id === studentId && !progressPanel.classList.contains("hidden")) {
+        closeStudentProgress();
+        return;
+      }
       selectedStudent = students.find(student => student.id === studentId);
       if (!selectedStudent) return;
-      await loadStudents();
       progressPanel.classList.remove("hidden");
+      await loadStudents();
       document.getElementById("progressTitle").textContent =
         `${selectedStudent.english_name} 학습 성취도`;
       document.getElementById("progressSubtitle").textContent =
@@ -393,6 +445,18 @@
       document.getElementById("feedbackText").value = "";
       await loadStudentProgress();
       progressPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    async function closeStudentProgress() {
+      selectedStudent = null;
+      selectedMetrics = null;
+      progressPanel.classList.add("hidden");
+      document.getElementById("metricCards").innerHTML = "";
+      document.getElementById("progressRows").innerHTML = "";
+      document.getElementById("wrongWords").classList.add("hidden");
+      document.getElementById("feedbackText").value = "";
+      feedbackStatus.textContent = "";
+      await loadStudents();
     }
 
     async function loadStudentProgress() {
@@ -778,6 +842,7 @@ ${unitLines || "아직 완료된 Unit 기록 없음"}`;
     }
 
     document.getElementById("refreshProgress").onclick = loadStudentProgress;
+    document.getElementById("closeProgress").onclick = closeStudentProgress;
     document.getElementById("signOut").onclick = async () => {
       await client.auth.signOut();
       location.href = "portal.html";
