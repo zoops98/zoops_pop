@@ -3821,22 +3821,22 @@ Requirements:
 - The title should be short and child-friendly.
 - wordBank should list 10 to 16 important words or phrases used in the article.
 - picturePrompt should describe one cohesive watercolor-style scene that directly matches the article.
-- picturePrompt must request a vertical portrait 9:16 composition for the worksheet image.
+- picturePrompt must request a horizontal 16:9 scene composition for the worksheet image.
 - The illustration should show the main setting, main characters, and 3 to 6 important objects from the article.
 - Avoid collage, stickers, icons, tiny characters, split scenes, speech bubbles, labels, letters, or text in the image.
-- The main subject should fill the tall frame naturally while keeping a gentle watercolor worksheet style.
-- Keep every important character and object fully visible inside the 9:16 frame. Do not crop faces, bodies, hands, animals, food, or key objects.`;
+- The main subject should fit naturally inside the wide scene frame while keeping a gentle watercolor worksheet style.
+- Keep every important character and object fully visible inside the 16:9 frame. Do not crop faces, bodies, hands, animals, food, or key objects.`;
 }
 
 async function generateArticleImage(apiKey, draft) {
   const prompt = [
     `${draft.picturePrompt}`,
     "Create one cohesive watercolor illustration for a children's phonics reading worksheet.",
-    "Use a vertical portrait 9:16 composition. The final image should feel intentionally tall, not a cropped landscape image.",
+    "Use a horizontal landscape 16:9 composition. The final image should feel intentionally wide, not a cropped portrait image.",
     "The picture must match the article as one natural scene, not a collage or a sticker sheet.",
     "Show the main characters and setting clearly. Include only objects that make sense in the article.",
-    "Keep the entire scene inside the portrait frame with safe margins. Do not cut off faces, bodies, animals, food, or key objects.",
-    "The subject should fill the tall portrait frame from top to bottom with a balanced composition, but nothing important should be cropped.",
+    "Keep the entire scene inside the wide frame with safe margins. Do not cut off faces, bodies, animals, food, or key objects.",
+    "The subject should fill the 16:9 scene frame with a balanced composition, but nothing important should be cropped.",
     "Soft colors, clean white background, friendly early elementary workbook style.",
     "No letters, no text, no watermark.",
     "The image should support this article:",
@@ -3928,19 +3928,17 @@ function exportArticleHtml() {
 
 function buildArticleHtmlDocument(draft) {
   const imageStateClass = draft.imageDataUri ? "has-image" : "no-image";
-  const artSceneMarkup = `
-        <div class="art-scene" aria-hidden="true">
-          <span class="sun"></span>
-          <span class="hill"></span>
-          <span class="pond"></span>
-          <span class="book"></span>
-          <span class="brush"></span>
-          <span class="paint-card"></span>
+  const sceneFallbackMarkup = `
+        <div class="scene-fallback" aria-hidden="true">
+          <span class="fallback-sky"></span>
+          <span class="fallback-table"></span>
+          <span class="fallback-book"></span>
+          <span class="fallback-brush"></span>
         </div>`;
   const imageMarkup = draft.imageDataUri
-    ? `${artSceneMarkup}
+    ? `${sceneFallbackMarkup}
         <img class="generated-art" src="${escapeAttribute(draft.imageDataUri)}" alt="${escapeAttribute(draft.title)} watercolor illustration">`
-    : artSceneMarkup;
+    : sceneFallbackMarkup;
   const wordBank = (draft.wordBank || [])
     .map(word => `<span class="word-chip">${escapeHtml(word)}</span>`)
     .join("");
@@ -3960,11 +3958,8 @@ function buildArticleHtmlDocument(draft) {
     --line: #201d2b;
     --red: #ff263d;
     --blue: #1498d5;
-    --green: #32a85a;
-    --yellow: #ffe14d;
     --paper: #fff;
     --soft-line: #d8dde8;
-    --hairline: rgba(32, 29, 43, .16);
     --shadow: 0 2mm 5mm rgba(32, 29, 43, .08);
   }
   body {
@@ -3978,38 +3973,16 @@ function buildArticleHtmlDocument(draft) {
     width: 210mm;
     min-height: 297mm;
     margin: 0 auto;
-    padding: 12mm 13mm;
+    padding: 13mm 15mm;
     background: var(--paper);
     border: 1px solid #eceff5;
     overflow: hidden;
   }
-  .page::before {
-    content: "";
-    position: absolute;
-    left: 11mm;
-    top: 20mm;
-    bottom: 24mm;
-    width: .45mm;
-    border-radius: 999px;
-    background: var(--soft-line);
-  }
-  .page::after {
-    content: "";
-    position: absolute;
-    left: 9.8mm;
-    top: 43mm;
-    width: 3mm;
-    height: 15mm;
-    border-radius: 999px;
-    background: linear-gradient(180deg, var(--red), var(--blue));
-  }
   .header {
     display: grid;
-    grid-template-columns: 1fr 56mm;
-    gap: 8mm;
+    grid-template-columns: 1fr 54mm;
+    gap: 10mm;
     align-items: start;
-    padding-bottom: 6mm;
-    border-bottom: 1px solid var(--soft-line);
   }
   .brand {
     display: inline-block;
@@ -4023,47 +3996,20 @@ function buildArticleHtmlDocument(draft) {
     letter-spacing: 0;
   }
   h1 {
+    display: inline-block;
     margin: 0;
-    max-width: 118mm;
-    font-size: 28pt;
-    line-height: 1.05;
-  }
-  .focus {
-    margin: 4mm 0 0;
-    color: var(--muted);
-    font-size: 11pt;
-    font-weight: 800;
-  }
-  .unit-card {
-    padding: 4mm;
-    border: 2px solid var(--line);
-    border-radius: 4mm;
+    max-width: 144mm;
+    padding: 0 7mm 0 0;
     background: #fff;
-    box-shadow: var(--shadow);
-  }
-  .unit-card span {
-    display: block;
-    margin-bottom: 2mm;
-    color: var(--red);
-    font-size: 10pt;
-    font-weight: 950;
-  }
-  .unit-card b {
-    display: block;
-    font-size: 13pt;
-    line-height: 1.2;
-  }
-  .unit-card small {
-    display: block;
-    margin-top: 2mm;
-    color: var(--muted);
-    font-size: 10pt;
-    font-weight: 800;
+    font-size: 30pt;
+    line-height: 1;
+    letter-spacing: 0;
+    transform: translateY(-52%);
   }
   .unit {
     align-self: start;
     justify-self: end;
-    max-width: 56mm;
+    max-width: 54mm;
     padding: 3.4mm 4mm;
     border: 1px solid var(--soft-line);
     border-top: 3px solid var(--blue);
@@ -4076,280 +4022,104 @@ function buildArticleHtmlDocument(draft) {
     line-height: 1.35;
     text-align: right;
   }
-  .page > h1 {
-    position: relative;
-    margin: 7mm 0 5mm;
-    padding-left: 5mm;
-    font-size: 27pt;
+  .title-rail {
+    margin: 8mm 0 5mm;
+    border-top: 1px solid var(--soft-line);
   }
-  .page > h1::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: .12em;
-    bottom: .12em;
-    width: .9mm;
-    border-radius: 999px;
-    background: var(--red);
-  }
-  .content,
-  .content-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 60mm;
-    gap: 8mm;
-    margin-top: 8mm;
-    align-items: start;
-  }
-  .reading-card,
-  .article,
-  .art,
-  .art-card,
+  .scene-card,
+  .story-card,
   .word-bank,
   .practice-card {
     border: 1px solid var(--soft-line);
-    border-radius: 8px;
+    border-radius: 12px;
     background: #fff;
     box-shadow: var(--shadow);
   }
-  .reading-card,
-  .article {
+  .scene-card {
     position: relative;
-    padding: 10mm 7mm 6mm;
-    counter-reset: sentence;
+    padding: 7mm;
   }
-  .article::before,
-  .art::before,
-  .word-bank::before {
-    position: absolute;
-    z-index: 4;
-    top: 3.2mm;
-    left: 5mm;
-    padding: 0 0 1mm;
-    border: 0;
+  .scene-label,
+  .story-label,
+  .bank-label {
+    display: inline-block;
+    margin: 0 0 3mm;
+    padding-bottom: 1mm;
     border-bottom: 1.5px solid currentColor;
-    border-radius: 999px;
-    background: #fff;
     color: var(--red);
     font-size: 8pt;
     font-weight: 950;
-    letter-spacing: 0;
     text-transform: uppercase;
   }
-  .article::before {
-    content: "Story";
-  }
-  .art::before {
-    content: "Scene";
-  }
-  .word-bank::before {
-    content: "Word Bank";
-  }
-  .section-label {
-    display: inline-block;
-    margin-bottom: 4mm;
-    padding: 1.8mm 3.5mm;
-    border: 2px solid var(--line);
-    border-radius: 999px;
-    background: var(--yellow);
-    color: var(--red);
-    font-size: 10pt;
-    font-weight: 950;
-  }
-  .article,
-  .article-text {
-    display: grid;
-    gap: 0;
-    margin: 0;
-    font-size: 15.5pt;
-    font-weight: 720;
-    line-height: 1.5;
-  }
-  .sentence {
+  .scene-frame {
     position: relative;
-    display: block;
-    min-height: 10mm;
-    padding: 2.3mm 0 2.3mm 10mm;
-    border-bottom: 1px dashed var(--hairline);
-  }
-  .sentence::before {
-    counter-increment: sentence;
-    content: counter(sentence);
-    position: absolute;
-    left: 0;
-    top: 2.7mm;
     display: grid;
     place-items: center;
-    width: 5.3mm;
-    height: 5.3mm;
-    border: 1px solid var(--soft-line);
-    border-radius: 50%;
-    color: var(--blue);
-    background: #fff;
-    font-size: 7.5pt;
-    font-weight: 950;
-  }
-  .sentence:last-child {
-    padding-bottom: 0;
-    border-bottom: 0;
-  }
-  .art,
-  .art-card {
-    position: relative;
-    width: 60mm;
-    aspect-ratio: 9 / 16;
-    min-height: 0;
-    justify-self: center;
+    width: 100%;
+    aspect-ratio: 16 / 9;
     overflow: hidden;
     background: #fff;
-    padding: 4mm;
+    border-radius: 10px;
   }
   .generated-art {
     position: absolute;
-    inset: 5mm 4mm 4mm;
+    inset: 0;
     display: block;
-    width: calc(100% - 8mm);
-    height: calc(100% - 9mm);
+    width: 100%;
+    height: 100%;
     object-fit: contain;
-    border-radius: 6px;
+    object-position: center center;
     background: #fff;
     z-index: 2;
   }
-  .art-scene {
+  .scene-fallback {
     position: absolute;
     inset: 0;
-    z-index: 1;
+    display: grid;
+    place-items: center;
+    background: #fff;
   }
-  .has-image .art-scene {
+  .scene-fallback::before {
+    content: "";
+    width: 42mm;
+    height: 18mm;
+    border: 1px solid var(--soft-line);
+    border-bottom: 2px solid var(--blue);
+    border-radius: 12px;
+  }
+  .has-image .scene-fallback {
     display: none;
   }
   .image-failed .generated-art {
     display: none;
   }
-  .image-failed .art-scene {
-    opacity: 1;
+  .image-failed .scene-fallback {
+    display: grid;
   }
-  .sun,
-  .hill,
-  .pond,
-  .book,
-  .brush,
-  .paint-card {
-    position: absolute;
-    display: block;
+  .story-card {
+    margin-top: 7mm;
+    padding: 6mm 7mm;
   }
-  .sun {
-    top: 8mm;
-    right: 9mm;
-    width: 18mm;
-    height: 18mm;
-    border: 2px solid rgba(32, 29, 43, .16);
-    border-radius: 50%;
-    background: #ffd75a;
-  }
-  .hill {
-    left: -12mm;
-    right: -12mm;
-    bottom: -16mm;
-    height: 42mm;
-    border-radius: 50% 50% 0 0;
-    background: #bfeeb5;
-  }
-  .pond {
-    right: 10mm;
-    bottom: 10mm;
-    width: 34mm;
-    height: 12mm;
-    border-radius: 50%;
-    background: rgba(20, 152, 213, .28);
-  }
-  .book {
-    left: 11mm;
-    bottom: 14mm;
-    width: 30mm;
-    height: 20mm;
-    border: 2px solid rgba(32, 29, 43, .24);
-    border-radius: 3mm;
-    background: #fff;
-    transform: rotate(-6deg);
-  }
-  .book::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 2mm;
-    bottom: 2mm;
-    border-left: 2px dashed rgba(32, 29, 43, .2);
-  }
-  .brush {
-    left: 24mm;
-    top: 22mm;
-    width: 29mm;
-    height: 4mm;
-    border-radius: 999px;
-    background: var(--blue);
-    transform: rotate(-28deg);
-  }
-  .brush::after {
-    content: "";
-    position: absolute;
-    right: -5mm;
-    top: -1.8mm;
-    width: 7mm;
-    height: 7mm;
-    border-radius: 50% 50% 50% 0;
-    background: var(--red);
-    transform: rotate(45deg);
-  }
-  .paint-card {
-    left: 12mm;
-    top: 15mm;
-    width: 28mm;
-    height: 17mm;
-    border: 2px solid rgba(32, 29, 43, .2);
-    border-radius: 4mm;
-    background: rgba(255, 255, 255, .8);
-  }
-  .image-note {
-    position: absolute;
-    left: 5mm;
-    right: 5mm;
-    bottom: 5mm;
-    z-index: 3;
-    padding: 2mm 3mm;
-    border: 1.5px solid rgba(32, 29, 43, .25);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, .84);
-    color: var(--muted);
-    font-size: 9pt;
-    font-weight: 900;
-    text-align: center;
-  }
-  .has-image .image-note {
-    display: none;
+  .story-text {
+    margin: 0;
+    font-size: 17pt;
+    line-height: 1.72;
+    font-weight: 720;
   }
   .word-bank {
-    display: flex;
-    flex-wrap: wrap;
-    position: relative;
-    gap: 2.6mm;
-    margin-top: 8mm;
-    padding: 10mm 5mm 5mm;
+    margin-top: 7mm;
+    padding: 5mm 6mm 6mm;
   }
   .footer {
     display: none;
   }
-  .word-bank h2,
-  .practice-card h2 {
-    margin: 0 0 3mm;
-    font-size: 13pt;
-  }
   .chip-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 3mm;
+    gap: 2.5mm;
   }
   .word-chip {
-    padding: 1.8mm 3.4mm;
+    padding: 1.7mm 3.4mm;
     border: 1px solid var(--soft-line);
     border-bottom: 2px solid var(--blue);
     border-radius: 999px;
@@ -4399,10 +4169,8 @@ function buildArticleHtmlDocument(draft) {
     .unit,
     .unit-card,
     .word-chip,
-    .reading-card,
-    .article,
-    .art,
-    .art-card,
+    .scene-card,
+    .story-card,
     .word-bank,
     .practice-card {
       background: #fff !important;
@@ -4416,43 +4184,30 @@ function buildArticleHtmlDocument(draft) {
       <div class="brand">Zoops PoP Reading Sheet</div>
       <div class="unit">${escapeHtml(draft.section)} &middot; ${escapeHtml(draft.unit)}<br>${escapeHtml(draft.label || "")}</div>
     </div>
-    <h1>${escapeHtml(draft.title)}</h1>
-    <section class="content">
-      <p class="article">${escapeHtml(draft.article)}</p>
-      <figure class="art ${imageStateClass}">${imageMarkup}<span class="image-note">Watercolor illustration</span></figure>
+    <section class="title-rail"><h1>${escapeHtml(draft.title)}</h1></section>
+    <section class="scene-card">
+      <div class="scene-label">Scene</div>
+      <figure class="scene-frame ${imageStateClass}">${imageMarkup}</figure>
     </section>
-    <section class="word-bank">${wordBank}</section>
+    <section class="story-card">
+      <div class="story-label">Story</div>
+      <p class="story-text">${escapeHtml(draft.article)}</p>
+    </section>
+    <section class="word-bank">
+      <div class="bank-label">Word Bank</div>
+      <div class="chip-list">${wordBank}</div>
+    </section>
   </main>
   <script>
     (function () {
-      var article = document.querySelector(".article");
-      var escapeText = function (value) {
-        return String(value).replace(/[&<>"']/g, function (character) {
-          return {
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#39;"
-          }[character];
-        });
-      };
-      if (article) {
-        var sentences = article.textContent.trim().split(/(?<=[.!?])\\s+/).filter(Boolean);
-        if (sentences.length > 1) {
-          article.innerHTML = sentences.map(function (sentence) {
-            return '<span class="sentence">' + escapeText(sentence) + '</span>';
-          }).join("");
-        }
-      }
-      var art = document.querySelector(".art");
-      var image = art ? art.querySelector("img") : null;
+      var scene = document.querySelector(".scene-frame");
+      var image = scene ? scene.querySelector("img") : null;
       if (image) {
         image.addEventListener("error", function () {
-          art.classList.add("image-failed");
+          scene.classList.add("image-failed");
         });
         if (image.complete && image.naturalWidth === 0) {
-          art.classList.add("image-failed");
+          scene.classList.add("image-failed");
         }
       }
       document.documentElement.classList.add("ready");
