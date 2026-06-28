@@ -3963,8 +3963,9 @@ function buildArticleHtmlDocument(draft) {
     --green: #32a85a;
     --yellow: #ffe14d;
     --paper: #fff;
-    --hairline: rgba(32, 29, 43, .2);
-    --shadow: 2px 3px 0 rgba(32, 29, 43, .14);
+    --soft-line: #d8dde8;
+    --hairline: rgba(32, 29, 43, .16);
+    --shadow: 0 2mm 5mm rgba(32, 29, 43, .08);
   }
   body {
     margin: 0;
@@ -3979,18 +3980,28 @@ function buildArticleHtmlDocument(draft) {
     margin: 0 auto;
     padding: 12mm 13mm;
     background: var(--paper);
-    border: 1.5px solid var(--line);
+    border: 1px solid #eceff5;
     overflow: hidden;
   }
   .page::before {
     content: "";
     position: absolute;
-    left: 9mm;
-    top: 12mm;
-    bottom: 12mm;
-    width: 1.6mm;
+    left: 11mm;
+    top: 20mm;
+    bottom: 24mm;
+    width: .45mm;
     border-radius: 999px;
-    background: linear-gradient(180deg, var(--red) 0 34%, var(--blue) 34% 68%, var(--green) 68% 100%);
+    background: var(--soft-line);
+  }
+  .page::after {
+    content: "";
+    position: absolute;
+    left: 9.8mm;
+    top: 43mm;
+    width: 3mm;
+    height: 15mm;
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--red), var(--blue));
   }
   .header {
     display: grid;
@@ -3998,15 +4009,15 @@ function buildArticleHtmlDocument(draft) {
     gap: 8mm;
     align-items: start;
     padding-bottom: 6mm;
-    border-bottom: 1.5px solid var(--line);
+    border-bottom: 1px solid var(--soft-line);
   }
   .brand {
     display: inline-block;
     margin: 0;
-    padding: 1.2mm 0;
-    border-bottom: 2.5px solid var(--red);
+    padding: 0 0 1.4mm;
+    border-bottom: 1.7px solid var(--red);
     color: var(--red);
-    font-size: 10.5pt;
+    font-size: 9.6pt;
     font-weight: 950;
     text-transform: uppercase;
     letter-spacing: 0;
@@ -4054,13 +4065,13 @@ function buildArticleHtmlDocument(draft) {
     justify-self: end;
     max-width: 56mm;
     padding: 3.4mm 4mm;
-    border: 1.5px solid var(--line);
-    border-top: 4px solid var(--blue);
-    border-radius: 5mm;
+    border: 1px solid var(--soft-line);
+    border-top: 3px solid var(--blue);
+    border-radius: 8px;
     background: #fff;
     box-shadow: var(--shadow);
     color: var(--muted);
-    font-size: 10.5pt;
+    font-size: 10pt;
     font-weight: 850;
     line-height: 1.35;
     text-align: right;
@@ -4077,7 +4088,7 @@ function buildArticleHtmlDocument(draft) {
     left: 0;
     top: .12em;
     bottom: .12em;
-    width: 1.6mm;
+    width: .9mm;
     border-radius: 999px;
     background: var(--red);
   }
@@ -4095,8 +4106,8 @@ function buildArticleHtmlDocument(draft) {
   .art-card,
   .word-bank,
   .practice-card {
-    border: 1.5px solid var(--line);
-    border-radius: 5mm;
+    border: 1px solid var(--soft-line);
+    border-radius: 8px;
     background: #fff;
     box-shadow: var(--shadow);
   }
@@ -4113,12 +4124,13 @@ function buildArticleHtmlDocument(draft) {
     z-index: 4;
     top: 3.2mm;
     left: 5mm;
-    padding: 1mm 2.8mm;
-    border: 1.4px solid var(--line);
+    padding: 0 0 1mm;
+    border: 0;
+    border-bottom: 1.5px solid currentColor;
     border-radius: 999px;
     background: #fff;
     color: var(--red);
-    font-size: 8.5pt;
+    font-size: 8pt;
     font-weight: 950;
     letter-spacing: 0;
     text-transform: uppercase;
@@ -4167,13 +4179,13 @@ function buildArticleHtmlDocument(draft) {
     top: 2.7mm;
     display: grid;
     place-items: center;
-    width: 5.7mm;
-    height: 5.7mm;
-    border: 1.3px solid var(--line);
+    width: 5.3mm;
+    height: 5.3mm;
+    border: 1px solid var(--soft-line);
     border-radius: 50%;
     color: var(--blue);
     background: #fff;
-    font-size: 8pt;
+    font-size: 7.5pt;
     font-weight: 950;
   }
   .sentence:last-child {
@@ -4198,7 +4210,7 @@ function buildArticleHtmlDocument(draft) {
     width: calc(100% - 8mm);
     height: calc(100% - 9mm);
     object-fit: contain;
-    border-radius: 3.5mm;
+    border-radius: 6px;
     background: #fff;
     z-index: 2;
   }
@@ -4338,8 +4350,8 @@ function buildArticleHtmlDocument(draft) {
   }
   .word-chip {
     padding: 1.8mm 3.4mm;
-    border: 1.2px solid var(--line);
-    border-bottom: 2.4px solid var(--blue);
+    border: 1px solid var(--soft-line);
+    border-bottom: 2px solid var(--blue);
     border-radius: 999px;
     background: #fff;
     color: var(--red);
@@ -4401,8 +4413,8 @@ function buildArticleHtmlDocument(draft) {
 <body>
   <main class="page">
     <div class="header">
-      <div class="brand">Zoops PoP Article Maker</div>
-      <div class="unit">${escapeHtml(draft.section)} · ${escapeHtml(draft.unit)}<br>${escapeHtml(draft.label || "")}</div>
+      <div class="brand">Zoops PoP Reading Sheet</div>
+      <div class="unit">${escapeHtml(draft.section)} &middot; ${escapeHtml(draft.unit)}<br>${escapeHtml(draft.label || "")}</div>
     </div>
     <h1>${escapeHtml(draft.title)}</h1>
     <section class="content">
