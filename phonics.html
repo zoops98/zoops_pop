@@ -970,8 +970,8 @@
     display: block;
     width: 100%;
     height: 210px;
-    object-fit: cover;
-    background: #fffdf4;
+    object-fit: contain;
+    background: #fff;
   }
 
   .article-art-placeholder {
@@ -3824,7 +3824,8 @@ Requirements:
 - picturePrompt must request a vertical portrait 9:16 composition for the worksheet image.
 - The illustration should show the main setting, main characters, and 3 to 6 important objects from the article.
 - Avoid collage, stickers, icons, tiny characters, split scenes, speech bubbles, labels, letters, or text in the image.
-- The main subject should fill the tall frame naturally while keeping a gentle watercolor worksheet style.`;
+- The main subject should fill the tall frame naturally while keeping a gentle watercolor worksheet style.
+- Keep every important character and object fully visible inside the 9:16 frame. Do not crop faces, bodies, hands, animals, food, or key objects.`;
 }
 
 async function generateArticleImage(apiKey, draft) {
@@ -3834,8 +3835,9 @@ async function generateArticleImage(apiKey, draft) {
     "Use a vertical portrait 9:16 composition. The final image should feel intentionally tall, not a cropped landscape image.",
     "The picture must match the article as one natural scene, not a collage or a sticker sheet.",
     "Show the main characters and setting clearly. Include only objects that make sense in the article.",
-    "The subject should fill the tall portrait frame from top to bottom with a balanced composition.",
-    "Soft colors, clean white or pale background, friendly early elementary workbook style.",
+    "Keep the entire scene inside the portrait frame with safe margins. Do not cut off faces, bodies, animals, food, or key objects.",
+    "The subject should fill the tall portrait frame from top to bottom with a balanced composition, but nothing important should be cropped.",
+    "Soft colors, clean white background, friendly early elementary workbook style.",
     "No letters, no text, no watermark.",
     "The image should support this article:",
     draft.article
@@ -3960,13 +3962,13 @@ function buildArticleHtmlDocument(draft) {
     --blue: #1498d5;
     --green: #32a85a;
     --yellow: #ffe14d;
-    --paper: #fffdf4;
+    --paper: #fff;
     --shadow: 3px 4px 0 rgba(32, 29, 43, .18);
   }
   body {
     margin: 0;
     color: var(--ink);
-    background: #f6f1df;
+    background: #fff;
     font-family: "Segoe UI", Arial, sans-serif;
   }
   .page {
@@ -3974,9 +3976,7 @@ function buildArticleHtmlDocument(draft) {
     min-height: 297mm;
     margin: 0 auto;
     padding: 12mm;
-    background:
-      linear-gradient(90deg, rgba(255, 225, 77, .13) 0 8mm, transparent 8mm),
-      var(--paper);
+    background: var(--paper);
     border: 2px solid var(--line);
   }
   .header {
@@ -4011,7 +4011,7 @@ function buildArticleHtmlDocument(draft) {
     padding: 4mm;
     border: 2px solid var(--line);
     border-radius: 4mm;
-    background: #eaf7ff;
+    background: #fff;
     box-shadow: var(--shadow);
   }
   .unit-card span {
@@ -4040,7 +4040,7 @@ function buildArticleHtmlDocument(draft) {
     padding: 4mm;
     border: 2px solid var(--line);
     border-radius: 4mm;
-    background: #eaf7ff;
+    background: #fff;
     box-shadow: var(--shadow);
     color: var(--muted);
     font-size: 11pt;
@@ -4111,7 +4111,7 @@ function buildArticleHtmlDocument(draft) {
     min-height: 0;
     justify-self: center;
     overflow: hidden;
-    background: linear-gradient(180deg, #eaf7ff 0%, #fffdf4 100%);
+    background: #fff;
   }
   .generated-art {
     position: absolute;
@@ -4119,9 +4119,9 @@ function buildArticleHtmlDocument(draft) {
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 0;
-    background: #fffdf4;
+    background: #fff;
     z-index: 2;
   }
   .art-scene {
@@ -4261,7 +4261,7 @@ function buildArticleHtmlDocument(draft) {
     padding: 2mm 3.5mm;
     border: 1.5px solid var(--line);
     border-radius: 999px;
-    background: #ffe8a6;
+    background: #fff;
     color: var(--red);
     font-size: 11pt;
     font-weight: 900;
@@ -4297,11 +4297,23 @@ function buildArticleHtmlDocument(draft) {
     border-bottom: 1.8px solid rgba(32, 29, 43, .45);
   }
   @media print {
-    body { background: #fff; }
+    body { background: #fff !important; }
     .page {
       margin: 0;
       border: 0;
       box-shadow: none;
+      background: #fff !important;
+    }
+    .unit,
+    .unit-card,
+    .word-chip,
+    .reading-card,
+    .article,
+    .art,
+    .art-card,
+    .word-bank,
+    .practice-card {
+      background: #fff !important;
     }
   }
 </style>
