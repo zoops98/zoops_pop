@@ -970,7 +970,7 @@
     display: block;
     width: 100%;
     height: 210px;
-    object-fit: contain;
+    object-fit: cover;
     background: #fffdf4;
   }
 
@@ -3809,6 +3809,9 @@ Write a short English article, not a list.
 Requirements:
 - 5 to 7 short sentences.
 - Use natural, meaningful language for children.
+- Build one coherent mini-story or one clear real-life scene, not separate unrelated sentences.
+- The article should be easy to illustrate as one picture.
+- Do not mention many unrelated places or objects just to use more words.
 - Use at least 8 phonics words from the Study Board.
 - Use at least 5 sight words.
 - Use at least 3 collocations naturally if they fit.
@@ -3817,15 +3820,20 @@ Requirements:
 - The article must fit on one A4 page with one small illustration.
 - The title should be short and child-friendly.
 - wordBank should list 10 to 16 important words or phrases used in the article.
-- picturePrompt should be an English prompt for one small watercolor-style illustration directly related to the article, no text in the image.`;
+- picturePrompt should describe one cohesive watercolor-style scene that directly matches the article.
+- The illustration should show the main setting, main characters, and 3 to 6 important objects from the article.
+- Avoid collage, stickers, icons, tiny characters, split scenes, speech bubbles, labels, letters, or text in the image.
+- The main subject should fill most of the frame while keeping a gentle watercolor worksheet style.`;
 }
 
 async function generateArticleImage(apiKey, draft) {
   const prompt = [
     `${draft.picturePrompt}`,
-    "Small watercolor illustration for a children's phonics reading worksheet.",
-    "Soft colors, white background, simple centered scene, no close-up crop.",
-    "Leave gentle margins around the subject so it fits inside a small worksheet frame.",
+    "Create one cohesive watercolor illustration for a children's phonics reading worksheet.",
+    "The picture must match the article as one natural scene, not a collage or a sticker sheet.",
+    "Show the main characters and setting clearly. Include only objects that make sense in the article.",
+    "The subject should fill about 75 percent of the image area with a balanced composition.",
+    "Soft colors, clean white or pale background, friendly early elementary workbook style.",
     "No letters, no text, no watermark.",
     "The image should support this article:",
     draft.article
@@ -4102,13 +4110,13 @@ function buildArticleHtmlDocument(draft) {
   }
   .generated-art {
     position: absolute;
-    inset: 5mm;
+    inset: 0;
     display: block;
-    width: calc(100% - 10mm);
-    height: calc(100% - 10mm);
-    object-fit: contain;
-    border-radius: 4mm;
-    background: rgba(255, 253, 244, .86);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    background: #fffdf4;
     z-index: 2;
   }
   .art-scene {
@@ -4117,7 +4125,7 @@ function buildArticleHtmlDocument(draft) {
     z-index: 1;
   }
   .has-image .art-scene {
-    opacity: .22;
+    display: none;
   }
   .image-failed .generated-art {
     display: none;
