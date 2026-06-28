@@ -3821,18 +3821,20 @@ Requirements:
 - The title should be short and child-friendly.
 - wordBank should list 10 to 16 important words or phrases used in the article.
 - picturePrompt should describe one cohesive watercolor-style scene that directly matches the article.
+- picturePrompt must request a vertical portrait 9:16 composition for the worksheet image.
 - The illustration should show the main setting, main characters, and 3 to 6 important objects from the article.
 - Avoid collage, stickers, icons, tiny characters, split scenes, speech bubbles, labels, letters, or text in the image.
-- The main subject should fill most of the frame while keeping a gentle watercolor worksheet style.`;
+- The main subject should fill the tall frame naturally while keeping a gentle watercolor worksheet style.`;
 }
 
 async function generateArticleImage(apiKey, draft) {
   const prompt = [
     `${draft.picturePrompt}`,
     "Create one cohesive watercolor illustration for a children's phonics reading worksheet.",
+    "Use a vertical portrait 9:16 composition. The final image should feel intentionally tall, not a cropped landscape image.",
     "The picture must match the article as one natural scene, not a collage or a sticker sheet.",
     "Show the main characters and setting clearly. Include only objects that make sense in the article.",
-    "The subject should fill about 75 percent of the image area with a balanced composition.",
+    "The subject should fill the tall portrait frame from top to bottom with a balanced composition.",
     "Soft colors, clean white or pale background, friendly early elementary workbook style.",
     "No letters, no text, no watermark.",
     "The image should support this article:",
@@ -4052,7 +4054,7 @@ function buildArticleHtmlDocument(draft) {
   .content,
   .content-grid {
     display: grid;
-    grid-template-columns: 1fr 66mm;
+    grid-template-columns: minmax(0, 1fr) 60mm;
     gap: 8mm;
     margin-top: 8mm;
     align-items: start;
@@ -4104,7 +4106,10 @@ function buildArticleHtmlDocument(draft) {
   .art,
   .art-card {
     position: relative;
-    min-height: 86mm;
+    width: 60mm;
+    aspect-ratio: 9 / 16;
+    min-height: 0;
+    justify-self: center;
     overflow: hidden;
     background: linear-gradient(180deg, #eaf7ff 0%, #fffdf4 100%);
   }
