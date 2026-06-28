@@ -3825,6 +3825,8 @@ Requirements:
 - The illustration should show the main setting, main characters, and 3 to 6 important objects from the article.
 - Avoid collage, stickers, icons, tiny characters, split scenes, speech bubbles, labels, letters, or text in the image.
 - The main subject should fit naturally inside the wide scene frame while keeping a gentle watercolor worksheet style.
+- Use most of the wide 16:9 canvas so the scene feels full, but avoid cropping or oversized close-ups.
+- Avoid large empty white margins around the main scene.
 - Keep every important character and object fully visible inside the 16:9 frame. Do not crop faces, bodies, hands, animals, food, or key objects.`;
 }
 
@@ -3837,6 +3839,7 @@ async function generateArticleImage(apiKey, draft) {
     "Show the main characters and setting clearly. Include only objects that make sense in the article.",
     "Keep the entire scene inside the wide frame with safe margins. Do not cut off faces, bodies, animals, food, or key objects.",
     "The subject should fill the 16:9 scene frame with a balanced composition, but nothing important should be cropped.",
+    "Use most of the canvas area. Avoid excessive blank white borders around the illustration.",
     "Soft colors, clean white background, friendly early elementary workbook style.",
     "No letters, no text, no watermark.",
     "The image should support this article:",
@@ -4023,10 +4026,9 @@ function buildArticleHtmlDocument(draft) {
     text-align: right;
   }
   .title-rail {
-    margin: 8mm 0 5mm;
+    margin: 4.5mm 0 3mm;
     border-top: 1px solid var(--soft-line);
   }
-  .scene-card,
   .story-card,
   .word-bank,
   .practice-card {
@@ -4036,14 +4038,22 @@ function buildArticleHtmlDocument(draft) {
     box-shadow: var(--shadow);
   }
   .scene-card {
-    position: relative;
-    padding: 7mm;
+    margin-top: 0;
   }
-  .scene-label,
   .story-label,
   .bank-label {
     display: inline-block;
     margin: 0 0 3mm;
+    padding-bottom: 1mm;
+    border-bottom: 1.5px solid currentColor;
+    color: var(--red);
+    font-size: 8pt;
+    font-weight: 950;
+    text-transform: uppercase;
+  }
+  .scene-label {
+    display: inline-block;
+    margin: 0 0 2mm 5mm;
     padding-bottom: 1mm;
     border-bottom: 1.5px solid currentColor;
     color: var(--red);
@@ -4058,8 +4068,12 @@ function buildArticleHtmlDocument(draft) {
     width: 100%;
     aspect-ratio: 16 / 9;
     overflow: hidden;
+    contain: paint;
+    isolation: isolate;
     background: #fff;
-    border-radius: 10px;
+    border: 1px solid var(--soft-line);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
   }
   .generated-art {
     position: absolute;
@@ -4067,6 +4081,8 @@ function buildArticleHtmlDocument(draft) {
     display: block;
     width: 100%;
     height: 100%;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
     object-position: center center;
     background: #fff;
