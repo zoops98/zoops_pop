@@ -805,6 +805,181 @@
     font: 900 13px "Segoe UI", system-ui, sans-serif;
   }
 
+  .article-maker {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 16px;
+  }
+
+  .article-maker[hidden] {
+    display: none;
+  }
+
+  .article-toolbar,
+  .article-preview,
+  .article-source-board {
+    border: 4px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+    box-shadow: var(--small-shadow);
+  }
+
+  .article-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 14px;
+    align-items: center;
+    padding: 16px;
+    background: linear-gradient(90deg, #fff 0%, #f1ffdc 100%);
+  }
+
+  .article-toolbar h3,
+  .article-preview h3 {
+    margin: 0;
+    font-size: 26px;
+  }
+
+  .article-toolbar p,
+  .article-status,
+  .article-note {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font: 800 14px "Segoe UI", system-ui, sans-serif;
+  }
+
+  .article-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .article-btn {
+    min-height: 42px;
+    padding: 9px 14px;
+    border: 3px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--sun);
+    box-shadow: var(--small-shadow);
+    cursor: pointer;
+    font-weight: 900;
+  }
+
+  .article-btn.secondary {
+    background: #fff;
+  }
+
+  .article-btn:disabled {
+    cursor: wait;
+    opacity: .62;
+    transform: none;
+  }
+
+  .article-source-board {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .article-source-block {
+    min-width: 0;
+    padding: 12px;
+    border: 3px solid var(--line);
+    border-radius: 6px;
+    background: #f7fbff;
+  }
+
+  .article-source-block b {
+    display: block;
+    margin-bottom: 9px;
+  }
+
+  .article-chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .article-chip {
+    padding: 5px 8px;
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font: 900 12px "Segoe UI", system-ui, sans-serif;
+  }
+
+  .article-preview {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 230px;
+    gap: 16px;
+    padding: 18px;
+    background: #fffdf4;
+  }
+
+  .article-page-text {
+    font-family: "Segoe UI", system-ui, sans-serif;
+  }
+
+  .article-title-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .article-unit-pill {
+    padding: 5px 9px;
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font: 900 12px "Segoe UI", system-ui, sans-serif;
+  }
+
+  .article-story {
+    margin: 0;
+    color: var(--ink);
+    font-size: 19px;
+    font-weight: 750;
+    line-height: 1.62;
+    white-space: pre-line;
+  }
+
+  .article-word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 14px;
+  }
+
+  .article-art {
+    display: grid;
+    place-items: center;
+    min-height: 210px;
+    border: 3px solid var(--line);
+    border-radius: var(--radius);
+    background: #eef9ff;
+    overflow: hidden;
+  }
+
+  .article-art img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .article-art-placeholder {
+    padding: 14px;
+    color: var(--muted);
+    font: 900 14px "Segoe UI", system-ui, sans-serif;
+    text-align: center;
+  }
+
   .play-big {
     display: grid;
     place-items: center;
@@ -1491,6 +1666,20 @@
       grid-template-columns: 1fr;
     }
 
+    .article-toolbar,
+    .article-preview,
+    .article-source-board {
+      grid-template-columns: 1fr;
+    }
+
+    .article-actions {
+      justify-content: stretch;
+    }
+
+    .article-btn {
+      flex: 1 1 auto;
+    }
+
     .book-tab {
       min-height: 60px;
       padding: 7px 6px;
@@ -1602,6 +1791,7 @@ const streakChip = document.getElementById("streakChip");
 const levelPop = document.getElementById("levelPop");
 const levelPopCard = document.getElementById("levelPopCard");
 let learnerProfile = null;
+let academyStaffProfile = null;
 let activeLearningSessionId = null;
 let activeLearningSessionPromise = null;
 let learningSessionCompleted = false;
@@ -1630,18 +1820,30 @@ async function initializeStudentSession() {
   studentSignOut.hidden = !session;
   if (!session) return;
 
-  const { data: student } = await authClient
-    .from("students")
-    .select("id, academy_id, english_name")
-    .eq("auth_user_id", session.user.id)
-    .eq("status", "active")
-    .maybeSingle();
+  const [studentResult, staffResult] = await Promise.all([
+    authClient
+      .from("students")
+      .select("id, academy_id, english_name")
+      .eq("auth_user_id", session.user.id)
+      .eq("status", "active")
+      .maybeSingle(),
+    authClient
+      .from("profiles")
+      .select("academy_id, role, display_name")
+      .eq("id", session.user.id)
+      .maybeSingle()
+  ]);
 
-  learnerProfile = student;
+  learnerProfile = studentResult.data;
+  academyStaffProfile = ["academy_owner", "teacher"].includes(staffResult.data?.role)
+    ? staffResult.data
+    : null;
+  studentSignOut.textContent = academyStaffProfile ? "관리자 로그아웃" : "로그아웃";
   if (learnerProfile) {
     playerHud.hidden = false;
     await loadGameState();
   }
+  if (academyStaffProfile) renderMain();
 }
 
 studentSignOut.addEventListener("click", async () => {
@@ -1680,7 +1882,10 @@ const state = {
   listenSelectedIds: [],
   listenAttempts: 1,
   listenStatus: "ready",
-  listenCompleted: {}
+  listenCompleted: {},
+  articleDraft: null,
+  articleStatus: "",
+  articleWorking: false
 };
 
 const GOOGLE_TTS_VOICE_NAMES = [
@@ -1692,6 +1897,10 @@ const WORD_AUDIO_BASE = "audio/words/";
 const WORD_AUDIO_VERSION = "emma-20260627-2";
 const COLLAB_AUDIO_BASE = "audio/collab/";
 const COLLAB_AUDIO_VERSION = "emma-collocation-20260628-1";
+const GEMINI_KEY_STORAGE = "zoops_pop_gemini_api_key";
+const ARTICLE_TEXT_MODEL = "gemini-2.5-flash";
+const ARTICLE_IMAGE_MODEL = "gemini-3.1-flash-image";
+const ARTICLE_IMAGE_FALLBACK_MODEL = "gemini-2.5-flash-image";
 let selectedTtsVoice = null;
 let ttsPlaybackId = 0;
 let activeWordAudio = null;
@@ -1710,6 +1919,13 @@ function currentUnit() {
 
 function currentUnitKey() {
   return `${state.book}:${state.unitIndex + 1}`;
+}
+
+function isAcademyStaff() {
+  return Boolean(
+    academyStaffProfile &&
+    ["academy_owner", "teacher"].includes(academyStaffProfile.role)
+  );
 }
 
 async function loadGameState(render = true) {
@@ -2057,6 +2273,10 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function escapeAttribute(value) {
+  return escapeHtml(value).replaceAll("`", "&#096;");
 }
 
 function getMarkedLetters(word, unit) {
@@ -3186,6 +3406,10 @@ function renderMobileUnits() {
 function renderMain() {
   const main = document.getElementById("main");
   const unit = currentUnit();
+  const canMakeArticle = isAcademyStaff();
+  if (state.mode === "article" && !canMakeArticle) {
+    state.mode = "study";
+  }
   if (state.mode === "listen" && state.listenTokens.length === 0) {
     prepareListenRound(state.listenIndex);
   }
@@ -3204,10 +3428,16 @@ function renderMain() {
     state.mode === "listen" ? listenPromptWord :
     state.mode === "sight" ? selectedSightWord :
     selectedWord;
-  const utilityAction = state.mode === "collab" && selectedCollabPhrase
+  const utilityAction = state.mode === "article"
+    ? "generateArticleSheet()"
+    : state.mode === "collab" && selectedCollabPhrase
     ? `playCollabPhrase(${state.collabIndex})`
     : `playWord('${escapeHtml(utilityWord)}')`;
-  const utilityLabel = state.mode === "collab" ? "Play Collocation" : "Play Word";
+  const utilityLabel = state.mode === "article"
+    ? "Make Article"
+    : state.mode === "collab"
+      ? "Play Collocation"
+      : "Play Word";
 
   main.innerHTML = `
     <section class="worksheet">
@@ -3231,6 +3461,7 @@ function renderMain() {
         <button class="mode-tab ${state.mode === "collab" ? "active" : ""}" onclick="setMode('collab')">Collocation</button>
         <button class="mode-tab ${state.mode === "spell" ? "active" : ""}" onclick="setMode('spell')">Spelling Check</button>
         <button class="mode-tab ${state.mode === "listen" ? "active" : ""}" onclick="setMode('listen')">Listen & Select</button>
+        ${canMakeArticle ? `<button class="mode-tab ${state.mode === "article" ? "active" : ""}" onclick="setMode('article')">Article Maker</button>` : ""}
         <button class="utility-btn" onclick="${utilityAction}">${utilityLabel}</button>
       </div>
 
@@ -3238,6 +3469,7 @@ function renderMain() {
         ${unit.families.map(item => `<span class="pattern-chip">${escapeHtml(item)}</span>`).join("")}
         ${state.mode === "sight" ? `<span class="pattern-chip">Sight Words</span>` : ""}
         ${state.mode === "collab" ? `<span class="pattern-chip">Collocation</span>` : ""}
+        ${state.mode === "article" ? `<span class="pattern-chip">Article Maker</span>` : ""}
       </div>
 
       ${
@@ -3247,9 +3479,11 @@ function renderMain() {
             ? renderSightMode(unit, sightWords, selectedSightWord)
             : state.mode === "collab"
               ? renderCollabMode(collabPhrases, selectedCollabPhrase)
-              : state.mode === "spell"
-                ? renderSpellMode(unit, correctCount, checkedCount)
-                : renderListenMode(unit)
+              : state.mode === "article"
+                ? renderArticleMaker(unit, sightWords, collabPhrases)
+                : state.mode === "spell"
+                  ? renderSpellMode(unit, correctCount, checkedCount)
+                  : renderListenMode(unit)
       }
     </section>
   `;
@@ -3322,6 +3556,459 @@ function renderCollabMode(collabPhrases, selectedCollabPhrase) {
       `).join("")}
     </div>
   `;
+}
+
+function renderArticleMaker(unit, sightWords, collabPhrases) {
+  const source = buildArticleSource(unit, sightWords, collabPhrases);
+  const draft = state.articleDraft;
+  return `
+    <div class="article-maker">
+      <div class="article-toolbar">
+        <div>
+          <h3>Article Maker</h3>
+          <p>${escapeHtml(state.book)} · ${escapeHtml(unit.name)} 단어로 A4 한 장짜리 짧은 글과 수채화 그림을 만듭니다.</p>
+          <p class="article-status" id="articleStatus">${escapeHtml(state.articleStatus || "원장님 API 키로 바로 생성할 수 있습니다.")}</p>
+        </div>
+        <div class="article-actions">
+          <button class="article-btn" type="button" onclick="generateArticleSheet()" ${state.articleWorking ? "disabled" : ""}>
+            ${state.articleWorking ? "Making..." : "Make Article"}
+          </button>
+          <button class="article-btn secondary" type="button" onclick="exportArticleHtml()" ${draft ? "" : "disabled"}>
+            Export HTML
+          </button>
+        </div>
+      </div>
+
+      <div class="article-source-board">
+        ${renderArticleSourceBlock("Study Board", source.studyWords)}
+        ${renderArticleSourceBlock("Sight Words", source.sightWords)}
+        ${renderArticleSourceBlock("Collocation", source.collocations)}
+      </div>
+
+      ${draft ? renderArticlePreview(draft) : `
+        <div class="article-preview">
+          <div class="article-page-text">
+            <div class="article-title-line">
+              <span class="article-unit-pill">${escapeHtml(unit.label)}</span>
+              <h3>Ready for a One-Page Reading</h3>
+            </div>
+            <p class="article-story">학습한 단어를 자연스러운 짧은 글로 묶어 A4 읽기 자료로 만들 수 있습니다.</p>
+          </div>
+          <div class="article-art">
+            <span class="article-art-placeholder">Watercolor picture</span>
+          </div>
+        </div>
+      `}
+    </div>
+  `;
+}
+
+function renderArticleSourceBlock(title, items) {
+  return `
+    <div class="article-source-block">
+      <b>${escapeHtml(title)}</b>
+      <div class="article-chip-list">
+        ${items.map(item => `<span class="article-chip">${escapeHtml(item)}</span>`).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderArticlePreview(draft) {
+  return `
+    <div class="article-preview">
+      <div class="article-page-text">
+        <div class="article-title-line">
+          <span class="article-unit-pill">${escapeHtml(draft.section)} · ${escapeHtml(draft.unit)}</span>
+          <h3>${escapeHtml(draft.title)}</h3>
+        </div>
+        <p class="article-story">${escapeHtml(draft.article)}</p>
+        <div class="article-word-bank">
+          ${(draft.wordBank || []).map(word => `<span class="article-chip">${escapeHtml(word)}</span>`).join("")}
+        </div>
+        ${draft.note ? `<p class="article-note">${escapeHtml(draft.note)}</p>` : ""}
+      </div>
+      <div class="article-art">
+        ${draft.imageDataUri
+          ? `<img src="${escapeAttribute(draft.imageDataUri)}" alt="${escapeAttribute(draft.title)} watercolor illustration">`
+          : `<span class="article-art-placeholder">그림 생성 전입니다.</span>`}
+      </div>
+    </div>
+  `;
+}
+
+function buildArticleSource(unit, sightWords, collabPhrases) {
+  return {
+    section: state.book,
+    unit: unit.name,
+    label: unit.label,
+    focus: unit.focus,
+    studyWords: (unit.words || []).slice(0, 12),
+    sightWords: (sightWords || []).slice(0, 9).map(displaySightWord),
+    collocations: (collabPhrases || []).slice(0, 9).map(item => item.phrase),
+    spellingWords: (unit.words || []).slice(0, 12),
+    listenWords: (unit.words || []).slice(0, 12)
+  };
+}
+
+async function generateArticleSheet() {
+  if (!isAcademyStaff()) {
+    state.articleStatus = "Article Maker는 원장님 또는 교사 계정에서만 사용할 수 있습니다.";
+    renderMain();
+    return;
+  }
+
+  const apiKey = localStorage.getItem(GEMINI_KEY_STORAGE);
+  if (!apiKey) {
+    state.articleStatus = "academy.html에서 Google Gemini API 키를 먼저 저장해 주세요.";
+    renderMain();
+    return;
+  }
+
+  const unit = currentUnit();
+  const sightWords = unit.sightWords || [];
+  const collabPhrases = makeCollabPhrases(unit, sightWords);
+  const source = buildArticleSource(unit, sightWords, collabPhrases);
+
+  state.articleWorking = true;
+  state.articleStatus = "짧은 글을 만들고 있습니다...";
+  renderMain();
+
+  try {
+    const article = await generateArticleText(apiKey, source);
+    state.articleDraft = {
+      ...article,
+      section: source.section,
+      unit: source.unit,
+      label: source.label,
+      source,
+      imageDataUri: "",
+      note: ""
+    };
+    state.articleStatus = "글이 완성되었습니다. 수채화 그림을 만들고 있습니다...";
+    renderMain();
+
+    try {
+      state.articleDraft.imageDataUri = await generateArticleImage(apiKey, state.articleDraft);
+      state.articleStatus = "A4 Article이 완성되었습니다.";
+    } catch (imageError) {
+      state.articleDraft.note = `그림 생성은 실패했습니다: ${imageError.message}`;
+      state.articleStatus = "글은 완성되었습니다. 그림은 다시 생성해 주세요.";
+    }
+  } catch (error) {
+    state.articleStatus = error.message;
+  } finally {
+    state.articleWorking = false;
+    renderMain();
+  }
+}
+
+async function generateArticleText(apiKey, source) {
+  const prompt = buildArticlePrompt(source);
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${ARTICLE_TEXT_MODEL}:generateContent`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": apiKey,
+      },
+      body: JSON.stringify({
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.55,
+          maxOutputTokens: 1400,
+          thinkingConfig: { thinkingBudget: 0 },
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: "OBJECT",
+            properties: {
+              title: { type: "STRING" },
+              article: { type: "STRING" },
+              picturePrompt: { type: "STRING" },
+              wordBank: {
+                type: "ARRAY",
+                items: { type: "STRING" }
+              }
+            },
+            required: ["title", "article", "picturePrompt", "wordBank"]
+          }
+        }
+      }),
+    }
+  );
+  const result = await response.json();
+  if (!response.ok) {
+    throw new Error(result.error?.message || "Gemini 글 생성 요청이 실패했습니다.");
+  }
+  const text = extractGeminiText(result);
+  if (!text) throw new Error("Gemini가 글 데이터를 반환하지 않았습니다.");
+
+  let draft;
+  try {
+    draft = JSON.parse(text);
+  } catch {
+    throw new Error("Gemini 글 응답 형식이 올바르지 않습니다. 다시 생성해 주세요.");
+  }
+
+  return {
+    title: String(draft.title || `${source.unit} Reading`).trim(),
+    article: String(draft.article || "").trim(),
+    picturePrompt: String(draft.picturePrompt || "").trim(),
+    wordBank: Array.isArray(draft.wordBank)
+      ? draft.wordBank.map(word => String(word).trim()).filter(Boolean).slice(0, 18)
+      : []
+  };
+}
+
+function buildArticlePrompt(source) {
+  return `You are creating a one-page A4 reading article for young Korean EFL phonics learners.
+Return only valid JSON with title, article, picturePrompt, and wordBank.
+
+Current unit:
+- Section: ${source.section}
+- Unit: ${source.unit}
+- Sound focus: ${source.focus}
+
+Learning materials the student already studied:
+- Study Board phonics words: ${source.studyWords.join(", ")}
+- Sight words: ${source.sightWords.join(", ")}
+- Collocations: ${source.collocations.join(" | ")}
+- Spelling Check words: ${source.spellingWords.join(", ")}
+- Listen & Select words: ${source.listenWords.join(", ")}
+
+Write a short English article, not a list.
+Requirements:
+- 5 to 7 short sentences.
+- Use natural, meaningful language for children.
+- Use at least 8 phonics words from the Study Board.
+- Use at least 5 sight words.
+- Use at least 3 collocations naturally if they fit.
+- Do not force awkward phrases.
+- Keep the article easy enough for early elementary learners.
+- The article must fit on one A4 page with one small illustration.
+- The title should be short and child-friendly.
+- wordBank should list 10 to 16 important words or phrases used in the article.
+- picturePrompt should be an English prompt for one small watercolor-style illustration directly related to the article, no text in the image.`;
+}
+
+async function generateArticleImage(apiKey, draft) {
+  const prompt = [
+    `${draft.picturePrompt}`,
+    "Small watercolor illustration for a children's phonics reading worksheet.",
+    "Soft colors, white background, simple scene, no letters, no text, no watermark.",
+    "The image should support this article:",
+    draft.article
+  ].join("\n");
+
+  const primaryError = await tryGenerateArticleImage(apiKey, ARTICLE_IMAGE_MODEL, prompt)
+    .then(result => {
+      if (result) return { ok: true, result };
+      return { ok: false, error: new Error("이미지 데이터가 비어 있습니다.") };
+    })
+    .catch(error => ({ ok: false, error }));
+  if (primaryError.ok) return primaryError.result;
+
+  const fallback = await tryGenerateArticleImage(apiKey, ARTICLE_IMAGE_FALLBACK_MODEL, prompt)
+    .catch(error => {
+      throw new Error(`${primaryError.error.message}; fallback: ${error.message}`);
+    });
+  if (!fallback) throw new Error(primaryError.error.message);
+  return fallback;
+}
+
+async function tryGenerateArticleImage(apiKey, model, prompt) {
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": apiKey,
+      },
+      body: JSON.stringify({
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        generationConfig: {
+          responseModalities: ["IMAGE", "TEXT"]
+        }
+      }),
+    }
+  );
+  const result = await response.json();
+  if (!response.ok) {
+    throw new Error(result.error?.message || `${model} 이미지 생성 요청이 실패했습니다.`);
+  }
+  const image = extractGeminiImage(result);
+  return image ? `data:${image.mimeType};base64,${image.data}` : "";
+}
+
+function extractGeminiText(result) {
+  return (result.candidates?.[0]?.content?.parts || [])
+    .filter(part => !part.thought)
+    .map(part => part.text || "")
+    .join("")
+    .trim();
+}
+
+function extractGeminiImage(result) {
+  const parts = result.candidates?.[0]?.content?.parts || [];
+  for (const part of parts) {
+    const inlineData = part.inlineData || part.inline_data;
+    if (inlineData?.data) {
+      return {
+        data: inlineData.data,
+        mimeType: inlineData.mimeType || inlineData.mime_type || "image/png"
+      };
+    }
+  }
+  return null;
+}
+
+function exportArticleHtml() {
+  if (!state.articleDraft) {
+    state.articleStatus = "먼저 Article을 만들어 주세요.";
+    renderMain();
+    return;
+  }
+  const html = buildArticleHtmlDocument(state.articleDraft);
+  const fileName = `${slugifyFileName(state.articleDraft.section)}-${slugifyFileName(state.articleDraft.unit)}-article.html`;
+  const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.open(url, "_blank", "noopener,noreferrer");
+  window.setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+
+function buildArticleHtmlDocument(draft) {
+  const imageMarkup = draft.imageDataUri
+    ? `<img src="${escapeAttribute(draft.imageDataUri)}" alt="${escapeAttribute(draft.title)} watercolor illustration">`
+    : `<div class="image-placeholder">Watercolor illustration</div>`;
+  const wordBank = (draft.wordBank || [])
+    .map(word => `<span>${escapeHtml(word)}</span>`)
+    .join("");
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${escapeHtml(draft.title)}</title>
+<style>
+  @page { size: A4; margin: 12mm; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    color: #17151f;
+    background: #f6f1df;
+    font-family: "Segoe UI", Arial, sans-serif;
+  }
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 14mm;
+    background: #fffdf4;
+    border: 2px solid #201d2b;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    gap: 10mm;
+    padding-bottom: 5mm;
+    border-bottom: 2px solid #201d2b;
+  }
+  .brand { font-weight: 900; color: #ff263d; }
+  .unit { font-size: 11pt; font-weight: 800; color: #625f6f; text-align: right; }
+  h1 { margin: 7mm 0 4mm; font-size: 27pt; line-height: 1.05; }
+  .content {
+    display: grid;
+    grid-template-columns: 1fr 58mm;
+    gap: 8mm;
+    align-items: start;
+  }
+  .article {
+    font-size: 17pt;
+    font-weight: 650;
+    line-height: 1.75;
+    white-space: pre-line;
+  }
+  .art {
+    min-height: 58mm;
+    border: 2px solid #201d2b;
+    border-radius: 4mm;
+    overflow: hidden;
+    background: #eef9ff;
+  }
+  .art img {
+    display: block;
+    width: 100%;
+    height: 58mm;
+    object-fit: cover;
+  }
+  .image-placeholder {
+    display: grid;
+    place-items: center;
+    height: 58mm;
+    color: #625f6f;
+    font-weight: 900;
+    text-align: center;
+  }
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3mm;
+    margin-top: 8mm;
+    padding-top: 5mm;
+    border-top: 2px dashed #201d2b;
+  }
+  .word-bank span {
+    padding: 2mm 3.5mm;
+    border: 1.5px solid #201d2b;
+    border-radius: 999px;
+    background: #ffe8a6;
+    color: #ff263d;
+    font-weight: 900;
+  }
+  .footer {
+    margin-top: 8mm;
+    color: #625f6f;
+    font-size: 10pt;
+    font-weight: 800;
+  }
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; border: 0; }
+  }
+</style>
+</head>
+<body>
+  <main class="page">
+    <div class="header">
+      <div class="brand">Zoops PoP Article Maker</div>
+      <div class="unit">${escapeHtml(draft.section)} · ${escapeHtml(draft.unit)}<br>${escapeHtml(draft.label || "")}</div>
+    </div>
+    <h1>${escapeHtml(draft.title)}</h1>
+    <section class="content">
+      <p class="article">${escapeHtml(draft.article)}</p>
+      <figure class="art">${imageMarkup}</figure>
+    </section>
+    <section class="word-bank">${wordBank}</section>
+    <div class="footer">Generated from Study Board, Sight Words, Collocation, Spelling Check, and Listen & Select words.</div>
+  </main>
+</body>
+</html>`;
+}
+
+function slugifyFileName(value) {
+  return String(value || "article")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "") || "article";
 }
 
 function renderSpellMode(unit, correctCount, checkedCount) {
@@ -3606,6 +4293,8 @@ function selectBook(book) {
   state.collabIndex = 0;
   state.answers = {};
   state.checked = {};
+  state.articleDraft = null;
+  state.articleStatus = "";
   resetListenState();
   resetLearningSessionState();
   renderApp();
@@ -3621,6 +4310,8 @@ function selectUnit(index) {
   state.collabIndex = 0;
   state.answers = {};
   state.checked = {};
+  state.articleDraft = null;
+  state.articleStatus = "";
   resetListenState();
   resetLearningSessionState();
   renderApp();
@@ -3664,6 +4355,7 @@ function playCollabPhrase(index = state.collabIndex) {
 }
 
 function setMode(mode) {
+  if (mode === "article" && !isAcademyStaff()) return;
   finishActiveLearningSession(false);
   state.mode = mode;
   if (mode === "sight") state.sightIndex = 0;
