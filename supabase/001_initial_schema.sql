@@ -229,6 +229,12 @@ grant select, insert, update, delete
 on all tables in schema public
 to authenticated;
 
+revoke update on public.profiles from authenticated;
+
+grant update (display_name)
+on public.profiles
+to authenticated;
+
 grant all privileges
 on all tables in schema public
 to service_role;
