@@ -4410,6 +4410,14 @@ function buildArticleHtmlDocument(draft) {
   const wordBank = (draft.wordBank || [])
     .map(word => `<span class="word-chip">${escapeHtml(word)}</span>`)
     .join("");
+  const practiceWords = (draft.wordBank || [])
+    .map(word => String(word || "").trim())
+    .filter(Boolean)
+    .slice(0, 3);
+  const practiceWordList = practiceWords.length
+    ? practiceWords.map(word => `<span class="practice-word">${escapeHtml(word)}</span>`).join("")
+    : `<span class="practice-word">word</span><span class="practice-word">sound</span><span class="practice-word">story</span>`;
+  const favoriteWord = practiceWords[0] || "word";
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -4506,7 +4514,8 @@ function buildArticleHtmlDocument(draft) {
     margin-top: 0;
   }
   .story-label,
-  .bank-label {
+  .bank-label,
+  .practice-title {
     display: inline-block;
     margin: 0 0 3mm;
     padding-bottom: 1mm;
@@ -4579,18 +4588,18 @@ function buildArticleHtmlDocument(draft) {
     display: grid;
   }
   .story-card {
-    margin-top: 7mm;
-    padding: 6mm 7mm;
+    margin-top: 5.5mm;
+    padding: 5mm 6mm;
   }
   .story-text {
     margin: 0;
-    font-size: 17pt;
-    line-height: 1.72;
+    font-size: 16pt;
+    line-height: 1.62;
     font-weight: 720;
   }
   .word-bank {
-    margin-top: 7mm;
-    padding: 5mm 6mm 6mm;
+    margin-top: 5.5mm;
+    padding: 4mm 5mm 5mm;
   }
   .footer {
     display: none;
@@ -4598,34 +4607,38 @@ function buildArticleHtmlDocument(draft) {
   .chip-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 2.5mm;
+    gap: 2.1mm;
   }
   .word-chip {
-    padding: 1.7mm 3.4mm;
+    padding: 1.4mm 3mm;
     border: 1px solid var(--soft-line);
     border-bottom: 2px solid var(--blue);
     border-radius: 999px;
     background: #fff;
     color: var(--red);
-    font-size: 10.5pt;
+    font-size: 10pt;
     font-weight: 900;
   }
   .practice-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6mm;
-    margin-top: 8mm;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4mm;
+    margin-top: 5mm;
   }
   .practice-card {
-    min-height: 34mm;
-    padding: 5mm;
+    min-height: 29mm;
+    padding: 4mm;
+  }
+  .practice-title {
+    margin-bottom: 2mm;
   }
   .check-line {
     display: flex;
     align-items: center;
-    gap: 3mm;
-    margin-top: 3mm;
+    gap: 2mm;
+    margin-top: 2mm;
     color: var(--muted);
+    font-size: 9.4pt;
     font-weight: 850;
   }
   .box {
@@ -4637,8 +4650,45 @@ function buildArticleHtmlDocument(draft) {
   }
   .writing-line {
     display: block;
-    height: 9mm;
+    height: 7mm;
     border-bottom: 1.8px solid rgba(32, 29, 43, .45);
+  }
+  .practice-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5mm;
+    margin: 1mm 0 2mm;
+  }
+  .practice-word {
+    display: inline-flex;
+    align-items: center;
+    min-height: 6mm;
+    padding: 1mm 2.4mm;
+    border: 1px solid var(--soft-line);
+    border-radius: 999px;
+    color: var(--red);
+    font-size: 9pt;
+    font-weight: 900;
+  }
+  .practice-prompt {
+    margin: 1mm 0 0;
+    color: var(--muted);
+    font-size: 9pt;
+    font-weight: 850;
+    line-height: 1.35;
+  }
+  .mini-line {
+    display: inline-block;
+    width: 25mm;
+    height: 4.5mm;
+    border-bottom: 1.6px solid rgba(32, 29, 43, .45);
+    vertical-align: -1mm;
+  }
+  .draw-box {
+    height: 10mm;
+    margin-top: 1.5mm;
+    border: 1.5px dashed var(--soft-line);
+    border-radius: 8px;
   }
   @media print {
     body { background: #fff !important; }
@@ -4678,6 +4728,26 @@ function buildArticleHtmlDocument(draft) {
     <section class="word-bank">
       <div class="bank-label">Word Bank</div>
       <div class="chip-list">${wordBank}</div>
+    </section>
+    <section class="practice-row">
+      <div class="practice-card">
+        <div class="practice-title">Read 3 Times</div>
+        <div class="check-line"><span class="box"></span><span>First reading</span></div>
+        <div class="check-line"><span class="box"></span><span>Second reading</span></div>
+        <div class="check-line"><span class="box"></span><span>Third reading</span></div>
+      </div>
+      <div class="practice-card">
+        <div class="practice-title">Word Hunt</div>
+        <p class="practice-prompt">Find and circle these words in the story.</p>
+        <div class="practice-words">${practiceWordList}</div>
+        <span class="writing-line"></span>
+      </div>
+      <div class="practice-card">
+        <div class="practice-title">Fill & Say</div>
+        <p class="practice-prompt">My favorite word is <span class="mini-line"></span>.</p>
+        <p class="practice-prompt">Draw ${escapeHtml(favoriteWord)} and say one sentence.</p>
+        <div class="draw-box"></div>
+      </div>
     </section>
   </main>
   <script>
