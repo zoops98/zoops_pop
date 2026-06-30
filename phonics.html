@@ -829,6 +829,147 @@
     font: 900 13px "Segoe UI", system-ui, sans-serif;
   }
 
+  .sentence-builder {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 16px;
+  }
+
+  .sentence-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 16px;
+    align-items: center;
+    padding: 18px;
+    border: 4px solid var(--line);
+    border-radius: var(--radius);
+    background: linear-gradient(90deg, #fff 0%, #e8ffd2 100%);
+    box-shadow: var(--small-shadow);
+  }
+
+  .sentence-label {
+    display: inline-block;
+    margin-bottom: 8px;
+    padding: 5px 9px;
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font: 900 12px "Segoe UI", system-ui, sans-serif;
+  }
+
+  .sentence-target {
+    color: var(--ink);
+    font-size: clamp(30px, 4.5vw, 58px);
+    font-weight: 950;
+    line-height: 1.05;
+  }
+
+  .sentence-helper {
+    margin-top: 8px;
+    color: var(--muted);
+    font: 800 14px "Segoe UI", system-ui, sans-serif;
+  }
+
+  .sentence-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .sentence-box {
+    min-height: 170px;
+    padding: 14px;
+    border: 4px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+    box-shadow: var(--small-shadow);
+  }
+
+  .sentence-box h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+  }
+
+  .sentence-slots,
+  .sentence-tiles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .sentence-slot,
+  .sentence-tile {
+    min-height: 42px;
+    padding: 8px 12px;
+    border: 3px solid var(--line);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--line);
+    font: 950 18px "Segoe UI", system-ui, sans-serif;
+  }
+
+  .sentence-slot.empty {
+    min-width: 64px;
+    border-style: dashed;
+    color: rgba(23, 21, 31, .38);
+  }
+
+  .sentence-tile {
+    cursor: pointer;
+  }
+
+  .sentence-tile:hover {
+    transform: translateY(-2px);
+  }
+
+  .sentence-tile.used {
+    opacity: .34;
+    pointer-events: none;
+  }
+
+  .sentence-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .sentence-action {
+    min-height: 42px;
+    padding: 9px 14px;
+    border: 3px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--sun);
+    color: var(--line);
+    font-family: inherit;
+    font-weight: 950;
+    cursor: pointer;
+  }
+
+  .sentence-action.secondary {
+    background: #fff;
+  }
+
+  .sentence-status {
+    padding: 12px 14px;
+    border: 3px solid var(--line);
+    border-radius: var(--radius);
+    background: #f7f8fb;
+    color: var(--muted);
+    font: 900 14px "Segoe UI", system-ui, sans-serif;
+  }
+
+  .sentence-status.correct {
+    background: #e8ffd2;
+    color: var(--green);
+  }
+
+  .sentence-status.wrong {
+    background: #fff1f2;
+    color: var(--red);
+  }
+
   .record-panel {
     position: relative;
     z-index: 1;
@@ -1606,7 +1747,7 @@
 
   .routine-steps {
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
     gap: 8px;
   }
 
@@ -2155,6 +2296,11 @@
       grid-template-columns: 1fr;
     }
 
+    .sentence-panel,
+    .sentence-workspace {
+      grid-template-columns: 1fr;
+    }
+
     .review-hero,
     .review-practice {
       grid-template-columns: 1fr;
@@ -2451,6 +2597,9 @@ const state = {
   selectedIndex: 0,
   sightIndex: 0,
   collabIndex: 0,
+  sentenceIndex: 0,
+  sentenceSelectedIds: [],
+  sentenceStatus: "Build the sentence with the word tiles.",
   answers: {},
   checked: {},
   listenIndex: 0,
@@ -2493,6 +2642,7 @@ const DAILY_ROUTINE_STEPS = [
   { mode: "study", title: "Study Board", hint: "Read every phonics word." },
   { mode: "sight", title: "Sight Words", hint: "Listen and read the sight words." },
   { mode: "collab", title: "Collocation", hint: "Read short natural phrases." },
+  { mode: "sentence", title: "Sentence Builder", hint: "Put word tiles in order." },
   { mode: "spell", title: "Spelling Check", hint: "Type the word you hear." },
   { mode: "listen", title: "Listen & Select", hint: "Choose the word you hear." },
   { mode: "record", title: "Read & Record", hint: "Record your own reading." }
@@ -4222,6 +4372,8 @@ function renderMain() {
   const selectedSightWord = sightWords[state.sightIndex] || sightWords[0] || selectedWord;
   const collabPhrases = makeCollabPhrases(unit, sightWords);
   const selectedCollabPhrase = collabPhrases[state.collabIndex] || collabPhrases[0];
+  const sentenceItems = buildSentenceBuilderItems(unit, sightWords, collabPhrases);
+  const selectedSentenceItem = sentenceItems[state.sentenceIndex] || sentenceItems[0];
   const recordingTarget = currentRecordingTarget(unit, sightWords, collabPhrases);
   const selectedReviewWord = currentReviewWord();
   const firstUncheckedIndex = unit.words.findIndex((_, index) => state.checked[index] !== true);
@@ -4233,6 +4385,7 @@ function renderMain() {
   const utilityWord = state.mode === "spell" ? spellingPromptWord :
     state.mode === "listen" ? listenPromptWord :
     state.mode === "sight" ? selectedSightWord :
+    state.mode === "sentence" && selectedSentenceItem ? selectedSentenceItem.sentence :
     state.mode === "record" && recordingTarget ? recordingTarget.text :
     state.mode === "review" && selectedReviewWord ? selectedReviewWord.word :
     selectedWord;
@@ -4242,6 +4395,8 @@ function renderMain() {
     ? `playCollabPhrase(${state.collabIndex})`
     : state.mode === "record"
     ? "playRecordingTarget()"
+    : state.mode === "sentence"
+    ? "playSentenceBuilder()"
     : state.mode === "review"
     ? "playReviewWord()"
     : `playWord('${escapeHtml(utilityWord)}')`;
@@ -4249,8 +4404,10 @@ function renderMain() {
     ? "Make Article"
     : state.mode === "collab"
       ? "Play Collocation"
-      : state.mode === "record"
+    : state.mode === "record"
       ? "Listen First"
+      : state.mode === "sentence"
+      ? "Play Sentence"
       : state.mode === "review"
       ? "Play Review Word"
       : "Play Word";
@@ -4277,6 +4434,7 @@ function renderMain() {
         <button class="mode-tab ${state.mode === "study" ? "active" : ""}" onclick="setMode('study')">Study Board</button>
         <button class="mode-tab ${state.mode === "sight" ? "active" : ""}" onclick="setMode('sight')">Sight Words</button>
         <button class="mode-tab ${state.mode === "collab" ? "active" : ""}" onclick="setMode('collab')">Collocation</button>
+        <button class="mode-tab ${state.mode === "sentence" ? "active" : ""}" onclick="setMode('sentence')">Sentence Builder</button>
         <button class="mode-tab ${state.mode === "spell" ? "active" : ""}" onclick="setMode('spell')">Spelling Check</button>
         <button class="mode-tab ${state.mode === "listen" ? "active" : ""}" onclick="setMode('listen')">Listen & Select</button>
         <button class="mode-tab ${state.mode === "record" ? "active" : ""}" onclick="setMode('record')">Read & Record</button>
@@ -4289,6 +4447,7 @@ function renderMain() {
         ${unit.families.map(item => `<span class="pattern-chip">${escapeHtml(item)}</span>`).join("")}
         ${state.mode === "sight" ? `<span class="pattern-chip">Sight Words</span>` : ""}
         ${state.mode === "collab" ? `<span class="pattern-chip">Collocation</span>` : ""}
+        ${state.mode === "sentence" ? `<span class="pattern-chip">Sentence Builder</span>` : ""}
         ${state.mode === "record" ? `<span class="pattern-chip">Read & Record</span>` : ""}
         ${state.mode === "review" ? `<span class="pattern-chip">Mistake Review</span>` : ""}
         ${state.mode === "article" ? `<span class="pattern-chip">Article Maker</span>` : ""}
@@ -4301,6 +4460,8 @@ function renderMain() {
             ? renderSightMode(unit, sightWords, selectedSightWord)
             : state.mode === "collab"
               ? renderCollabMode(collabPhrases, selectedCollabPhrase)
+              : state.mode === "sentence"
+                ? renderSentenceMode(unit, sightWords, collabPhrases)
               : state.mode === "record"
                 ? renderRecordMode(unit, sightWords, collabPhrases)
               : state.mode === "review"
@@ -4382,6 +4543,156 @@ function renderCollabMode(collabPhrases, selectedCollabPhrase) {
       `).join("")}
     </div>
   `;
+}
+
+function renderSentenceMode(unit, sightWords, collabPhrases) {
+  const items = buildSentenceBuilderItems(unit, sightWords, collabPhrases);
+  const item = items[Math.max(0, Math.min(state.sentenceIndex, items.length - 1))] || items[0];
+  if (!item) {
+    return `<div class="sentence-status">Sentence Builder needs collocation words for this unit.</div>`;
+  }
+  const selectedIds = new Set(state.sentenceSelectedIds);
+  const selectedTiles = state.sentenceSelectedIds
+    .map(id => item.tiles.find(tile => tile.id === id))
+    .filter(Boolean);
+  const slotCount = item.tokens.length;
+  const statusClass = state.sentenceStatus === "Great sentence!"
+    ? "correct"
+    : state.sentenceStatus.includes("Try again")
+      ? "wrong"
+      : "";
+
+  return `
+    <div class="sentence-builder">
+      <div class="sentence-panel">
+        <div>
+          <span class="sentence-label">Sentence ${String(state.sentenceIndex + 1).padStart(2, "0")}</span>
+          <div class="sentence-target">${escapeHtml(item.sentence)}</div>
+          <div class="sentence-helper">Listen, then tap the word tiles in the same order.</div>
+        </div>
+        <button class="play-big" type="button" onclick="playSentenceBuilder()" aria-label="Play sentence">&#9654;</button>
+      </div>
+
+      <div class="sentence-workspace">
+        <section class="sentence-box">
+          <h3>Build Here</h3>
+          <div class="sentence-slots">
+            ${Array.from({ length: slotCount }, (_, index) => {
+              const tile = selectedTiles[index];
+              return tile
+                ? `<button class="sentence-slot" type="button" onclick="removeSentenceTile(${escapeAttribute(JSON.stringify(tile.id))})">${escapeHtml(tile.text)}</button>`
+                : `<span class="sentence-slot empty">${index + 1}</span>`;
+            }).join("")}
+          </div>
+        </section>
+        <section class="sentence-box">
+          <h3>Word Tiles</h3>
+          <div class="sentence-tiles">
+            ${item.tiles.map(tile => `
+              <button class="sentence-tile ${selectedIds.has(tile.id) ? "used" : ""}" type="button" onclick="addSentenceTile(${escapeAttribute(JSON.stringify(tile.id))})" ${selectedIds.has(tile.id) ? "disabled" : ""}>
+                ${escapeHtml(tile.text)}
+              </button>
+            `).join("")}
+          </div>
+        </section>
+      </div>
+
+      <div class="sentence-actions">
+        <button class="sentence-action" type="button" onclick="checkSentenceBuilder()">Check Sentence</button>
+        <button class="sentence-action secondary" type="button" onclick="resetSentenceBuilder()">Reset</button>
+        <button class="sentence-action secondary" type="button" onclick="nextSentenceBuilder()">Next Sentence</button>
+      </div>
+      <div class="sentence-status ${statusClass}">${escapeHtml(state.sentenceStatus)}</div>
+    </div>
+  `;
+}
+
+function buildSentenceBuilderItems(unit, sightWords, collabPhrases) {
+  const phrases = (collabPhrases || [])
+    .map(item => ({
+      phrase: String(item.phrase || item.text || item || "").trim(),
+      sightWord: item.sightWord || "",
+      phonicsWords: item.phonicsWords || []
+    }))
+    .filter(item => item.phrase);
+
+  const fallbackPhrases = [
+    ...(sightWords || []).slice(0, 3),
+    ...(unit.words || []).slice(0, 6)
+  ].filter(Boolean);
+
+  const source = phrases.length
+    ? phrases
+    : fallbackPhrases.map(word => ({ phrase: word, sightWord: word, phonicsWords: [word] }));
+
+  return source.slice(0, 9).map((item, index) => {
+    const sentence = makeSentenceBuilderSentence(item.phrase);
+    const tokens = tokenizeSentenceBuilderText(sentence);
+    const tiles = seededShuffle(
+      tokens.map((text, tokenIndex) => ({
+        id: `${index}-${tokenIndex}-${text.toLowerCase()}`,
+        text
+      })),
+      `${currentUnitKey()}:${index}:${sentence}`
+    );
+    return {
+      ...item,
+      sentence,
+      tokens,
+      tiles
+    };
+  });
+}
+
+function makeSentenceBuilderSentence(phrase) {
+  const clean = String(phrase || "")
+    .trim()
+    .replace(/[.!?]+$/g, "")
+    .replace(/\s+/g, " ");
+  if (!clean) return "";
+  const lower = clean.toLowerCase();
+  let sentence = clean;
+
+  if (/^(i|we|they|he|she|you|it)\b/.test(lower)) {
+    sentence = clean;
+  } else if (/^(jumping|running|sitting|playing|reading|looking|making|riding|swimming)\b/.test(lower)) {
+    sentence = `We are ${clean}`;
+  } else if (/^(jumped|looked|washed|played|rained|called|wanted|needed|painted|tried|cried)\b/.test(lower)) {
+    sentence = `We ${clean}`;
+  } else if (/^(open|show|tie|grow|obey|read|paint|help|rescue|run|look|make|play)\b/.test(lower)) {
+    sentence = `We ${clean}`;
+  } else if (/^(great|good|sweet|funny|happy|yummy|new|blue)\b/.test(lower)) {
+    sentence = `I like ${clean}`;
+  } else {
+    sentence = `I see ${clean}`;
+  }
+
+  return `${sentence.charAt(0).toUpperCase()}${sentence.slice(1)}.`;
+}
+
+function tokenizeSentenceBuilderText(sentence) {
+  return String(sentence || "")
+    .replace(/[.,!?;:]/g, "")
+    .split(/\s+/)
+    .map(token => token.trim())
+    .filter(Boolean);
+}
+
+function seededShuffle(items, seedText) {
+  const result = [...items];
+  let seed = hashString(seedText);
+  for (let index = result.length - 1; index > 0; index -= 1) {
+    seed = (seed * 1664525 + 1013904223) >>> 0;
+    const swapIndex = seed % (index + 1);
+    [result[index], result[swapIndex]] = [result[swapIndex], result[index]];
+  }
+  return result;
+}
+
+function hashString(value) {
+  return String(value || "").split("").reduce((hash, char) => {
+    return ((hash << 5) - hash + char.charCodeAt(0)) >>> 0;
+  }, 2166136261);
 }
 
 function renderRecordMode(unit, sightWords, collabPhrases) {
@@ -5510,6 +5821,9 @@ function selectBook(book) {
   state.selectedIndex = 0;
   state.sightIndex = 0;
   state.collabIndex = 0;
+  state.sentenceIndex = 0;
+  state.sentenceSelectedIds = [];
+  state.sentenceStatus = "Build the sentence with the word tiles.";
   state.recordingIndex = 0;
   state.answers = {};
   state.checked = {};
@@ -5534,6 +5848,9 @@ function selectUnit(index) {
   state.selectedIndex = 0;
   state.sightIndex = 0;
   state.collabIndex = 0;
+  state.sentenceIndex = 0;
+  state.sentenceSelectedIds = [];
+  state.sentenceStatus = "Build the sentence with the word tiles.";
   state.recordingIndex = 0;
   state.answers = {};
   state.checked = {};
@@ -5580,6 +5897,77 @@ function playCollabPhrase(index = state.collabIndex) {
   const phrases = makeCollabPhrases(currentUnit(), currentUnit().sightWords || []);
   const item = phrases[Math.max(0, Math.min(index, phrases.length - 1))];
   if (item) playPhrase(item.phrase);
+}
+
+function currentSentenceBuilderItem() {
+  const unit = currentUnit();
+  const items = buildSentenceBuilderItems(unit, unit.sightWords || [], makeCollabPhrases(unit, unit.sightWords || []));
+  return items[Math.max(0, Math.min(state.sentenceIndex, items.length - 1))] || items[0];
+}
+
+function addSentenceTile(tileId) {
+  const item = currentSentenceBuilderItem();
+  if (!item || state.sentenceSelectedIds.includes(tileId)) return;
+  if (!item.tiles.some(tile => tile.id === tileId)) return;
+  if (state.sentenceSelectedIds.length >= item.tokens.length) return;
+  noteLearningActivity();
+  state.sentenceSelectedIds = [...state.sentenceSelectedIds, tileId];
+  state.sentenceStatus = "Keep going. Build the sentence in order.";
+  renderMain();
+}
+
+function removeSentenceTile(tileId) {
+  state.sentenceSelectedIds = state.sentenceSelectedIds.filter(id => id !== tileId);
+  state.sentenceStatus = "Build the sentence with the word tiles.";
+  renderMain();
+}
+
+function resetSentenceBuilder() {
+  state.sentenceSelectedIds = [];
+  state.sentenceStatus = "Build the sentence with the word tiles.";
+  renderMain();
+}
+
+function nextSentenceBuilder() {
+  const unit = currentUnit();
+  const items = buildSentenceBuilderItems(unit, unit.sightWords || [], makeCollabPhrases(unit, unit.sightWords || []));
+  state.sentenceIndex = items.length ? (state.sentenceIndex + 1) % items.length : 0;
+  resetSentenceBuilder();
+  window.setTimeout(() => playSentenceBuilder(), 120);
+}
+
+function checkSentenceBuilder() {
+  const item = currentSentenceBuilderItem();
+  if (!item) return;
+  const selectedTokens = state.sentenceSelectedIds
+    .map(id => item.tiles.find(tile => tile.id === id)?.text || "")
+    .filter(Boolean);
+  const selectedText = selectedTokens.join(" ").toLowerCase();
+  const targetText = item.tokens.join(" ").toLowerCase();
+  if (selectedTokens.length !== item.tokens.length) {
+    state.sentenceStatus = `Add ${item.tokens.length - selectedTokens.length} more tile(s).`;
+  } else if (selectedText === targetText) {
+    state.sentenceStatus = "Great sentence!";
+    playPopEffect(true);
+  } else {
+    state.sentenceStatus = "Try again. Tap a word in Build Here to remove it.";
+    playPopEffect(false);
+  }
+  noteLearningActivity();
+  renderMain();
+}
+
+async function playSentenceBuilder() {
+  const item = currentSentenceBuilderItem();
+  if (!item) return;
+  noteLearningActivity();
+  const playbackId = ++ttsPlaybackId;
+  stopRecordedAudio();
+  if (!("speechSynthesis" in window)) return;
+  window.speechSynthesis.cancel();
+  const voice = await getConsistentGoogleVoice();
+  if (playbackId !== ttsPlaybackId) return;
+  speakUtterance(item.sentence, voice, 0.78);
 }
 
 function buildRecordingTargets(unit, sightWords, collabPhrases) {
@@ -6028,6 +6416,11 @@ function setMode(mode) {
   state.mode = mode;
   if (mode === "sight") state.sightIndex = 0;
   if (mode === "collab") state.collabIndex = 0;
+  if (mode === "sentence") {
+    state.sentenceIndex = 0;
+    state.sentenceSelectedIds = [];
+    state.sentenceStatus = "Build the sentence with the word tiles.";
+  }
   if (mode === "record") state.recordingIndex = 0;
   if (mode === "review") {
     state.reviewIndex = 0;
