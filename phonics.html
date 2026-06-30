@@ -956,6 +956,135 @@
     text-align: center;
   }
 
+  .review-panel {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 16px;
+  }
+
+  .review-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 16px;
+    align-items: center;
+    padding: 18px;
+    border: 4px solid var(--line);
+    border-radius: var(--radius);
+    background: linear-gradient(90deg, #fff 0%, #fff2f4 100%);
+    box-shadow: var(--small-shadow);
+  }
+
+  .review-word {
+    display: block;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    font-size: clamp(44px, 6vw, 78px);
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  .review-meta {
+    margin-top: 8px;
+    color: var(--muted);
+    font: 900 14px "Segoe UI", system-ui, sans-serif;
+  }
+
+  .review-practice {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) auto auto auto;
+    gap: 10px;
+    align-items: center;
+    padding: 14px;
+    border: 4px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+    box-shadow: var(--small-shadow);
+  }
+
+  .review-input {
+    min-height: 44px;
+    padding: 8px 12px;
+    border: 3px solid var(--line);
+    border-radius: var(--radius);
+    font: 900 18px "Segoe UI", system-ui, sans-serif;
+  }
+
+  .review-btn {
+    min-height: 42px;
+    padding: 9px 14px;
+    border: 3px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--sun);
+    box-shadow: var(--small-shadow);
+    cursor: pointer;
+    font-weight: 900;
+  }
+
+  .review-btn.secondary {
+    background: #fff;
+  }
+
+  .review-status {
+    color: var(--muted);
+    font: 900 14px "Segoe UI", system-ui, sans-serif;
+  }
+
+  .review-status.correct {
+    color: var(--green);
+  }
+
+  .review-status.wrong {
+    color: var(--hot);
+  }
+
+  .review-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .review-card {
+    display: grid;
+    gap: 8px;
+    min-height: 112px;
+    padding: 12px;
+    border: 4px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+    box-shadow: var(--small-shadow);
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .review-card.playing {
+    outline: 5px solid var(--hot);
+  }
+
+  .review-card b {
+    align-self: center;
+    overflow-wrap: anywhere;
+    font-size: clamp(28px, 3vw, 44px);
+    font-weight: 900;
+    text-align: center;
+  }
+
+  .review-card span {
+    color: var(--muted);
+    font: 900 12px "Segoe UI", system-ui, sans-serif;
+  }
+
+  .review-empty {
+    padding: 24px;
+    border: 4px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+    box-shadow: var(--small-shadow);
+    color: var(--muted);
+    font-weight: 900;
+    line-height: 1.5;
+  }
+
   .article-maker {
     position: relative;
     z-index: 1;
@@ -1784,7 +1913,8 @@
     .challenge-grid,
     .sight-grid,
     .collab-grid,
-    .record-target-grid {
+    .record-target-grid,
+    .review-grid {
       grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
       gap: 10px;
     }
@@ -1798,6 +1928,11 @@
     }
 
     .record-reader {
+      grid-template-columns: 1fr;
+    }
+
+    .review-hero,
+    .review-practice {
       grid-template-columns: 1fr;
     }
   }
@@ -1856,7 +1991,8 @@
     .challenge-grid,
     .sight-grid,
     .collab-grid,
-    .record-target-grid {
+    .record-target-grid,
+    .review-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
@@ -2090,6 +2226,13 @@ const state = {
   listenCompleted: {},
   recordingIndex: 0,
   recordingStatus: "Choose a reading target, listen once, then record.",
+  reviewWords: [],
+  reviewIndex: 0,
+  reviewAnswer: "",
+  reviewChecked: null,
+  reviewLoading: false,
+  reviewStatus: "오답 기록을 불러와 자주 틀린 단어부터 복습해요.",
+  reviewLoadedForStudentId: "",
   articleDraft: null,
   articleStatus: "",
   articleWorking: false
@@ -3633,6 +3776,7 @@ function renderMain() {
   const collabPhrases = makeCollabPhrases(unit, sightWords);
   const selectedCollabPhrase = collabPhrases[state.collabIndex] || collabPhrases[0];
   const recordingTarget = currentRecordingTarget(unit, sightWords, collabPhrases);
+  const selectedReviewWord = currentReviewWord();
   const firstUncheckedIndex = unit.words.findIndex((_, index) => state.checked[index] !== true);
   const spellingPromptWord = unit.words[firstUncheckedIndex === -1 ? 0 : firstUncheckedIndex];
   const listenPromptWord = unit.words[state.listenIndex] || unit.words[0];
@@ -3643,6 +3787,7 @@ function renderMain() {
     state.mode === "listen" ? listenPromptWord :
     state.mode === "sight" ? selectedSightWord :
     state.mode === "record" && recordingTarget ? recordingTarget.text :
+    state.mode === "review" && selectedReviewWord ? selectedReviewWord.word :
     selectedWord;
   const utilityAction = state.mode === "article"
     ? "generateArticleSheet()"
@@ -3650,6 +3795,8 @@ function renderMain() {
     ? `playCollabPhrase(${state.collabIndex})`
     : state.mode === "record"
     ? "playRecordingTarget()"
+    : state.mode === "review"
+    ? "playReviewWord()"
     : `playWord('${escapeHtml(utilityWord)}')`;
   const utilityLabel = state.mode === "article"
     ? "Make Article"
@@ -3657,6 +3804,8 @@ function renderMain() {
       ? "Play Collocation"
       : state.mode === "record"
       ? "Listen First"
+      : state.mode === "review"
+      ? "Play Review Word"
       : "Play Word";
 
   main.innerHTML = `
@@ -3682,6 +3831,7 @@ function renderMain() {
         <button class="mode-tab ${state.mode === "spell" ? "active" : ""}" onclick="setMode('spell')">Spelling Check</button>
         <button class="mode-tab ${state.mode === "listen" ? "active" : ""}" onclick="setMode('listen')">Listen & Select</button>
         <button class="mode-tab ${state.mode === "record" ? "active" : ""}" onclick="setMode('record')">Read & Record</button>
+        <button class="mode-tab ${state.mode === "review" ? "active" : ""}" onclick="setMode('review')">Mistake Review</button>
         ${canMakeArticle ? `<button class="mode-tab ${state.mode === "article" ? "active" : ""}" onclick="setMode('article')">Article Maker</button>` : ""}
         <button class="utility-btn" onclick="${utilityAction}">${utilityLabel}</button>
       </div>
@@ -3691,6 +3841,7 @@ function renderMain() {
         ${state.mode === "sight" ? `<span class="pattern-chip">Sight Words</span>` : ""}
         ${state.mode === "collab" ? `<span class="pattern-chip">Collocation</span>` : ""}
         ${state.mode === "record" ? `<span class="pattern-chip">Read & Record</span>` : ""}
+        ${state.mode === "review" ? `<span class="pattern-chip">Mistake Review</span>` : ""}
         ${state.mode === "article" ? `<span class="pattern-chip">Article Maker</span>` : ""}
       </div>
 
@@ -3703,6 +3854,8 @@ function renderMain() {
               ? renderCollabMode(collabPhrases, selectedCollabPhrase)
               : state.mode === "record"
                 ? renderRecordMode(unit, sightWords, collabPhrases)
+              : state.mode === "review"
+                ? renderReviewMode()
               : state.mode === "article"
                 ? renderArticleMaker(unit, sightWords, collabPhrases)
                 : state.mode === "spell"
@@ -3822,6 +3975,75 @@ function renderRecordMode(unit, sightWords, collabPhrases) {
           <button class="record-target-card ${state.recordingIndex === index ? "playing" : ""}" type="button" onclick="selectRecordingTarget(${index})">
             <b>${escapeHtml(item.label)}</b>
             <span>${escapeHtml(item.text)}</span>
+          </button>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderReviewMode() {
+  if (state.reviewLoading) {
+    return `<div class="review-empty">오답 기록을 불러오고 있습니다...</div>`;
+  }
+
+  if (!learnerProfile) {
+    return `
+      <div class="review-empty">
+        학생 계정으로 로그인하면 Spelling Check에서 틀린 단어를 모아 복습할 수 있습니다.
+      </div>
+    `;
+  }
+
+  if (!state.reviewWords.length) {
+    return `
+      <div class="review-empty">
+        아직 저장된 오답 단어가 없습니다.<br>
+        Spelling Check를 진행하면 틀린 단어가 이곳에 모입니다.
+        <div style="margin-top:12px">
+          <button class="review-btn" type="button" onclick="loadMistakeReviewWords(true)">Refresh Review</button>
+        </div>
+      </div>
+    `;
+  }
+
+  const item = currentReviewWord();
+  const answer = state.reviewAnswer || "";
+  const statusClass = state.reviewChecked === true
+    ? "correct"
+    : state.reviewChecked === false
+      ? "wrong"
+      : "";
+  const home = item.home ? `${item.home.section} · ${item.home.unit}` : "Saved mistake word";
+
+  return `
+    <div class="review-panel">
+      <div class="review-hero">
+        <div>
+          <span class="record-target-label">Mistake Review ${state.reviewIndex + 1} / ${state.reviewWords.length}</span>
+          <span class="review-word">${renderReviewWord(item)}</span>
+          <div class="review-meta">${escapeHtml(home)} · missed ${item.wrongCount} time${item.wrongCount > 1 ? "s" : ""}</div>
+        </div>
+        <button class="play-big" type="button" onclick="playReviewWord()" aria-label="Play review word">&#9654;</button>
+      </div>
+
+      <div class="review-practice">
+        <input class="review-input" id="reviewAnswer" value="${escapeAttribute(answer)}"
+          oninput="saveReviewAnswer(this.value)"
+          onkeydown="if(event.key==='Enter') checkReviewAnswer()"
+          placeholder="Listen, then spell" autocomplete="off" autocapitalize="none" spellcheck="false">
+        <button class="review-btn" type="button" onclick="checkReviewAnswer()">Check</button>
+        <button class="review-btn secondary" type="button" onclick="nextReviewWord()">Next</button>
+        <button class="review-btn secondary" type="button" onclick="loadMistakeReviewWords(true)">Refresh</button>
+        <div class="review-status ${statusClass}" id="reviewStatus">${escapeHtml(state.reviewStatus)}</div>
+      </div>
+
+      <div class="review-grid">
+        ${state.reviewWords.map((wordItem, index) => `
+          <button class="review-card ${state.reviewIndex === index ? "playing" : ""}" type="button" onclick="selectReviewWord(${index})">
+            <span>Missed ${wordItem.wrongCount} · ${wordItem.lastMissedLabel}</span>
+            <b>${escapeHtml(wordItem.word)}</b>
+            <span>${escapeHtml(wordItem.home ? `${wordItem.home.section} · ${wordItem.home.unit}` : "Review word")}</span>
           </button>
         `).join("")}
       </div>
@@ -5090,6 +5312,192 @@ function updateRecordingTimer() {
   if (status) status.textContent = state.recordingStatus;
 }
 
+function currentReviewWord() {
+  return state.reviewWords[Math.max(0, Math.min(state.reviewIndex, state.reviewWords.length - 1))] || null;
+}
+
+async function loadMistakeReviewWords(force = false) {
+  if (!authClient || !learnerProfile) {
+    state.reviewWords = [];
+    state.reviewLoadedForStudentId = "";
+    state.reviewLoading = false;
+    state.reviewStatus = "학생 계정으로 로그인하면 오답 복습을 사용할 수 있습니다.";
+    renderMain();
+    return;
+  }
+
+  if (!force && state.reviewLoadedForStudentId === learnerProfile.id && state.reviewWords.length) {
+    return;
+  }
+
+  state.reviewLoading = true;
+  state.reviewStatus = "오답 기록을 불러오고 있습니다...";
+  renderMain();
+
+  const { data, error } = await authClient
+    .from("word_attempts")
+    .select("word, is_correct, created_at")
+    .eq("student_id", learnerProfile.id)
+    .order("created_at", { ascending: false })
+    .limit(250);
+
+  state.reviewLoading = false;
+  state.reviewLoadedForStudentId = learnerProfile.id;
+
+  if (error) {
+    state.reviewWords = [];
+    state.reviewStatus = `오답 기록을 불러오지 못했습니다: ${error.message}`;
+    renderMain();
+    return;
+  }
+
+  state.reviewWords = buildMistakeReviewList(data || []);
+  state.reviewIndex = 0;
+  state.reviewAnswer = "";
+  state.reviewChecked = null;
+  state.reviewStatus = state.reviewWords.length
+    ? "Listen, say it, then type the word."
+    : "아직 저장된 오답 단어가 없습니다. Spelling Check를 진행하면 이곳에 모입니다.";
+  renderMain();
+}
+
+function buildMistakeReviewList(attempts) {
+  const grouped = new Map();
+  attempts.forEach(attempt => {
+    const key = String(attempt.word || "").toLowerCase().trim();
+    if (!key) return;
+    if (!grouped.has(key)) {
+      grouped.set(key, {
+        word: displaySightWord(key),
+        normalizedWord: key,
+        wrongCount: 0,
+        correctCount: 0,
+        latestWrong: false,
+        lastMissedAt: "",
+        latestAt: attempt.created_at || ""
+      });
+    }
+    const item = grouped.get(key);
+    if (!attempt.is_correct) {
+      item.wrongCount += 1;
+      if (!item.lastMissedAt) item.lastMissedAt = attempt.created_at || "";
+    } else {
+      item.correctCount += 1;
+    }
+    if (!item.latestAt || new Date(attempt.created_at || 0) > new Date(item.latestAt || 0)) {
+      item.latestAt = attempt.created_at || item.latestAt;
+    }
+    if (item.latestAt === attempt.created_at) {
+      item.latestWrong = !attempt.is_correct;
+    }
+  });
+
+  return [...grouped.values()]
+    .filter(item => item.wrongCount > 0)
+    .map(item => ({
+      ...item,
+      home: findWordHome(item.normalizedWord),
+      lastMissedLabel: formatReviewDate(item.lastMissedAt),
+      reviewScore: (item.latestWrong ? 100 : 0) + item.wrongCount * 8 - item.correctCount
+    }))
+    .sort((a, b) =>
+      b.reviewScore - a.reviewScore ||
+      b.wrongCount - a.wrongCount ||
+      new Date(b.lastMissedAt || 0) - new Date(a.lastMissedAt || 0)
+    )
+    .slice(0, 24);
+}
+
+function findWordHome(word) {
+  const lower = String(word || "").toLowerCase();
+  for (const [section, book] of Object.entries(PHONICS_DATA)) {
+    for (const unit of book.units || []) {
+      const inStudy = (unit.words || []).some(item => String(item).toLowerCase() === lower);
+      const inSight = (unit.sightWords || []).some(item => String(item).toLowerCase() === lower);
+      if (inStudy || inSight) {
+        return { section, unit: unit.name, unitData: unit, isStudyWord: inStudy };
+      }
+    }
+  }
+  return null;
+}
+
+function formatReviewDate(value) {
+  if (!value) return "saved";
+  try {
+    return new Date(value).toLocaleDateString("ko-KR", { month: "numeric", day: "numeric" });
+  } catch {
+    return "saved";
+  }
+}
+
+function renderReviewWord(item) {
+  if (!item) return "";
+  if (item.home?.isStudyWord && item.home.unitData) {
+    return markWord(item.word, item.home.unitData);
+  }
+  return escapeHtml(item.word);
+}
+
+function selectReviewWord(index) {
+  state.reviewIndex = Math.max(0, Math.min(index, state.reviewWords.length - 1));
+  state.reviewAnswer = "";
+  state.reviewChecked = null;
+  state.reviewStatus = "Listen, say it, then type the word.";
+  renderMain();
+  playReviewWord();
+}
+
+function saveReviewAnswer(value) {
+  state.reviewAnswer = value;
+  state.reviewChecked = null;
+  const status = document.getElementById("reviewStatus");
+  if (status) {
+    status.className = "review-status";
+    status.textContent = "Type the word, then press Check.";
+  }
+}
+
+function checkReviewAnswer() {
+  const item = currentReviewWord();
+  if (!item) return;
+  const expected = item.normalizedWord;
+  const actual = String(state.reviewAnswer || "").trim().toLowerCase();
+  state.reviewChecked = actual === expected;
+  if (state.reviewChecked) {
+    state.reviewStatus = "Great! You fixed this mistake.";
+    showLevelPop("Review Pop!");
+  } else {
+    state.reviewStatus = `Try again. Listen for ${item.word}.`;
+    playWrongEffect();
+    window.setTimeout(playReviewWord, 180);
+  }
+  renderMain();
+  window.setTimeout(() => {
+    const input = document.getElementById("reviewAnswer");
+    if (input) {
+      input.focus();
+      if (!state.reviewChecked) input.select();
+    }
+  }, 80);
+}
+
+function nextReviewWord() {
+  if (!state.reviewWords.length) return;
+  state.reviewIndex = (state.reviewIndex + 1) % state.reviewWords.length;
+  state.reviewAnswer = "";
+  state.reviewChecked = null;
+  state.reviewStatus = "Listen, say it, then type the word.";
+  renderMain();
+  playReviewWord();
+}
+
+function playReviewWord() {
+  const item = currentReviewWord();
+  if (!item) return;
+  playWord(item.normalizedWord, { spelling: true, skipTracking: true });
+}
+
 function setMode(mode) {
   if (mode === "article" && !isAcademyStaff()) return;
   if (readRecorder && readRecorder.state === "recording" && mode !== "record") {
@@ -5102,18 +5510,25 @@ function setMode(mode) {
   if (mode === "sight") state.sightIndex = 0;
   if (mode === "collab") state.collabIndex = 0;
   if (mode === "record") state.recordingIndex = 0;
+  if (mode === "review") {
+    state.reviewIndex = 0;
+    state.reviewAnswer = "";
+    state.reviewChecked = null;
+  }
   state.answers = {};
   state.checked = {};
   resetListenState();
   resetLearningSessionState();
   renderMain();
-  noteLearningActivity();
+  if (mode !== "review") noteLearningActivity();
   if (mode === "spell") {
     window.setTimeout(() => playSpellingWord(0), 120);
   } else if (mode === "listen") {
     prepareListenRound(0);
     renderMain();
     window.setTimeout(() => playWord(currentUnit().words[0], { spelling: true }), 120);
+  } else if (mode === "review") {
+    loadMistakeReviewWords();
   }
 }
 
@@ -5260,8 +5675,10 @@ function wait(ms) {
 async function playWord(text, options = {}) {
   const word = String(text || "").toLowerCase().trim();
   if (!word) return;
-  noteLearningActivity();
-  trackAudioReplay(word);
+  if (!options.skipTracking) {
+    noteLearningActivity();
+    trackAudioReplay(word);
+  }
 
   const playbackId = ++ttsPlaybackId;
   stopRecordedAudio();
