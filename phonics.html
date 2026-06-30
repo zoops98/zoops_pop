@@ -1579,6 +1579,119 @@
     text-align: center;
   }
 
+  .daily-routine {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 16px;
+    padding: 13px;
+    border: 3px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+    box-shadow: var(--small-shadow);
+  }
+
+  .routine-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-weight: 900;
+  }
+
+  .routine-head span {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .routine-steps {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .routine-step {
+    min-width: 0;
+    overflow: hidden;
+    border: 2px solid var(--line);
+    border-radius: 8px;
+    background: #f7f8fb;
+  }
+
+  .routine-step.active {
+    background: #e5f6ff;
+    outline: 3px solid var(--sky);
+  }
+
+  .routine-step.done {
+    background: #e8ffd2;
+  }
+
+  .routine-jump,
+  .routine-check {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: var(--line);
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  .routine-jump {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 6px;
+    align-items: start;
+    min-height: 78px;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .routine-no {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    background: var(--yellow);
+    color: var(--red);
+    font-size: 12px;
+    font-weight: 950;
+  }
+
+  .routine-copy b,
+  .routine-copy small {
+    display: block;
+    overflow-wrap: anywhere;
+  }
+
+  .routine-copy b {
+    font-size: 12px;
+    line-height: 1.15;
+  }
+
+  .routine-copy small {
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1.25;
+  }
+
+  .routine-check {
+    padding: 6px 8px;
+    border-top: 2px solid var(--line);
+    background: #fff;
+    color: var(--red);
+    font-size: 11px;
+    font-weight: 950;
+  }
+
+  .routine-step.done .routine-check {
+    color: var(--green);
+  }
+
   .listen-game {
     position: relative;
     z-index: 1;
@@ -1959,6 +2072,10 @@
       grid-template-columns: 1fr;
     }
 
+    .routine-steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .article-toolbar,
     .article-preview,
     .article-source-board {
@@ -2251,6 +2368,15 @@ const GEMINI_KEY_STORAGE = "zoops_pop_gemini_api_key";
 const ARTICLE_TEXT_MODEL = "gemini-2.5-flash";
 const ARTICLE_IMAGE_MODEL = "gemini-3.1-flash-image";
 const ARTICLE_IMAGE_FALLBACK_MODEL = "gemini-2.5-flash-image";
+const DAILY_ROUTINE_STORAGE_PREFIX = "zoops_pop_daily_routine_v1";
+const DAILY_ROUTINE_STEPS = [
+  { mode: "study", title: "Study Board", hint: "Read every phonics word." },
+  { mode: "sight", title: "Sight Words", hint: "Listen and read the sight words." },
+  { mode: "collab", title: "Collocation", hint: "Read short natural phrases." },
+  { mode: "spell", title: "Spelling Check", hint: "Type the word you hear." },
+  { mode: "listen", title: "Listen & Select", hint: "Choose the word you hear." },
+  { mode: "record", title: "Read & Record", hint: "Record your own reading." }
+];
 let selectedTtsVoice = null;
 let ttsPlaybackId = 0;
 let activeWordAudio = null;
@@ -2276,6 +2402,53 @@ function currentUnit() {
 
 function currentUnitKey() {
   return `${state.book}:${state.unitIndex + 1}`;
+}
+
+function dailyRoutineDateKey() {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function dailyRoutineStorageKey() {
+  const studentKey =
+    learnerProfile?.student_id ||
+    learnerProfile?.id ||
+    academyStaffProfile?.email ||
+    "guest";
+  return [
+    DAILY_ROUTINE_STORAGE_PREFIX,
+    studentKey,
+    currentUnitKey(),
+    dailyRoutineDateKey()
+  ].join(":");
+}
+
+function loadDailyRoutineProgress() {
+  try {
+    return JSON.parse(localStorage.getItem(dailyRoutineStorageKey()) || "{}") || {};
+  } catch {
+    return {};
+  }
+}
+
+function saveDailyRoutineProgress(progress) {
+  try {
+    localStorage.setItem(dailyRoutineStorageKey(), JSON.stringify(progress));
+  } catch {}
+}
+
+function toggleDailyRoutineStep(mode) {
+  const progress = loadDailyRoutineProgress();
+  if (progress[mode]) {
+    delete progress[mode];
+  } else {
+    progress[mode] = new Date().toISOString();
+  }
+  saveDailyRoutineProgress(progress);
+  renderMain();
 }
 
 function isAcademyStaff() {
@@ -2457,6 +2630,42 @@ function renderMissionItem(label, value, target, text) {
       <span>${escapeHtml(text)}</span>
       <div class="mission-progress"><i style="width:${percent}%"></i></div>
     </div>
+  `;
+}
+
+function renderDailyRoutinePanel() {
+  if (!learnerProfile && !isAcademyStaff()) return "";
+  const progress = loadDailyRoutineProgress();
+  const doneCount = DAILY_ROUTINE_STEPS.filter(step => progress[step.mode]).length;
+  const totalCount = DAILY_ROUTINE_STEPS.length;
+
+  return `
+    <section class="daily-routine" aria-label="Today reading path">
+      <div class="routine-head">
+        <b>Today Reading Path</b>
+        <span>${doneCount}/${totalCount} complete</span>
+      </div>
+      <div class="routine-steps">
+        ${DAILY_ROUTINE_STEPS.map((step, index) => {
+          const done = Boolean(progress[step.mode]);
+          const active = state.mode === step.mode;
+          return `
+            <article class="routine-step ${done ? "done" : ""} ${active ? "active" : ""}">
+              <button class="routine-jump" type="button" onclick="setMode('${step.mode}')">
+                <span class="routine-no">${index + 1}</span>
+                <span class="routine-copy">
+                  <b>${escapeHtml(step.title)}</b>
+                  <small>${escapeHtml(step.hint)}</small>
+                </span>
+              </button>
+              <button class="routine-check" type="button" aria-pressed="${done ? "true" : "false"}" onclick="toggleDailyRoutineStep('${step.mode}')">
+                ${done ? "Done" : "Check"}
+              </button>
+            </article>
+          `;
+        }).join("")}
+      </div>
+    </section>
   `;
 }
 
@@ -3812,6 +4021,7 @@ function renderMain() {
     <section class="worksheet">
       ${renderMobileUnits()}
       ${renderRewardDashboard()}
+      ${renderDailyRoutinePanel()}
       <div class="unit-hero">
         <div>
           <div class="unit-label"><span>${state.unitIndex + 1}</span> ${escapeHtml(unit.label)}</div>
