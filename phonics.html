@@ -1692,6 +1692,117 @@
     color: var(--green);
   }
 
+  .exit-ticket {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+    gap: 12px;
+    margin: 0 0 16px;
+    padding: 13px;
+    border: 3px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+    box-shadow: var(--small-shadow);
+  }
+
+  .exit-ticket-head b {
+    display: block;
+    font-size: 18px;
+    font-weight: 950;
+  }
+
+  .exit-ticket-head span {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 850;
+    line-height: 1.35;
+  }
+
+  .exit-ticket-body {
+    display: grid;
+    gap: 9px;
+  }
+
+  .ticket-group {
+    display: grid;
+    gap: 6px;
+  }
+
+  .ticket-label {
+    color: var(--line);
+    font-size: 12px;
+    font-weight: 950;
+  }
+
+  .ticket-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .ticket-option {
+    padding: 7px 9px;
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--line);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .ticket-option.active {
+    background: var(--yellow);
+    color: var(--red);
+    box-shadow: 0 3px 0 rgba(23, 21, 31, .14);
+  }
+
+  .ticket-note-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 8px;
+  }
+
+  .ticket-note {
+    min-width: 0;
+    padding: 9px 10px;
+    border: 2px solid var(--line);
+    border-radius: 8px;
+    background: #f7f8fb;
+    color: var(--line);
+    font: 850 13px "Segoe UI", system-ui, sans-serif;
+  }
+
+  .ticket-save,
+  .ticket-clear {
+    padding: 9px 12px;
+    border: 2px solid var(--line);
+    border-radius: 8px;
+    color: var(--line);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 950;
+    cursor: pointer;
+  }
+
+  .ticket-save {
+    background: var(--lime);
+  }
+
+  .ticket-clear {
+    background: #fff;
+  }
+
+  .ticket-status {
+    color: var(--green);
+    font-size: 12px;
+    font-weight: 900;
+  }
+
   .listen-game {
     position: relative;
     z-index: 1;
@@ -2076,6 +2187,14 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    .exit-ticket {
+      grid-template-columns: 1fr;
+    }
+
+    .ticket-note-row {
+      grid-template-columns: 1fr;
+    }
+
     .article-toolbar,
     .article-preview,
     .article-source-board {
@@ -2369,6 +2488,7 @@ const ARTICLE_TEXT_MODEL = "gemini-2.5-flash";
 const ARTICLE_IMAGE_MODEL = "gemini-3.1-flash-image";
 const ARTICLE_IMAGE_FALLBACK_MODEL = "gemini-2.5-flash-image";
 const DAILY_ROUTINE_STORAGE_PREFIX = "zoops_pop_daily_routine_v1";
+const EXIT_TICKET_STORAGE_PREFIX = "zoops_pop_exit_ticket_v1";
 const DAILY_ROUTINE_STEPS = [
   { mode: "study", title: "Study Board", hint: "Read every phonics word." },
   { mode: "sight", title: "Sight Words", hint: "Listen and read the sight words." },
@@ -2376,6 +2496,19 @@ const DAILY_ROUTINE_STEPS = [
   { mode: "spell", title: "Spelling Check", hint: "Type the word you hear." },
   { mode: "listen", title: "Listen & Select", hint: "Choose the word you hear." },
   { mode: "record", title: "Read & Record", hint: "Record your own reading." }
+];
+const EXIT_TICKET_FEELINGS = [
+  { value: "easy", label: "Easy" },
+  { value: "good", label: "Just right" },
+  { value: "practice", label: "Need practice" }
+];
+const EXIT_TICKET_FOCUS_AREAS = [
+  { value: "phonics", label: "Phonics words" },
+  { value: "sight", label: "Sight words" },
+  { value: "collocation", label: "Collocation" },
+  { value: "spelling", label: "Spelling" },
+  { value: "listening", label: "Listening" },
+  { value: "recording", label: "Reading aloud" }
 ];
 let selectedTtsVoice = null;
 let ttsPlaybackId = 0;
@@ -2448,6 +2581,63 @@ function toggleDailyRoutineStep(mode) {
     progress[mode] = new Date().toISOString();
   }
   saveDailyRoutineProgress(progress);
+  renderMain();
+}
+
+function exitTicketStorageKey() {
+  const studentKey =
+    learnerProfile?.student_id ||
+    learnerProfile?.id ||
+    academyStaffProfile?.email ||
+    "guest";
+  return [
+    EXIT_TICKET_STORAGE_PREFIX,
+    studentKey,
+    currentUnitKey(),
+    dailyRoutineDateKey()
+  ].join(":");
+}
+
+function loadExitTicket() {
+  try {
+    return JSON.parse(localStorage.getItem(exitTicketStorageKey()) || "{}") || {};
+  } catch {
+    return {};
+  }
+}
+
+function saveExitTicket(ticket) {
+  try {
+    localStorage.setItem(exitTicketStorageKey(), JSON.stringify({
+      ...ticket,
+      savedAt: new Date().toISOString()
+    }));
+  } catch {}
+}
+
+function setExitTicketValue(field, value) {
+  const ticket = loadExitTicket();
+  ticket[field] = value;
+  saveExitTicket(ticket);
+  renderMain();
+}
+
+function updateExitTicketNote(value) {
+  const ticket = loadExitTicket();
+  ticket.note = String(value || "").slice(0, 120);
+  saveExitTicket(ticket);
+}
+
+function saveExitTicketNote() {
+  const input = document.getElementById("exitTicketNote");
+  updateExitTicketNote(input ? input.value : "");
+  renderMain();
+}
+
+function clearExitTicket() {
+  try {
+    localStorage.removeItem(exitTicketStorageKey());
+  } catch {}
   renderMain();
 }
 
@@ -2664,6 +2854,54 @@ function renderDailyRoutinePanel() {
             </article>
           `;
         }).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function renderExitTicketPanel() {
+  if (!learnerProfile && !isAcademyStaff()) return "";
+  const ticket = loadExitTicket();
+  const savedText = ticket.savedAt
+    ? `Saved ${new Date(ticket.savedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
+    : "Not saved yet";
+
+  return `
+    <section class="exit-ticket" aria-label="Exit ticket">
+      <div class="exit-ticket-head">
+        <b>Exit Ticket</b>
+        <span>Finish today's unit with one quick check-in before you leave.</span>
+      </div>
+      <div class="exit-ticket-body">
+        <div class="ticket-group">
+          <div class="ticket-label">How did it feel?</div>
+          <div class="ticket-options">
+            ${EXIT_TICKET_FEELINGS.map(option => `
+              <button class="ticket-option ${ticket.feeling === option.value ? "active" : ""}" type="button" onclick="setExitTicketValue('feeling', '${option.value}')">
+                ${escapeHtml(option.label)}
+              </button>
+            `).join("")}
+          </div>
+        </div>
+        <div class="ticket-group">
+          <div class="ticket-label">What should I practice again?</div>
+          <div class="ticket-options">
+            ${EXIT_TICKET_FOCUS_AREAS.map(option => `
+              <button class="ticket-option ${ticket.focus === option.value ? "active" : ""}" type="button" onclick="setExitTicketValue('focus', '${option.value}')">
+                ${escapeHtml(option.label)}
+              </button>
+            `).join("")}
+          </div>
+        </div>
+        <div class="ticket-group">
+          <div class="ticket-label">Teacher note</div>
+          <div class="ticket-note-row">
+            <input id="exitTicketNote" class="ticket-note" maxlength="120" value="${escapeAttribute(ticket.note || "")}" placeholder="One word or sentence for my teacher" oninput="updateExitTicketNote(this.value)">
+            <button class="ticket-save" type="button" onclick="saveExitTicketNote()">Save</button>
+            <button class="ticket-clear" type="button" onclick="clearExitTicket()">Clear</button>
+          </div>
+          <div class="ticket-status">${escapeHtml(savedText)}</div>
+        </div>
       </div>
     </section>
   `;
@@ -4022,6 +4260,7 @@ function renderMain() {
       ${renderMobileUnits()}
       ${renderRewardDashboard()}
       ${renderDailyRoutinePanel()}
+      ${renderExitTicketPanel()}
       <div class="unit-hero">
         <div>
           <div class="unit-label"><span>${state.unitIndex + 1}</span> ${escapeHtml(unit.label)}</div>
