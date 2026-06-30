@@ -176,6 +176,30 @@
     font-weight: 900;
   }
 
+  .staff-dashboard-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 42px;
+    padding: 8px 14px;
+    border: 3px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+    box-shadow: var(--small-shadow);
+    color: var(--ink);
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 900;
+  }
+
+  .staff-dashboard-link:hover {
+    background: var(--sun);
+  }
+
+  .staff-dashboard-link[hidden] {
+    display: none;
+  }
+
   .student-signout:hover {
     background: #fff;
   }
@@ -1742,6 +1766,9 @@
             </span>
             <span id="streakChip" class="streak-chip">Streak 0일</span>
           </div>
+          <a id="staffDashboardLink" class="staff-dashboard-link" href="academy.html" hidden>
+            학습관리로 돌아가기
+          </a>
           <button id="studentSignOut" class="student-signout" type="button" hidden>
             로그아웃
           </button>
@@ -1785,6 +1812,7 @@ const authClient = window.supabase && window.ZOOPS_SUPABASE
     )
   : null;
 const studentSignOut = document.getElementById("studentSignOut");
+const staffDashboardLink = document.getElementById("staffDashboardLink");
 const playerHud = document.getElementById("playerHud");
 const levelChip = document.getElementById("levelChip");
 const xpFill = document.getElementById("xpFill");
@@ -1841,6 +1869,7 @@ async function initializeStudentSession() {
     ? staffResult.data
     : null;
   studentSignOut.textContent = academyStaffProfile ? "관리자 로그아웃" : "로그아웃";
+  updateStaffDashboardLink(staffResult.data?.role);
   if (academyStaffProfile && shouldOpenArticleMaker()) {
     state.mode = "article";
   }
@@ -1865,9 +1894,22 @@ function enableLocalStaffPreview() {
   if (shouldOpenArticleMaker()) {
     state.mode = "article";
   }
+  updateStaffDashboardLink(academyStaffProfile.role);
   studentSignOut.hidden = true;
   renderMain();
   return true;
+}
+
+function updateStaffDashboardLink(role) {
+  const canReturnToAcademy = ["academy_owner", "teacher"].includes(role);
+  const canReturnToAdmin = role === "super_admin";
+  const showLink = canReturnToAcademy || canReturnToAdmin;
+  staffDashboardLink.hidden = !showLink;
+  if (!showLink) return;
+  staffDashboardLink.href = canReturnToAdmin ? "admin.html" : "academy.html";
+  staffDashboardLink.textContent = canReturnToAdmin
+    ? "관리자 대시보드로 돌아가기"
+    : "학습관리로 돌아가기";
 }
 
 function shouldOpenArticleMaker() {
