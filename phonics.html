@@ -1937,6 +1937,7 @@
 
 <script src="phonics_curriculum.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
 <script src="supabase_config.js"></script>
 <script>
 const authClient = window.supabase && window.ZOOPS_SUPABASE
@@ -3810,7 +3811,7 @@ function renderRecordMode(unit, sightWords, collabPhrases) {
           Play My Recording
         </button>
         <button class="record-btn secondary" type="button" onclick="downloadReadingRecording()" ${hasRecording ? "" : "disabled"}>
-          Save Recording
+          Save MP3
         </button>
         <span class="record-status" id="recordStatus">${escapeHtml(state.recordingStatus)}</span>
         ${hasRecording ? `<audio class="record-playback" id="readRecordPlayback" controls src="${escapeAttribute(readRecordingUrl)}"></audio>` : ""}
@@ -4967,8 +4968,14 @@ function playReadingRecording() {
   });
 }
 
-function downloadReadingRecording() {
+async function downloadReadingRecording() {
   if (!readRecordingBlob || !readRecordingUrl) return;
+  if (!window.lamejs) {
+    state.recordingStatus = "MP3 encoder is still loading. Wait a moment, then try Save MP3 again.";
+    renderMain();
+    return;
+  }
+
   const target = currentRecordingTarget();
   const fileName = [
     getRecordingStudentName(),
@@ -4976,15 +4983,70 @@ function downloadReadingRecording() {
     slugifyFileName(currentUnit().name),
     slugifyFileName(target?.text || "reading"),
     new Date().toISOString().slice(0, 10)
-  ].filter(Boolean).join("_") + ".webm";
-  const link = document.createElement("a");
-  link.href = readRecordingUrl;
-  link.download = fileName;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  state.recordingStatus = `Saved as ${fileName}`;
+  ].filter(Boolean).join("_") + ".mp3";
+
+  state.recordingStatus = "Converting recording to MP3...";
   renderMain();
+
+  try {
+    const mp3Blob = await convertRecordingBlobToMp3(readRecordingBlob);
+    const mp3Url = URL.createObjectURL(mp3Blob);
+    const link = document.createElement("a");
+    link.href = mp3Url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(mp3Url), 60000);
+    state.recordingStatus = `Saved as ${fileName}`;
+  } catch (error) {
+    state.recordingStatus = `MP3 conversion failed: ${error.message}`;
+  }
+  renderMain();
+}
+
+async function convertRecordingBlobToMp3(blob) {
+  const arrayBuffer = await blob.arrayBuffer();
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextClass) {
+    throw new Error("AudioContext is not available in this browser.");
+  }
+  const audioContext = new AudioContextClass();
+  try {
+    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer.slice(0));
+    const channelCount = Math.min(2, audioBuffer.numberOfChannels || 1);
+    const sampleRate = audioBuffer.sampleRate;
+    const encoder = new lamejs.Mp3Encoder(channelCount, sampleRate, 96);
+    const mp3Chunks = [];
+    const blockSize = 1152;
+    const left = float32ToInt16(audioBuffer.getChannelData(0));
+    const right = channelCount > 1
+      ? float32ToInt16(audioBuffer.getChannelData(1))
+      : null;
+
+    for (let offset = 0; offset < left.length; offset += blockSize) {
+      const leftChunk = left.subarray(offset, offset + blockSize);
+      const mp3Buffer = right
+        ? encoder.encodeBuffer(leftChunk, right.subarray(offset, offset + blockSize))
+        : encoder.encodeBuffer(leftChunk);
+      if (mp3Buffer.length > 0) mp3Chunks.push(mp3Buffer);
+    }
+
+    const finalBuffer = encoder.flush();
+    if (finalBuffer.length > 0) mp3Chunks.push(finalBuffer);
+    return new Blob(mp3Chunks, { type: "audio/mpeg" });
+  } finally {
+    audioContext.close?.();
+  }
+}
+
+function float32ToInt16(samples) {
+  const output = new Int16Array(samples.length);
+  for (let index = 0; index < samples.length; index += 1) {
+    const sample = Math.max(-1, Math.min(1, samples[index]));
+    output[index] = sample < 0 ? sample * 0x8000 : sample * 0x7fff;
+  }
+  return output;
 }
 
 function getRecordingStudentName() {
