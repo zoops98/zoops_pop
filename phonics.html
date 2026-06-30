@@ -829,6 +829,133 @@
     font: 900 13px "Segoe UI", system-ui, sans-serif;
   }
 
+  .record-panel {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 16px;
+  }
+
+  .record-reader {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 16px;
+    align-items: center;
+    padding: 18px;
+    border: 4px solid var(--line);
+    border-radius: var(--radius);
+    background: linear-gradient(90deg, #fff 0%, #e8f7ff 100%);
+    box-shadow: var(--small-shadow);
+  }
+
+  .record-target-label {
+    display: inline-block;
+    margin-bottom: 8px;
+    padding: 5px 10px;
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--accent);
+    font: 900 13px "Segoe UI", system-ui, sans-serif;
+  }
+
+  .record-text {
+    display: block;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    font-size: clamp(38px, 5.3vw, 72px);
+    font-weight: 900;
+    line-height: 1.05;
+  }
+
+  .record-helper {
+    margin-top: 10px;
+    color: var(--muted);
+    font: 800 14px "Segoe UI", system-ui, sans-serif;
+  }
+
+  .record-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .record-btn {
+    min-height: 42px;
+    padding: 9px 15px;
+    border: 3px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--sun);
+    box-shadow: var(--small-shadow);
+    cursor: pointer;
+    font-weight: 900;
+  }
+
+  .record-btn.secondary {
+    background: #fff;
+  }
+
+  .record-btn.danger {
+    background: var(--hot);
+    color: #fff;
+  }
+
+  .record-btn:disabled {
+    cursor: not-allowed;
+    opacity: .55;
+  }
+
+  .record-status {
+    flex: 1 1 220px;
+    min-width: 180px;
+    color: var(--muted);
+    font: 900 14px "Segoe UI", system-ui, sans-serif;
+  }
+
+  .record-playback {
+    width: 100%;
+    margin-top: 2px;
+  }
+
+  .record-target-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .record-target-card {
+    display: grid;
+    gap: 8px;
+    min-height: 120px;
+    padding: 12px;
+    border: 4px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+    box-shadow: var(--small-shadow);
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .record-target-card.playing {
+    outline: 5px solid var(--lime);
+  }
+
+  .record-target-card b {
+    color: var(--accent);
+    font: 900 12px "Segoe UI", system-ui, sans-serif;
+  }
+
+  .record-target-card span {
+    align-self: center;
+    overflow-wrap: anywhere;
+    font-size: clamp(26px, 2.7vw, 40px);
+    font-weight: 900;
+    line-height: 1.08;
+    text-align: center;
+  }
+
   .article-maker {
     position: relative;
     z-index: 1;
@@ -1656,7 +1783,8 @@
     .word-grid,
     .challenge-grid,
     .sight-grid,
-    .collab-grid {
+    .collab-grid,
+    .record-target-grid {
       grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
       gap: 10px;
     }
@@ -1664,8 +1792,13 @@
     .word-card,
     .challenge-card,
     .sight-card,
-    .collab-card {
+    .collab-card,
+    .record-target-card {
       min-height: 112px;
+    }
+
+    .record-reader {
+      grid-template-columns: 1fr;
     }
   }
 
@@ -1722,7 +1855,8 @@
     .word-grid,
     .challenge-grid,
     .sight-grid,
-    .collab-grid {
+    .collab-grid,
+    .record-target-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
@@ -1953,6 +2087,8 @@ const state = {
   listenAttempts: 1,
   listenStatus: "ready",
   listenCompleted: {},
+  recordingIndex: 0,
+  recordingStatus: "Choose a reading target, listen once, then record.",
   articleDraft: null,
   articleStatus: "",
   articleWorking: false
@@ -1976,6 +2112,13 @@ let ttsPlaybackId = 0;
 let activeWordAudio = null;
 let activeWordResolve = null;
 let recordedRepeatTimer = 0;
+let readRecorder = null;
+let readRecordingStream = null;
+let readRecordingChunks = [];
+let readRecordingBlob = null;
+let readRecordingUrl = "";
+let readRecordingStartedAt = 0;
+let readRecordingTimer = 0;
 const wordAudioCache = new Map();
 const collabAudioCache = new Map();
 
@@ -3488,6 +3631,7 @@ function renderMain() {
   const selectedSightWord = sightWords[state.sightIndex] || sightWords[0] || selectedWord;
   const collabPhrases = makeCollabPhrases(unit, sightWords);
   const selectedCollabPhrase = collabPhrases[state.collabIndex] || collabPhrases[0];
+  const recordingTarget = currentRecordingTarget(unit, sightWords, collabPhrases);
   const firstUncheckedIndex = unit.words.findIndex((_, index) => state.checked[index] !== true);
   const spellingPromptWord = unit.words[firstUncheckedIndex === -1 ? 0 : firstUncheckedIndex];
   const listenPromptWord = unit.words[state.listenIndex] || unit.words[0];
@@ -3497,16 +3641,21 @@ function renderMain() {
   const utilityWord = state.mode === "spell" ? spellingPromptWord :
     state.mode === "listen" ? listenPromptWord :
     state.mode === "sight" ? selectedSightWord :
+    state.mode === "record" && recordingTarget ? recordingTarget.text :
     selectedWord;
   const utilityAction = state.mode === "article"
     ? "generateArticleSheet()"
     : state.mode === "collab" && selectedCollabPhrase
     ? `playCollabPhrase(${state.collabIndex})`
+    : state.mode === "record"
+    ? "playRecordingTarget()"
     : `playWord('${escapeHtml(utilityWord)}')`;
   const utilityLabel = state.mode === "article"
     ? "Make Article"
     : state.mode === "collab"
       ? "Play Collocation"
+      : state.mode === "record"
+      ? "Listen First"
       : "Play Word";
 
   main.innerHTML = `
@@ -3531,6 +3680,7 @@ function renderMain() {
         <button class="mode-tab ${state.mode === "collab" ? "active" : ""}" onclick="setMode('collab')">Collocation</button>
         <button class="mode-tab ${state.mode === "spell" ? "active" : ""}" onclick="setMode('spell')">Spelling Check</button>
         <button class="mode-tab ${state.mode === "listen" ? "active" : ""}" onclick="setMode('listen')">Listen & Select</button>
+        <button class="mode-tab ${state.mode === "record" ? "active" : ""}" onclick="setMode('record')">Read & Record</button>
         ${canMakeArticle ? `<button class="mode-tab ${state.mode === "article" ? "active" : ""}" onclick="setMode('article')">Article Maker</button>` : ""}
         <button class="utility-btn" onclick="${utilityAction}">${utilityLabel}</button>
       </div>
@@ -3539,6 +3689,7 @@ function renderMain() {
         ${unit.families.map(item => `<span class="pattern-chip">${escapeHtml(item)}</span>`).join("")}
         ${state.mode === "sight" ? `<span class="pattern-chip">Sight Words</span>` : ""}
         ${state.mode === "collab" ? `<span class="pattern-chip">Collocation</span>` : ""}
+        ${state.mode === "record" ? `<span class="pattern-chip">Read & Record</span>` : ""}
         ${state.mode === "article" ? `<span class="pattern-chip">Article Maker</span>` : ""}
       </div>
 
@@ -3549,6 +3700,8 @@ function renderMain() {
             ? renderSightMode(unit, sightWords, selectedSightWord)
             : state.mode === "collab"
               ? renderCollabMode(collabPhrases, selectedCollabPhrase)
+              : state.mode === "record"
+                ? renderRecordMode(unit, sightWords, collabPhrases)
               : state.mode === "article"
                 ? renderArticleMaker(unit, sightWords, collabPhrases)
                 : state.mode === "spell"
@@ -3624,6 +3777,53 @@ function renderCollabMode(collabPhrases, selectedCollabPhrase) {
           <span class="collab-action"><span aria-hidden="true">&#9654;</span> Listen & Read</span>
         </button>
       `).join("")}
+    </div>
+  `;
+}
+
+function renderRecordMode(unit, sightWords, collabPhrases) {
+  const targets = buildRecordingTargets(unit, sightWords, collabPhrases);
+  const target = targets[state.recordingIndex] || targets[0];
+  const isRecording = readRecorder && readRecorder.state === "recording";
+  const hasRecording = Boolean(readRecordingBlob && readRecordingUrl);
+  const recordText = target?.kind === "collocation"
+    ? `<span class="record-text collab-phrase">${markCollabPhrase(target)}</span>`
+    : `<span class="record-text">${escapeHtml(target?.text || "")}</span>`;
+
+  return `
+    <div class="record-panel">
+      <div class="record-reader">
+        <div>
+          <span class="record-target-label">${escapeHtml(target?.label || "Reading")}</span>
+          ${recordText}
+          <div class="record-helper">Listen first, read clearly, then save the recording to this computer.</div>
+        </div>
+        <button class="play-big" type="button" onclick="playRecordingTarget()" aria-label="Listen first">&#9654;</button>
+      </div>
+
+      <div class="record-controls">
+        <button class="record-btn ${isRecording ? "danger" : ""}" type="button"
+          onclick="${isRecording ? "stopReadingRecording()" : "startReadingRecording()"}">
+          ${isRecording ? "Stop Recording" : "Start Recording"}
+        </button>
+        <button class="record-btn secondary" type="button" onclick="playReadingRecording()" ${hasRecording ? "" : "disabled"}>
+          Play My Recording
+        </button>
+        <button class="record-btn secondary" type="button" onclick="downloadReadingRecording()" ${hasRecording ? "" : "disabled"}>
+          Save Recording
+        </button>
+        <span class="record-status" id="recordStatus">${escapeHtml(state.recordingStatus)}</span>
+        ${hasRecording ? `<audio class="record-playback" id="readRecordPlayback" controls src="${escapeAttribute(readRecordingUrl)}"></audio>` : ""}
+      </div>
+
+      <div class="record-target-grid">
+        ${targets.map((item, index) => `
+          <button class="record-target-card ${state.recordingIndex === index ? "playing" : ""}" type="button" onclick="selectRecordingTarget(${index})">
+            <b>${escapeHtml(item.label)}</b>
+            <span>${escapeHtml(item.text)}</span>
+          </button>
+        `).join("")}
+      </div>
     </div>
   `;
 }
@@ -4556,6 +4756,11 @@ function playSpellingWord(index) {
 }
 
 function selectBook(book) {
+  if (readRecorder && readRecorder.state === "recording") {
+    state.recordingStatus = "Stop the current recording before changing sections.";
+    renderMain();
+    return;
+  }
   finishActiveLearningSession(false);
   state.book = book;
   state.unitIndex = 0;
@@ -4563,10 +4768,12 @@ function selectBook(book) {
   state.selectedIndex = 0;
   state.sightIndex = 0;
   state.collabIndex = 0;
+  state.recordingIndex = 0;
   state.answers = {};
   state.checked = {};
   state.articleDraft = null;
   state.articleStatus = "";
+  clearReadingRecording();
   resetListenState();
   resetLearningSessionState();
   renderApp();
@@ -4574,16 +4781,23 @@ function selectBook(book) {
 }
 
 function selectUnit(index) {
+  if (readRecorder && readRecorder.state === "recording") {
+    state.recordingStatus = "Stop the current recording before changing units.";
+    renderMain();
+    return;
+  }
   finishActiveLearningSession(false);
   state.unitIndex = index;
   state.mode = "study";
   state.selectedIndex = 0;
   state.sightIndex = 0;
   state.collabIndex = 0;
+  state.recordingIndex = 0;
   state.answers = {};
   state.checked = {};
   state.articleDraft = null;
   state.articleStatus = "";
+  clearReadingRecording();
   resetListenState();
   resetLearningSessionState();
   renderApp();
@@ -4626,12 +4840,206 @@ function playCollabPhrase(index = state.collabIndex) {
   if (item) playPhrase(item.phrase);
 }
 
+function buildRecordingTargets(unit, sightWords, collabPhrases) {
+  const studyTargets = (unit.words || []).slice(0, 12).map(word => ({
+    kind: "word",
+    label: "Study Word",
+    text: word
+  }));
+  const sightTargets = (sightWords || []).slice(0, 9).map(word => ({
+    kind: "word",
+    label: "Sight Word",
+    text: displaySightWord(word)
+  }));
+  const collabTargets = (collabPhrases || []).slice(0, 9).map(item => ({
+    ...item,
+    kind: "collocation",
+    label: "Collocation",
+    text: item.phrase
+  }));
+  return [...studyTargets, ...sightTargets, ...collabTargets];
+}
+
+function currentRecordingTarget(
+  unit = currentUnit(),
+  sightWords = unit.sightWords || [],
+  collabPhrases = makeCollabPhrases(unit, sightWords)
+) {
+  const targets = buildRecordingTargets(unit, sightWords, collabPhrases);
+  return targets[Math.max(0, Math.min(state.recordingIndex, targets.length - 1))] || targets[0];
+}
+
+function selectRecordingTarget(index) {
+  if (readRecorder && readRecorder.state === "recording") {
+    state.recordingStatus = "Stop the current recording before choosing another target.";
+    renderMain();
+    return;
+  }
+  noteLearningActivity();
+  const targets = buildRecordingTargets(currentUnit(), currentUnit().sightWords || [], makeCollabPhrases(currentUnit(), currentUnit().sightWords || []));
+  state.recordingIndex = Math.max(0, Math.min(index, targets.length - 1));
+  clearReadingRecording();
+  state.recordingStatus = "Listen first, then start recording.";
+  renderMain();
+}
+
+function playRecordingTarget() {
+  const target = currentRecordingTarget();
+  if (!target) return;
+  if (target.kind === "collocation") {
+    playPhrase(target.text);
+  } else {
+    playWord(target.text);
+  }
+}
+
+async function startReadingRecording() {
+  if (!("mediaDevices" in navigator) || !window.MediaRecorder) {
+    state.recordingStatus = "Chrome microphone recording is not available in this browser.";
+    renderMain();
+    return;
+  }
+  if (readRecorder && readRecorder.state === "recording") return;
+
+  noteLearningActivity();
+  stopRecordedAudio();
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+  clearReadingRecording();
+  state.recordingStatus = "Requesting microphone permission...";
+  renderMain();
+
+  try {
+    readRecordingStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    readRecordingChunks = [];
+    const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
+      ? "audio/webm;codecs=opus"
+      : MediaRecorder.isTypeSupported("audio/webm")
+        ? "audio/webm"
+        : "";
+    readRecorder = mimeType
+      ? new MediaRecorder(readRecordingStream, { mimeType })
+      : new MediaRecorder(readRecordingStream);
+
+    readRecorder.ondataavailable = event => {
+      if (event.data && event.data.size > 0) readRecordingChunks.push(event.data);
+    };
+    readRecorder.onstop = finishReadingRecording;
+    readRecordingStartedAt = Date.now();
+    readRecorder.start();
+    state.recordingStatus = "Recording... 0:00";
+    startRecordingTimer();
+    renderMain();
+  } catch (error) {
+    stopReadingStream();
+    state.recordingStatus = `Microphone permission failed: ${error.message}`;
+    renderMain();
+  }
+}
+
+function stopReadingRecording() {
+  if (!readRecorder || readRecorder.state !== "recording") return;
+  state.recordingStatus = "Finishing recording...";
+  stopRecordingTimer();
+  readRecorder.stop();
+  renderMain();
+}
+
+function finishReadingRecording() {
+  stopRecordingTimer();
+  stopReadingStream();
+  const mimeType = readRecordingChunks[0]?.type || "audio/webm";
+  readRecordingBlob = new Blob(readRecordingChunks, { type: mimeType });
+  readRecordingChunks = [];
+  if (readRecordingUrl) URL.revokeObjectURL(readRecordingUrl);
+  readRecordingUrl = URL.createObjectURL(readRecordingBlob);
+  readRecorder = null;
+  state.recordingStatus = "Recording is ready. Play it back or save it to this computer.";
+  renderMain();
+}
+
+function playReadingRecording() {
+  const audio = document.getElementById("readRecordPlayback");
+  if (!audio) return;
+  audio.currentTime = 0;
+  audio.play().catch(() => {
+    state.recordingStatus = "Could not play the recording. Try saving it first.";
+    renderMain();
+  });
+}
+
+function downloadReadingRecording() {
+  if (!readRecordingBlob || !readRecordingUrl) return;
+  const target = currentRecordingTarget();
+  const fileName = [
+    getRecordingStudentName(),
+    slugifyFileName(state.book),
+    slugifyFileName(currentUnit().name),
+    slugifyFileName(target?.text || "reading"),
+    new Date().toISOString().slice(0, 10)
+  ].filter(Boolean).join("_") + ".webm";
+  const link = document.createElement("a");
+  link.href = readRecordingUrl;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  state.recordingStatus = `Saved as ${fileName}`;
+  renderMain();
+}
+
+function getRecordingStudentName() {
+  return slugifyFileName(
+    learnerProfile?.english_name ||
+    academyStaffProfile?.display_name ||
+    "student"
+  );
+}
+
+function clearReadingRecording() {
+  if (readRecordingUrl) URL.revokeObjectURL(readRecordingUrl);
+  readRecordingUrl = "";
+  readRecordingBlob = null;
+  readRecordingChunks = [];
+}
+
+function stopReadingStream() {
+  if (!readRecordingStream) return;
+  readRecordingStream.getTracks().forEach(track => track.stop());
+  readRecordingStream = null;
+}
+
+function startRecordingTimer() {
+  stopRecordingTimer();
+  readRecordingTimer = window.setInterval(updateRecordingTimer, 500);
+}
+
+function stopRecordingTimer() {
+  window.clearInterval(readRecordingTimer);
+  readRecordingTimer = 0;
+}
+
+function updateRecordingTimer() {
+  if (!readRecordingStartedAt) return;
+  const elapsedSeconds = Math.max(0, Math.floor((Date.now() - readRecordingStartedAt) / 1000));
+  const minutes = Math.floor(elapsedSeconds / 60);
+  const seconds = String(elapsedSeconds % 60).padStart(2, "0");
+  state.recordingStatus = `Recording... ${minutes}:${seconds}`;
+  const status = document.getElementById("recordStatus");
+  if (status) status.textContent = state.recordingStatus;
+}
+
 function setMode(mode) {
   if (mode === "article" && !isAcademyStaff()) return;
+  if (readRecorder && readRecorder.state === "recording" && mode !== "record") {
+    state.recordingStatus = "Stop the current recording before leaving Read & Record.";
+    renderMain();
+    return;
+  }
   finishActiveLearningSession(false);
   state.mode = mode;
   if (mode === "sight") state.sightIndex = 0;
   if (mode === "collab") state.collabIndex = 0;
+  if (mode === "record") state.recordingIndex = 0;
   state.answers = {};
   state.checked = {};
   resetListenState();
