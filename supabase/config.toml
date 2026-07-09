@@ -3,6 +3,8 @@ project_id = "qudxcsbfjerwittazmpx"
 [auth]
 site_url = "https://zoops.synology.me:8081/zoopspop/portal.html"
 additional_redirect_urls = [
+  "https://phonics-weld.vercel.app",
+  "https://phonics-weld.vercel.app/portal.html",
   "https://zoops.synology.me:8081/zoopspop/portal.html",
   "http://zoops.synology.me:8080/phonics/portal.html",
   "http://127.0.0.1:8173/portal.html",
