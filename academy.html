@@ -181,9 +181,9 @@
 
   <main>
     <section id="setupPanel" class="panel hidden">
-      <h2>학원 공간 만들기</h2>
-      <p>처음 한 번만 입력합니다. 학원 코드는 학생 로그인에 사용됩니다.</p>
-      <form id="setupForm">
+      <h2>계정 확인 필요</h2>
+      <p>학원장 계정은 최고 관리자가 발급한 계정으로만 사용할 수 있습니다.</p>
+      <form id="setupForm" class="hidden">
         <input id="academyName" placeholder="학원 이름" required>
         <input id="academyNewCode" placeholder="학원 코드 (예: HAPPY01)" required>
         <input id="ownerName" placeholder="원장님 표시 이름" required>
@@ -325,7 +325,8 @@
       }
       currentProfile = profile;
       if (!profile) {
-        setupPanel.classList.remove("hidden");
+        document.getElementById("setupForm").classList.add("hidden");
+        showSetupError("이 계정은 아직 학원장 권한이 없습니다. 최고 관리자에게 학원장 계정 생성을 요청해 주세요.");
         return;
       }
       if (profile.role === "super_admin") {
@@ -354,37 +355,9 @@
       await loadStudents();
     }
 
-    document.getElementById("setupForm").onsubmit = async event => {
+    document.getElementById("setupForm").onsubmit = event => {
       event.preventDefault();
-      const academyName = document.getElementById("academyName").value.trim();
-      const academyCode = document.getElementById("academyNewCode").value
-        .trim().toUpperCase().replace(/[^A-Z0-9_-]/g, "");
-      const ownerName = document.getElementById("ownerName").value.trim();
-
-      if (!academyCode) {
-        showSetupError("학원 코드는 영문, 숫자, 하이픈(-), 밑줄(_)로 입력해 주세요.");
-        return;
-      }
-
-      academyCreateButton.disabled = true;
-      academyCreateButton.textContent = "생성 중...";
-      setupMessage.textContent = "학원 공간을 만들고 있습니다...";
-
-      const { error } = await client.rpc("create_my_academy", {
-        academy_name: academyName,
-        academy_code: academyCode,
-        owner_display_name: ownerName,
-      });
-
-      if (error) {
-        showSetupError(error.code === "23505"
-          ? "이미 사용 중인 학원 코드입니다."
-          : error.message);
-      } else {
-        await start();
-      }
-      academyCreateButton.disabled = false;
-      academyCreateButton.textContent = "학원 생성";
+      showSetupError("학원장 계정은 최고 관리자 대시보드에서만 생성할 수 있습니다.");
     };
 
     async function loadStudents() {

@@ -7,6 +7,12 @@ const corsHeaders = {
 
 const STATUS_VALUES = new Set(["trial", "active", "suspended", "expired"]);
 
+function generateTemporaryPassword() {
+  const bytes = new Uint8Array(18);
+  crypto.getRandomValues(bytes);
+  return `Zp!${Array.from(bytes, (byte) => byte.toString(36).padStart(2, "0")).join("")}`;
+}
+
 Deno.serve(async (request) => {
   if (request.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -44,18 +50,43 @@ Deno.serve(async (request) => {
     }
 
     const body = await request.json();
-    const academyName = String(body.academy_name || "").trim();
-    const academyCode = String(body.academy_code || "")
+    const applicationId = String(body.application_id || "").trim();
+    let source = body;
+
+    if (applicationId) {
+      const { data: application, error: applicationError } = await adminClient
+        .from("academy_owner_applications")
+        .select("id, academy_name, academy_code, owner_name, owner_email, expected_students, status")
+        .eq("id", applicationId)
+        .eq("status", "pending")
+        .single();
+      if (applicationError || !application) {
+        throw new Error("Pending academy owner application not found");
+      }
+
+      source = {
+        academy_name: application.academy_name,
+        academy_code: application.academy_code,
+        owner_display_name: application.owner_name,
+        owner_email: application.owner_email,
+        password: generateTemporaryPassword(),
+        status: body.status || "active",
+        student_limit: application.expected_students || 100,
+      };
+    }
+
+    const academyName = String(source.academy_name || "").trim();
+    const academyCode = String(source.academy_code || "")
       .trim()
       .toUpperCase()
       .replace(/[^A-Z0-9_-]/g, "");
-    const ownerDisplayName = String(body.owner_display_name || "").trim();
-    const ownerEmail = String(body.owner_email || "").trim().toLowerCase();
-    const password = String(body.password || "");
-    const status = String(body.status || "active").trim();
-    const studentLimit = body.student_limit === undefined
+    const ownerDisplayName = String(source.owner_display_name || "").trim();
+    const ownerEmail = String(source.owner_email || "").trim().toLowerCase();
+    const password = String(source.password || "");
+    const status = String(source.status || "active").trim();
+    const studentLimit = source.student_limit === undefined
       ? 100
-      : Number(body.student_limit);
+      : Number(source.student_limit);
 
     if (academyName.length < 2 || academyName.length > 80) {
       throw new Error("Academy name must be 2-80 characters");
@@ -124,7 +155,23 @@ Deno.serve(async (request) => {
       throw new Error(profileInsertError.message);
     }
 
-    return new Response(JSON.stringify({ academy }), {
+    if (applicationId) {
+      const { error: applicationUpdateError } = await adminClient
+        .from("academy_owner_applications")
+        .update({
+          status: "approved",
+          reviewed_by: user.id,
+          reviewed_at: new Date().toISOString(),
+          created_academy_id: academy.id,
+        })
+        .eq("id", applicationId)
+        .eq("status", "pending");
+      if (applicationUpdateError) {
+        throw new Error(applicationUpdateError.message);
+      }
+    }
+
+    return new Response(JSON.stringify({ academy, owner_email: ownerEmail }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 201,
     });

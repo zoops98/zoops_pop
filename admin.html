@@ -154,6 +154,41 @@
       text-transform: uppercase;
     }
     td strong { display: block; }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 3px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+    .status-pill.pending {
+      border-color: #f1c40f;
+      background: #fff8cc;
+      color: #806500;
+    }
+    .status-pill.approved {
+      border-color: #8fd3aa;
+      background: #e9f9ef;
+      color: var(--green);
+    }
+    .status-pill.rejected {
+      border-color: #ffb1bd;
+      background: #fff0f2;
+      color: var(--hot);
+    }
+    .request-note {
+      max-width: 280px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+      line-height: 1.35;
+    }
     .code-pill {
       display: inline-flex;
       margin-top: 4px;
@@ -214,6 +249,30 @@
         <div class="stat"><span>Students</span><b id="studentCount">0</b></div>
         <div class="stat"><span>Capacity</span><b id="capacityCount">0</b></div>
       </div>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>학원장 신청서 승인</h2>
+            <p class="muted">신청서를 확인한 뒤 승인하면 학원과 학원장 계정이 자동으로 생성됩니다.</p>
+          </div>
+        </div>
+        <div id="emptyApplications" class="empty hidden">승인 대기 중인 신청서가 없습니다.</div>
+        <table id="applicationTable">
+          <thead>
+            <tr>
+              <th>Academy</th>
+              <th>Owner</th>
+              <th>Students</th>
+              <th>Status</th>
+              <th>Requested</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="applicationRows"></tbody>
+        </table>
+        <p id="applicationMessage" class="message" aria-live="polite"></p>
+      </section>
 
       <section class="panel">
         <div class="panel-head">
@@ -295,7 +354,9 @@
     const accessMessage = document.getElementById("accessMessage");
     const createMessage = document.getElementById("createMessage");
     const tableMessage = document.getElementById("tableMessage");
+    const applicationMessage = document.getElementById("applicationMessage");
     let academies = [];
+    let ownerApplications = [];
 
     async function start() {
       const { data: { user }, error: userError } = await client.auth.getUser();
@@ -330,7 +391,58 @@
         `${profile.display_name || "Super Admin"} 님, 학원장 계정을 관리합니다.`;
       accessPanel.classList.add("hidden");
       dashboardPanel.classList.remove("hidden");
-      await loadAcademies();
+      await Promise.all([loadAcademies(), loadApplications()]);
+    }
+
+    async function loadApplications() {
+      applicationMessage.textContent = "신청서 목록을 불러오는 중입니다...";
+      const { data, error } = await client.rpc("get_super_admin_owner_applications");
+      if (error) {
+        applicationMessage.textContent = error.message;
+        return;
+      }
+      ownerApplications = data || [];
+      renderApplications();
+      applicationMessage.textContent = ownerApplications.length
+        ? "신청서 목록을 불러왔습니다."
+        : "";
+      applicationMessage.classList.toggle("ok", ownerApplications.length > 0);
+    }
+
+    function renderApplications() {
+      const pendingCount = ownerApplications.filter(item => item.status === "pending").length;
+      document.getElementById("emptyApplications").classList.toggle("hidden", ownerApplications.length > 0);
+      document.getElementById("applicationTable").classList.toggle("hidden", ownerApplications.length === 0);
+      document.getElementById("emptyApplications").textContent = pendingCount
+        ? ""
+        : "승인 대기 중인 신청서가 없습니다.";
+      document.getElementById("applicationRows").innerHTML = ownerApplications.map(item => `
+        <tr>
+          <td>
+            <strong>${escapeText(item.academy_name)}</strong>
+            <span class="code-pill">${escapeText(item.academy_code)}</span>
+            ${item.request_note ? `<div class="request-note">${escapeText(item.request_note)}</div>` : ""}
+          </td>
+          <td>
+            <strong>${escapeText(item.owner_name)}</strong>
+            <span class="muted">${escapeText(item.owner_email)}</span>
+            ${item.owner_phone ? `<span class="muted">${escapeText(item.owner_phone)}</span>` : ""}
+          </td>
+          <td>${Number(item.expected_students || 0).toLocaleString("ko-KR")}명</td>
+          <td><span class="status-pill ${escapeAttribute(item.status)}">${escapeText(item.status)}</span></td>
+          <td>${formatDate(item.created_at)}</td>
+          <td>
+            <div class="row-actions">
+              ${item.status === "pending" ? `
+                <button type="button" onclick="approveApplication('${escapeAttribute(item.id)}')">승인</button>
+                <button class="danger" type="button" onclick="rejectApplication('${escapeAttribute(item.id)}')">거절</button>
+              ` : `
+                <span class="muted">${item.reviewed_at ? formatDate(item.reviewed_at) : "처리 완료"}</span>
+              `}
+            </div>
+          </td>
+        </tr>
+      `).join("");
     }
 
     async function loadAcademies() {
@@ -425,6 +537,51 @@
       button.disabled = false;
     };
 
+    async function approveApplication(applicationId) {
+      const application = ownerApplications.find(item => item.id === applicationId);
+      if (!application || application.status !== "pending") return;
+      applicationMessage.classList.remove("ok");
+      applicationMessage.textContent = `${application.academy_name} 신청서를 승인하는 중입니다...`;
+
+      const { data, error } = await client.functions.invoke("create-academy-owner", {
+        body: {
+          application_id: applicationId,
+          status: "active",
+        },
+      });
+      if (error || data?.error) {
+        applicationMessage.textContent = data?.error || error.message;
+        return;
+      }
+
+      const resetResult = await client.auth.resetPasswordForEmail(application.owner_email, {
+        redirectTo: portalUrl,
+      });
+      applicationMessage.classList.add("ok");
+      applicationMessage.textContent = resetResult.error
+        ? "계정은 생성되었지만 비밀번호 설정 메일 발송에 실패했습니다. 계정 목록에서 비밀번호 재설정을 다시 보내 주세요."
+        : "승인되었습니다. 학원장에게 비밀번호 설정 메일을 보냈습니다.";
+      await Promise.all([loadApplications(), loadAcademies()]);
+    }
+
+    async function rejectApplication(applicationId) {
+      const application = ownerApplications.find(item => item.id === applicationId);
+      if (!application || application.status !== "pending") return;
+      applicationMessage.classList.remove("ok");
+      applicationMessage.textContent = `${application.academy_name} 신청서를 거절하는 중입니다...`;
+
+      const { error } = await client.rpc("reject_academy_owner_application", {
+        p_application_id: applicationId,
+      });
+      if (error) {
+        applicationMessage.textContent = error.message;
+        return;
+      }
+      applicationMessage.classList.add("ok");
+      applicationMessage.textContent = "신청서를 거절 처리했습니다.";
+      await loadApplications();
+    }
+
     async function saveAcademy(academyId) {
       const row = document.querySelector(`tr[data-academy-id="${cssEscape(academyId)}"]`);
       if (!row) return;
@@ -463,7 +620,10 @@
         : "비밀번호 재설정 메일을 보냈습니다.";
     }
 
-    document.getElementById("refreshButton").onclick = loadAcademies;
+    document.getElementById("refreshButton").onclick = () => {
+      loadAcademies();
+      loadApplications();
+    };
     document.getElementById("signOut").onclick = async () => {
       await client.auth.signOut();
       location.href = "portal.html";

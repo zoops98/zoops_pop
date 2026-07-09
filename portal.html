@@ -56,7 +56,8 @@
     main { padding: 22px; }
     form { display: grid; gap: 13px; }
     label { display: grid; gap: 5px; font-weight: 900; }
-    input {
+    input,
+    textarea {
       min-height: 48px;
       width: 100%;
       padding: 10px 12px;
@@ -64,6 +65,11 @@
       border-radius: 5px;
       font: inherit;
       font-weight: 700;
+    }
+    textarea {
+      min-height: 86px;
+      resize: vertical;
+      line-height: 1.45;
     }
     .submit {
       min-height: 50px;
@@ -76,11 +82,13 @@
       font-weight: 900;
     }
     .secondary {
-      border: 0;
-      background: transparent;
+      min-height: 44px;
+      border: 3px solid #17151f;
+      border-radius: 5px;
+      background: #fff;
       color: #126f9b;
       cursor: pointer;
-      font-weight: 800;
+      font-weight: 900;
     }
     .message {
       min-height: 22px;
@@ -89,6 +97,7 @@
       font-weight: 800;
       text-align: center;
     }
+    .message.ok { color: #2f9d59; }
     .hidden { display: none; }
   </style>
 </head>
@@ -111,7 +120,32 @@
           <input id="ownerPassword" type="password" minlength="6" autocomplete="current-password" required>
         </label>
         <button class="submit" type="submit">로그인</button>
-        <button id="ownerSignup" class="secondary" type="button">처음 이용합니다 - 원장님 가입</button>
+        <button id="ownerApply" class="secondary" type="button">학원장 신청하기</button>
+      </form>
+      <form id="applicationForm" class="hidden">
+        <label>학원명
+          <input id="applicationAcademyName" autocomplete="organization" required>
+        </label>
+        <label>희망 학원 코드
+          <input id="applicationAcademyCode" inputmode="latin" placeholder="예: HAPPY01" required>
+        </label>
+        <label>원장님 이름
+          <input id="applicationOwnerName" autocomplete="name" required>
+        </label>
+        <label>원장님 이메일
+          <input id="applicationOwnerEmail" type="email" autocomplete="email" required>
+        </label>
+        <label>연락처
+          <input id="applicationOwnerPhone" type="tel" autocomplete="tel" placeholder="선택 입력">
+        </label>
+        <label>예상 학생 수
+          <input id="applicationExpectedStudents" type="number" min="1" max="5000" value="100" required>
+        </label>
+        <label>요청 메모
+          <textarea id="applicationNote" placeholder="수업 시작 예정일, 요청 사항 등을 적어 주세요."></textarea>
+        </label>
+        <button class="submit" type="submit">신청서 보내기</button>
+        <button id="backToLogin" class="secondary" type="button">로그인으로 돌아가기</button>
       </form>
       <form id="studentForm" class="hidden">
         <label>학원 코드
@@ -140,6 +174,7 @@
     const studentTab = document.getElementById("studentTab");
     const ownerForm = document.getElementById("ownerForm");
     const studentForm = document.getElementById("studentForm");
+    const applicationForm = document.getElementById("applicationForm");
     const message = document.getElementById("message");
     const portalUrl = new URL("portal.html", window.location.href).href;
 
@@ -169,11 +204,25 @@
       studentTab.classList.toggle("active", !owner);
       ownerForm.classList.toggle("hidden", !owner);
       studentForm.classList.toggle("hidden", owner);
+      applicationForm.classList.add("hidden");
       message.textContent = "";
+      message.classList.remove("ok");
+    }
+
+    function showApplicationForm() {
+      ownerTab.classList.remove("active");
+      studentTab.classList.remove("active");
+      ownerForm.classList.add("hidden");
+      studentForm.classList.add("hidden");
+      applicationForm.classList.remove("hidden");
+      message.classList.remove("ok");
+      message.textContent = "신청서를 보내면 최고 관리자가 확인 후 학원장 계정을 승인합니다.";
     }
 
     ownerTab.onclick = () => showMode("owner");
     studentTab.onclick = () => showMode("student");
+    document.getElementById("ownerApply").onclick = showApplicationForm;
+    document.getElementById("backToLogin").onclick = () => showMode("owner");
 
     ownerForm.onsubmit = async event => {
       event.preventDefault();
@@ -187,26 +236,6 @@
         return;
       }
       location.href = "academy.html";
-    };
-
-    document.getElementById("ownerSignup").onclick = async () => {
-      const email = document.getElementById("ownerEmail").value.trim();
-      const password = document.getElementById("ownerPassword").value;
-      if (!email || password.length < 6) {
-        message.textContent = "이메일과 6자 이상의 비밀번호를 입력해 주세요.";
-        return;
-      }
-      message.textContent = "가입 처리 중...";
-      const { error } = await client.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: portalUrl,
-        },
-      });
-      message.textContent = error
-        ? error.message
-        : "가입되었습니다. 이메일 확인 후 로그인해 주세요.";
     };
 
     studentForm.onsubmit = async event => {
@@ -223,6 +252,35 @@
         return;
       }
       location.href = "phonics.html";
+    };
+
+    applicationForm.onsubmit = async event => {
+      event.preventDefault();
+      const submitButton = applicationForm.querySelector(".submit");
+      submitButton.disabled = true;
+      message.classList.remove("ok");
+      message.textContent = "신청서를 보내는 중입니다...";
+
+      const { error } = await client.rpc("submit_academy_owner_application", {
+        p_academy_name: document.getElementById("applicationAcademyName").value.trim(),
+        p_academy_code: document.getElementById("applicationAcademyCode").value.trim(),
+        p_owner_name: document.getElementById("applicationOwnerName").value.trim(),
+        p_owner_email: document.getElementById("applicationOwnerEmail").value.trim(),
+        p_owner_phone: document.getElementById("applicationOwnerPhone").value.trim(),
+        p_expected_students: Number(document.getElementById("applicationExpectedStudents").value),
+        p_request_note: document.getElementById("applicationNote").value.trim(),
+      });
+
+      if (error) {
+        message.textContent = error.message;
+      } else {
+        applicationForm.reset();
+        document.getElementById("applicationExpectedStudents").value = 100;
+        showMode("owner");
+        message.classList.add("ok");
+        message.textContent = "신청서가 접수되었습니다. 승인 후 안내 메일을 확인해 주세요.";
+      }
+      submitButton.disabled = false;
     };
 
     finishEmailConfirmation();
