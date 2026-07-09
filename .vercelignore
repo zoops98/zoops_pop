@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+output/
+tmp/
+supabase/
+my_book_of_phonics_patterns_1000_words.pdf
+generate_phonics_audio.py
+generate_collab_audio.py

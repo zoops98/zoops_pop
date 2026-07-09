@@ -1,0 +1,7 @@
+.vercel
+__pycache__/
+*.pyc
+output/
+tmp/
+supabase/.temp/
+my_book_of_phonics_patterns_1000_words.pdf
