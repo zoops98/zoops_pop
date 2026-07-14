@@ -147,6 +147,15 @@
         <button class="submit" type="submit">신청서 보내기</button>
         <button id="backToLogin" class="secondary" type="button">로그인으로 돌아가기</button>
       </form>
+      <form id="passwordResetForm" class="hidden">
+        <label>새 비밀번호
+          <input id="newPassword" type="password" minlength="8" autocomplete="new-password" required>
+        </label>
+        <label>새 비밀번호 확인
+          <input id="newPasswordConfirm" type="password" minlength="8" autocomplete="new-password" required>
+        </label>
+        <button class="submit" type="submit">비밀번호 저장</button>
+      </form>
       <form id="studentForm" class="hidden">
         <label>학원 코드
           <input id="academyCode" inputmode="latin" autocomplete="organization" required>
@@ -175,24 +184,34 @@
     const ownerForm = document.getElementById("ownerForm");
     const studentForm = document.getElementById("studentForm");
     const applicationForm = document.getElementById("applicationForm");
+    const passwordResetForm = document.getElementById("passwordResetForm");
     const message = document.getElementById("message");
     const portalUrl = new URL("portal.html", window.location.href).href;
 
     async function finishEmailConfirmation() {
       const url = new URL(window.location.href);
       const code = url.searchParams.get("code");
+      const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+      const hashType = hashParams.get("type");
 
       if (code) {
-        message.textContent = "이메일 확인을 완료하는 중입니다...";
+        message.textContent = "비밀번호 설정 링크를 확인하는 중입니다...";
         const { error } = await client.auth.exchangeCodeForSession(code);
         if (error) {
-          message.textContent = `이메일 확인 오류: ${error.message}`;
+          message.textContent = `비밀번호 설정 링크 오류: ${error.message}`;
           return;
         }
         window.history.replaceState({}, document.title, portalUrl);
+        showPasswordResetForm();
+        return;
       }
 
       const { data: { session } } = await client.auth.getSession();
+      if (session && hashType === "recovery") {
+        window.history.replaceState({}, document.title, portalUrl);
+        showPasswordResetForm();
+        return;
+      }
       if (session) {
         window.location.replace("academy.html");
       }
@@ -205,6 +224,7 @@
       ownerForm.classList.toggle("hidden", !owner);
       studentForm.classList.toggle("hidden", owner);
       applicationForm.classList.add("hidden");
+      passwordResetForm.classList.add("hidden");
       message.textContent = "";
       message.classList.remove("ok");
     }
@@ -215,8 +235,21 @@
       ownerForm.classList.add("hidden");
       studentForm.classList.add("hidden");
       applicationForm.classList.remove("hidden");
+      passwordResetForm.classList.add("hidden");
       message.classList.remove("ok");
       message.textContent = "신청서를 보내면 최고 관리자가 확인 후 학원장 계정을 승인합니다.";
+    }
+
+    function showPasswordResetForm() {
+      ownerTab.classList.remove("active");
+      studentTab.classList.remove("active");
+      ownerForm.classList.add("hidden");
+      studentForm.classList.add("hidden");
+      applicationForm.classList.add("hidden");
+      passwordResetForm.classList.remove("hidden");
+      message.classList.remove("ok");
+      message.textContent = "새 비밀번호를 설정해야 다음부터 정상 로그인할 수 있습니다.";
+      document.getElementById("newPassword").focus();
     }
 
     ownerTab.onclick = () => showMode("owner");
@@ -280,6 +313,44 @@
         message.classList.add("ok");
         message.textContent = "신청서가 접수되었습니다. 승인 후 안내 메일을 확인해 주세요.";
       }
+      submitButton.disabled = false;
+    };
+
+    passwordResetForm.onsubmit = async event => {
+      event.preventDefault();
+      const password = document.getElementById("newPassword").value;
+      const passwordConfirm = document.getElementById("newPasswordConfirm").value;
+      const submitButton = passwordResetForm.querySelector(".submit");
+
+      message.classList.remove("ok");
+      if (password.length < 8) {
+        message.textContent = "비밀번호는 8자 이상으로 설정해 주세요.";
+        return;
+      }
+      if (password !== passwordConfirm) {
+        message.textContent = "새 비밀번호와 확인 비밀번호가 일치하지 않습니다.";
+        return;
+      }
+
+      submitButton.disabled = true;
+      message.textContent = "새 비밀번호를 저장하는 중입니다...";
+
+      const { data: { user } } = await client.auth.getUser();
+      const { error } = await client.auth.updateUser({ password });
+      if (error) {
+        message.textContent = error.message;
+        submitButton.disabled = false;
+        return;
+      }
+
+      passwordResetForm.reset();
+      await client.auth.signOut();
+      showMode("owner");
+      if (user?.email) {
+        document.getElementById("ownerEmail").value = user.email;
+      }
+      message.classList.add("ok");
+      message.textContent = "비밀번호가 설정되었습니다. 새 비밀번호로 로그인해 주세요.";
       submitButton.disabled = false;
     };
 
