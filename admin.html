@@ -500,6 +500,7 @@
             <div class="row-actions">
               <button type="button" onclick="saveAcademy('${escapeAttribute(item.academy_id)}')">저장</button>
               <button class="secondary" type="button" onclick="sendPasswordReset('${escapeAttribute(item.owner_email || "")}')">비밀번호 재설정</button>
+              <button class="secondary" type="button" onclick="issueTemporaryPassword('${escapeAttribute(item.academy_id)}')">임시 비밀번호</button>
             </div>
           </td>
         </tr>
@@ -615,9 +616,41 @@
         redirectTo: portalUrl,
       });
       tableMessage.classList.toggle("ok", !error);
-      tableMessage.textContent = error
-        ? error.message
-        : "비밀번호 재설정 메일을 보냈습니다.";
+      if (error) {
+        const message = String(error.message || "");
+        tableMessage.textContent = message.toLowerCase().includes("rate limit")
+          ? "이메일 발송 제한에 걸렸습니다. 잠시 후 다시 보내거나, 임시 비밀번호 버튼을 사용해 주세요."
+          : message;
+      } else {
+        tableMessage.textContent = "비밀번호 재설정 메일을 보냈습니다.";
+      }
+    }
+
+    async function issueTemporaryPassword(academyId) {
+      const academy = academies.find(item => item.academy_id === academyId);
+      if (!academy?.owner_email) {
+        tableMessage.classList.remove("ok");
+        tableMessage.textContent = "이 학원장 계정에는 이메일 기록이 없습니다.";
+        return;
+      }
+
+      tableMessage.classList.remove("ok");
+      tableMessage.textContent = "임시 비밀번호를 발급하는 중입니다...";
+      const { data, error } = await client.functions.invoke("issue-owner-temp-password", {
+        body: { academy_id: academyId },
+      });
+
+      if (error || data?.error) {
+        tableMessage.textContent = data?.error || error.message;
+        return;
+      }
+
+      tableMessage.classList.add("ok");
+      tableMessage.innerHTML =
+        `임시 비밀번호가 발급되었습니다. ` +
+        `${escapeText(data.owner_email)} / ` +
+        `<code>${escapeText(data.temporary_password)}</code> ` +
+        `로그인 후 비밀번호 재설정을 다시 안내해 주세요.`;
     }
 
     document.getElementById("refreshButton").onclick = () => {

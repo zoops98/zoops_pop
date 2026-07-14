@@ -28,3 +28,6 @@ verify_jwt = true
 
 [functions.create-academy-owner]
 verify_jwt = true
+
+[functions.issue-owner-temp-password]
+verify_jwt = true
